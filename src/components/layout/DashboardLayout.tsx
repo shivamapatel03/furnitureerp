@@ -1,0 +1,96 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+import { Sidebar } from "./Sidebar";
+import { MobileBottomNav } from "./MobileBottomNav";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import logoImg from "@/logo/logo.png";
+import { Menu, Plus } from "lucide-react";
+
+export function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (status === "unauthenticated" && pathname !== "/login") {
+      router.push("/login");
+    }
+  }, [status, router, pathname]);
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-9 w-9 border-b-2 border-primary"></div>
+          <p className="text-sm font-medium text-gray-500">Loading Bhurjala ERP...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col print:bg-white min-w-0">
+      {/* Mobile Top App Bar (visible on < lg) */}
+      <header className="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-3.5 py-2.5 flex items-center justify-between shadow-xs print:hidden">
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-2 text-gray-600 hover:text-gray-900 active:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Open Navigation Menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <Link href="/" className="flex items-center">
+            <Image 
+              src={logoImg} 
+              alt="Bhurjala Furniture" 
+              width={120} 
+              height={36} 
+              className="object-contain max-h-9 w-auto"
+              priority
+            />
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <Link
+            href="/billing/new"
+            className="flex items-center gap-1 bg-primary active:bg-primary-dark text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-all shadow-xs"
+          >
+            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span>Bill</span>
+          </Link>
+          <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center ml-1">
+            {session?.user?.name?.charAt(0) || "A"}
+          </div>
+        </div>
+      </header>
+
+      {/* Sidebar (Desktop fixed 64 (256px) + Mobile Drawer) */}
+      <Sidebar 
+        isOpen={mobileMenuOpen} 
+        onClose={() => setMobileMenuOpen(false)} 
+      />
+
+      {/* Main Content Area: uses lg:pl-64 so it perfectly fits viewport without overflow */}
+      <div className="flex-1 lg:pl-64 print:pl-0 flex flex-col min-h-screen min-w-0">
+        <main className="flex-1 p-3.5 sm:p-6 lg:p-8 pb-24 lg:pb-8 max-w-7xl w-full mx-auto min-w-0 print:p-0">
+          {children}
+        </main>
+      </div>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <MobileBottomNav onOpenMenu={() => setMobileMenuOpen(true)} />
+    </div>
+  );
+}
