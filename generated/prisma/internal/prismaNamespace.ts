@@ -407,7 +407,8 @@ export const ModelName = {
   Payment: 'Payment',
   Project: 'Project',
   MaterialUsage: 'MaterialUsage',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  Estimate: 'Estimate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -423,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "employee" | "attendance" | "customer" | "product" | "bill" | "billItem" | "payment" | "project" | "materialUsage" | "setting"
+    modelProps: "user" | "employee" | "attendance" | "customer" | "product" | "bill" | "billItem" | "payment" | "project" | "materialUsage" | "setting" | "estimate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1241,6 +1242,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Estimate: {
+      payload: Prisma.$EstimatePayload<ExtArgs>
+      fields: Prisma.EstimateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EstimateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EstimateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>
+        }
+        findFirst: {
+          args: Prisma.EstimateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EstimateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>
+        }
+        findMany: {
+          args: Prisma.EstimateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>[]
+        }
+        create: {
+          args: Prisma.EstimateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>
+        }
+        createMany: {
+          args: Prisma.EstimateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EstimateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>[]
+        }
+        delete: {
+          args: Prisma.EstimateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>
+        }
+        update: {
+          args: Prisma.EstimateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>
+        }
+        deleteMany: {
+          args: Prisma.EstimateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EstimateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EstimateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>[]
+        }
+        upsert: {
+          args: Prisma.EstimateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EstimatePayload>
+        }
+        aggregate: {
+          args: Prisma.EstimateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEstimate>
+        }
+        groupBy: {
+          args: Prisma.EstimateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EstimateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EstimateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EstimateCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1430,6 +1505,27 @@ export const SettingScalarFieldEnum = {
 } as const
 
 export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
+
+
+export const EstimateScalarFieldEnum = {
+  id: 'id',
+  estimateNumber: 'estimateNumber',
+  clientName: 'clientName',
+  clientMobile: 'clientMobile',
+  propertyType: 'propertyType',
+  totalSqft: 'totalSqft',
+  qualityTier: 'qualityTier',
+  style: 'style',
+  totalCost: 'totalCost',
+  roomsData: 'roomsData',
+  bomData: 'bomData',
+  notes: 'notes',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EstimateScalarFieldEnum = (typeof EstimateScalarFieldEnum)[keyof typeof EstimateScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1679,6 +1775,7 @@ export type GlobalOmitConfig = {
   project?: Prisma.ProjectOmit
   materialUsage?: Prisma.MaterialUsageOmit
   setting?: Prisma.SettingOmit
+  estimate?: Prisma.EstimateOmit
 }
 
 /* Types for Logging */

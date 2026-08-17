@@ -144,3 +144,22 @@ model Setting {
   key   String @unique
   value String
 }
+
+model Estimate {
+  id             String   @id @default(cuid())
+  estimateNumber String   @unique
+  clientName     String?
+  clientMobile   String?
+  propertyType   String   // 1BHK, 2BHK, 3BHK, 4BHK, VILLA, STUDIO, OFFICE, CUSTOM
+  totalSqft      Float
+  qualityTier    String   // ECONOMY, STANDARD, LUXURY
+  style          String?  // MODERN, MINIMALIST, LUXURY, TRADITIONAL, SCANDINAVIAN
+  totalCost      Float
+  roomsData      String   // JSON stringified array of rooms & furniture items
+  bomData        String?  // JSON stringified Bill of Materials (plywood, laminates, hardware)
+  notes          String?
+  status         String   @default("DRAFT") // DRAFT, SENT, CONVERTED_TO_PROJECT, CONVERTED_TO_BILL
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+

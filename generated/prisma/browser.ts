@@ -72,3 +72,8 @@ export type MaterialUsage = Prisma.MaterialUsageModel
  * 
  */
 export type Setting = Prisma.SettingModel
+/**
+ * Model Estimate
+ * 
+ */
+export type Estimate = Prisma.EstimateModel

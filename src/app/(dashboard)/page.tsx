@@ -1,5 +1,5 @@
 import { getDashboardData } from "../actions/dashboard";
-import { CreditCard, IndianRupee, Package, ReceiptText, AlertTriangle, ArrowRight, Plus } from "lucide-react";
+import { CreditCard, IndianRupee, Package, ReceiptText, AlertTriangle, ArrowRight, Plus, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 
@@ -16,12 +16,46 @@ export default async function DashboardPage() {
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-xs sm:text-sm text-gray-500">Business overview & quick metrics</p>
         </div>
-        <Link 
-          href="/billing/new" 
-          className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+        <div className="flex items-center gap-2">
+          <Link 
+            href="/estimator" 
+            className="bg-gradient-to-r from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm border border-gray-700"
+          >
+            <Sparkles size={16} className="text-amber-400" />
+            AI Estimator
+          </Link>
+          <Link 
+            href="/billing/new" 
+            className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+          >
+            <Plus size={18} />
+            Create Bill
+          </Link>
+        </div>
+      </div>
+
+      {/* AI Estimator Featured Quick Banner */}
+      <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white p-4 sm:p-5 rounded-2xl border border-gray-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-500 to-amber-500 flex items-center justify-center text-white shrink-0 shadow-md">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="font-bold text-sm sm:text-base text-white">AI House & Furniture Estimator</h2>
+              <span className="px-2 py-0.5 text-[10px] font-extrabold uppercase bg-primary text-white rounded-full">New</span>
+            </div>
+            <p className="text-xs text-gray-300 mt-0.5">
+              Calculate exact furniture needed by sqft (1BHK, 2BHK, 3BHK, Villa), raw plywood BOM & 3-tier price quotes in seconds.
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/estimator"
+          className="px-4 py-2 bg-white text-gray-900 hover:bg-gray-100 font-bold text-xs rounded-xl transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
         >
-          <Plus size={18} />
-          Create New Bill
+          <span>Calculate Now</span>
+          <ArrowRight size={14} />
         </Link>
       </div>
 

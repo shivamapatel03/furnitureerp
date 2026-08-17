@@ -61,7 +61,8 @@ export const ModelName = {
   Payment: 'Payment',
   Project: 'Project',
   MaterialUsage: 'MaterialUsage',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  Estimate: 'Estimate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -230,6 +231,27 @@ export const SettingScalarFieldEnum = {
 } as const
 
 export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
+
+
+export const EstimateScalarFieldEnum = {
+  id: 'id',
+  estimateNumber: 'estimateNumber',
+  clientName: 'clientName',
+  clientMobile: 'clientMobile',
+  propertyType: 'propertyType',
+  totalSqft: 'totalSqft',
+  qualityTier: 'qualityTier',
+  style: 'style',
+  totalCost: 'totalCost',
+  roomsData: 'roomsData',
+  bomData: 'bomData',
+  notes: 'notes',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EstimateScalarFieldEnum = (typeof EstimateScalarFieldEnum)[keyof typeof EstimateScalarFieldEnum]
 
 
 export const SortOrder = {

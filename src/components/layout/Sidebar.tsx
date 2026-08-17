@@ -17,11 +17,13 @@ import {
   BarChart3, 
   Settings,
   LogOut,
-  X
+  X,
+  Sparkles
 } from "lucide-react";
 
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "AI Estimator", href: "/estimator", icon: Sparkles, isAi: true },
   { name: "Billing", href: "/billing", icon: ReceiptText },
   { name: "Products / Materials", href: "/products", icon: Box },
   { name: "Projects", href: "/projects", icon: Briefcase },
@@ -81,8 +83,13 @@ export function Sidebar({
                 : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             }`}
           >
-            <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-primary stroke-[2.2]" : "text-gray-400"}`} />
-            <span className="truncate">{item.name}</span>
+            <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-primary stroke-[2.2]" : (item as any).isAi ? "text-amber-500" : "text-gray-400"}`} />
+            <span className="truncate flex-1">{item.name}</span>
+            {(item as any).isAi && (
+              <span className="px-1.5 py-0.5 text-[9px] font-extrabold uppercase bg-gradient-to-r from-red-500 to-amber-500 text-white rounded-md shadow-xs tracking-wider">
+                AI
+              </span>
+            )}
           </Link>
         );
       })}
