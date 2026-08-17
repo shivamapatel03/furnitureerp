@@ -1,11 +1,16 @@
 import { getCustomers } from "@/app/actions/customers";
 import { format } from "date-fns";
 import { Users, Phone, Receipt } from "lucide-react";
+import CustomerSearchInput from "./CustomerSearchInput";
+import { Suspense } from "react";
+import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
 
-export default async function CustomersPage() {
-  const customers = await getCustomers();
+export default async function CustomersPage(props: { searchParams: Promise<{ q?: string }> }) {
+  const searchParams = await props.searchParams;
+  const query = searchParams.q ?? "";
+  const customers = await getCustomers(query || undefined);
 
   return (
     <div className="space-y-4 sm:space-y-6 max-w-7xl mx-auto">
@@ -18,6 +23,16 @@ export default async function CustomersPage() {
       </div>
 
       <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+        {/* Search Toolbar */}
+        <div className="p-3.5 sm:p-4 border-b border-gray-100 bg-gray-50/60 flex items-center justify-between">
+          <Suspense fallback={<div className="h-10 w-full max-w-md bg-gray-200 animate-pulse rounded-xl" />}>
+            <CustomerSearchInput />
+          </Suspense>
+          <span className="text-xs font-semibold text-gray-400 hidden sm:inline">
+            {customers.length} {customers.length === 1 ? "customer" : "customers"} found
+          </span>
+        </div>
+
         {/* Mobile View: Cards */}
         <div className="block sm:hidden divide-y divide-gray-100">
           {customers.length > 0 ? (
@@ -51,8 +66,18 @@ export default async function CustomersPage() {
           ) : (
             <div className="p-8 text-center text-gray-400">
               <Users className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-              <p className="text-sm font-bold text-gray-800">No customer records</p>
-              <p className="text-xs text-gray-400 mt-1">Customers will automatically appear as you generate invoices.</p>
+              <p className="text-sm font-bold text-gray-800">
+                {query ? `No customers matching "${query}"` : "No customer records"}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                {query ? (
+                  <Link href="/customers" className="text-primary font-semibold hover:underline">
+                    Clear search filter
+                  </Link>
+                ) : (
+                  "Customers will automatically appear as you generate invoices."
+                )}
+              </p>
             </div>
           )}
         </div>
@@ -97,8 +122,18 @@ export default async function CustomersPage() {
                   <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
                     <div className="flex flex-col items-center justify-center">
                       <Users className="w-12 h-12 text-gray-300 mb-3" />
-                      <p className="text-base font-bold text-gray-900">No customers found</p>
-                      <p className="text-xs text-gray-400 mt-1">Customers are auto-saved when you create invoices.</p>
+                      <p className="text-base font-bold text-gray-900">
+                        {query ? `No customers matching "${query}"` : "No customers found"}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {query ? (
+                          <Link href="/customers" className="text-primary font-semibold hover:underline">
+                            Clear search filter
+                          </Link>
+                        ) : (
+                          "Customers are auto-saved when you create invoices."
+                        )}
+                      </p>
                     </div>
                   </td>
                 </tr>

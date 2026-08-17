@@ -162,3 +162,71 @@ export async function getBillById(id: string) {
     }
   });
 }
+
+export async function deleteBill(id: string) {
+  try {
+    const bill = await prisma.bill.findUnique({
+      where: { id },
+      include: {
+        items: true,
+      }
+    });
+
+    if (!bill) {
+      return { success: false, error: "Bill not found." };
+    }
+
+    await prisma.$transaction(async (tx) => {
+      // 1. Restore product inventory stock
+      for (const item of bill.items) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: {
+            stock: {
+              increment: item.quantity
+            }
+          }
+        });
+      }
+
+      // 2. Decrement customer totalPurchased
+      await tx.customer.update({
+        where: { id: bill.customerId },
+        data: {
+          totalPurchased: {
+            decrement: bill.grandTotal
+          }
+        }
+      });
+
+      // 3. Delete payments associated with this bill
+      await tx.payment.deleteMany({
+        where: { billId: id }
+      });
+
+      // 4. Delete bill items
+      await tx.billItem.deleteMany({
+        where: { billId: id }
+      });
+
+      // 5. Delete the bill itself
+      await tx.bill.delete({
+        where: { id }
+      });
+    });
+
+    revalidatePath("/billing");
+    revalidatePath("/");
+    revalidatePath("/products");
+    revalidatePath("/customers");
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error deleting bill:", error);
+    return {
+      success: false,
+      error: error.message || "Failed to delete bill."
+    };
+  }
+}
+

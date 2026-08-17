@@ -3,6 +3,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { Plus, FileText, IndianRupee } from "lucide-react";
 import PrintActionButton from "./PrintActionButton";
+import DeleteBillButton from "./DeleteBillButton";
 import BillSearchInput from "./BillSearchInput";
 import { Suspense } from "react";
 
@@ -65,8 +66,9 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
                   </div>
                 </div>
 
-                <div className="pt-2 flex justify-end items-center border-t border-gray-50">
+                <div className="pt-2 flex justify-end items-center gap-2 border-t border-gray-50">
                   <PrintActionButton billId={bill.id} />
+                  <DeleteBillButton billId={bill.id} billNumber={bill.billNumber} />
                 </div>
               </div>
             ))
@@ -116,8 +118,9 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1">
                         <PrintActionButton billId={bill.id} />
+                        <DeleteBillButton billId={bill.id} billNumber={bill.billNumber} />
                       </div>
                     </td>
                   </tr>
