@@ -103,8 +103,8 @@ export function Sidebar({
           {session?.user?.name?.charAt(0) || "A"}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold text-gray-900 truncate">{session?.user?.name || "Admin"}</p>
-          <p className="text-[11px] text-gray-500 truncate">{session?.user?.email || "admin@example.com"}</p>
+          <p className="text-xs font-bold text-gray-900 truncate">{session?.user?.name || "Administrator"}</p>
+          <p className="text-[11px] text-gray-500 truncate">{session?.user?.role === "ADMIN" ? "Master Admin Access" : "Staff Access"}</p>
         </div>
       </div>
       <button 

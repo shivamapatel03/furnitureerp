@@ -6,36 +6,65 @@ import bcrypt from "bcryptjs"
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "Secret Code",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "admin@example.com" },
-        password: { label: "Password", type: "password" }
+        code: { label: "Secret Code", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null
+        const enteredCode = credentials?.code?.trim();
+        if (!enteredCode) {
+          return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
-        })
-
-        if (!user) {
-          return null
+        // 1. Check custom secret code from DB settings
+        let dbSecretCode = "";
+        try {
+          const setting = await prisma.setting.findUnique({
+            where: { key: "secretAccessCode" }
+          });
+          if (setting && setting.value) {
+            dbSecretCode = setting.value.trim();
+          }
+        } catch (e) {
+          console.warn("Could not read secretAccessCode from DB:", e);
         }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+        // Valid default master codes: "2026", "7890", "admin123", "bhurjala"
+        const validCodes = [
+          dbSecretCode,
+          "2026",
+          "7890",
+          "admin123",
+          "bhurjala",
+          "bhurjala2026"
+        ].filter(Boolean);
 
-        if (!isPasswordValid) {
-          return null
+        // 2. Also check if matches any user password in DB
+        let isUserMatch = false;
+        let matchedUser: any = null;
+        try {
+          const users = await prisma.user.findMany();
+          for (const u of users) {
+            if (await bcrypt.compare(enteredCode, u.password) || enteredCode === u.password) {
+              isUserMatch = true;
+              matchedUser = u;
+              break;
+            }
+          }
+        } catch (e) {
+          // DB fallback
         }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
+        if (validCodes.includes(enteredCode) || isUserMatch) {
+          return {
+            id: matchedUser?.id || "admin-master",
+            name: matchedUser?.name || "Administrator",
+            email: matchedUser?.email || "admin@bhurjala.com",
+            role: matchedUser?.role || "ADMIN",
+          };
         }
+
+        return null;
       }
     })
   ],

@@ -1,5 +1,5 @@
 import { getSettings, saveSettings } from "@/app/actions/settings";
-import { Building2, Phone, Mail, MapPin } from "lucide-react";
+import { Building2, Phone, Mail, MapPin, KeyRound } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 
@@ -10,11 +10,29 @@ export default async function SettingsPage() {
     <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-xs sm:text-sm text-gray-500">Company profile & invoice branding</p>
+        <p className="text-xs sm:text-sm text-gray-500">Company profile, login security & invoice branding</p>
       </div>
 
       <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-xs p-4 sm:p-6">
         <form action={saveSettings} className="space-y-4 sm:space-y-6">
+          {/* Security / Secret Code */}
+          <div className="p-4 bg-red-50/50 rounded-xl border border-red-100 space-y-2">
+            <label htmlFor="secretAccessCode" className="flex items-center gap-1.5 text-xs font-bold text-gray-900">
+              <KeyRound size={15} className="text-primary" /> ERP Secret Access Code (Login PIN)
+            </label>
+            <input 
+              type="text" 
+              id="secretAccessCode" 
+              name="secretAccessCode" 
+              defaultValue={settings.secretAccessCode || "2026"}
+              className="w-full px-3.5 py-2.5 text-sm font-bold tracking-wider text-gray-900 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+              placeholder="e.g. 2026" 
+            />
+            <p className="text-[11px] text-gray-500">
+              This secret passcode is used to log into the ERP without entering an email address.
+            </p>
+          </div>
+
           <div className="space-y-1.5">
             <label htmlFor="companyName" className="flex items-center gap-1.5 text-xs font-semibold text-gray-700">
               <Building2 size={14} className="text-gray-400" /> Company Name
