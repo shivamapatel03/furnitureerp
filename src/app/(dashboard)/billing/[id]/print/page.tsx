@@ -2,10 +2,10 @@ import { getBillById } from "@/app/actions/billing";
 import { getSettings } from "@/app/actions/settings";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
-import PrintButton from "./PrintButton";
+import ActionButtons from "./ActionButtons";
 import Image from "next/image";
 import logoImg from "@/logo/logo.png";
-import AutoPrint from "./AutoPrint";
+import SuccessModal from "./SuccessModal";
 
 export default async function PrintBillPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -18,10 +18,10 @@ export default async function PrintBillPage(props: { params: Promise<{ id: strin
   const paidAmount = bill.payments.reduce((acc, p) => acc + p.amount, 0);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
-      <AutoPrint />
-      <div className="mb-6 w-full max-w-3xl flex justify-end no-print">
-        <PrintButton />
+    <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center relative">
+      <SuccessModal billNumber={bill.billNumber} />
+      <div className="mb-6 w-full max-w-3xl flex justify-center sm:justify-end no-print">
+        <ActionButtons billNumber={bill.billNumber} />
       </div>
 
       <div id="print-area" className="w-full max-w-3xl bg-white p-12 shadow-sm border border-gray-200">
