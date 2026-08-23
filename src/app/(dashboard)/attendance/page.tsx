@@ -3,26 +3,33 @@ import AttendanceManager from "./AttendanceManager";
 
 export const dynamic = 'force-dynamic';
 
-export default async function AttendancePage() {
-  const today = new Date();
+export default async function AttendancePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ date?: string }>;
+}) {
+  const params = await searchParams;
+  const dateParam = params.date;
+  const targetDate = dateParam ? new Date(dateParam) : new Date();
+
   const [employees, attendance, salary] = await Promise.all([
     getEmployees(),
-    getAttendance(today),
-    getMonthlySalary(today.getFullYear(), today.getMonth()),
+    getAttendance(targetDate),
+    getMonthlySalary(targetDate.getFullYear(), targetDate.getMonth()),
   ]);
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Staff Attendance</h1>
-        <p className="text-gray-500">Mark attendance, manage staff, and view salary summaries</p>
+        <h1 className="text-2xl font-bold text-gray-900 print:hidden">Staff Attendance</h1>
+        <p className="text-gray-500 print:hidden">Mark attendance, manage staff, and view salary summaries</p>
       </div>
 
       <AttendanceManager
         initialEmployees={employees as any}
         initialAttendance={attendance as any}
         initialSalary={salary as any}
-        dateStr={today.toISOString()}
+        dateStr={targetDate.toISOString()}
       />
     </div>
   );

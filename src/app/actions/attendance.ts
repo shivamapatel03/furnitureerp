@@ -80,6 +80,33 @@ export async function markAttendance(data: {
   return { success: true };
 }
 
+export async function batchMarkAttendance(data: {
+  date: Date;
+  records: { employeeId: string; status: string }[];
+}) {
+  const startOfDay = new Date(data.date);
+  startOfDay.setHours(0, 0, 0, 0);
+  const endOfDay = new Date(data.date);
+  endOfDay.setHours(23, 59, 59, 999);
+
+  await prisma.attendance.deleteMany({
+    where: { date: { gte: startOfDay, lte: endOfDay } }
+  });
+
+  if (data.records.length > 0) {
+    await prisma.attendance.createMany({
+      data: data.records.map(r => ({
+        employeeId: r.employeeId,
+        status: r.status,
+        date: startOfDay,
+      }))
+    });
+  }
+
+  revalidatePath("/attendance");
+  return { success: true };
+}
+
 // ─── Salary Summary ────────────────────────────────────────────
 
 export async function getMonthlySalary(year: number, month: number) {

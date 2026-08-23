@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { markAttendance, createEmployee, updateEmployee, deleteEmployee } from "@/app/actions/attendance";
 import { format } from "date-fns";
-import { Users, Calendar, IndianRupee, Plus, Edit2, Trash2, Check, X, UserCheck } from "lucide-react";
+import { Users, Calendar, IndianRupee, Plus, Edit2, Trash2, Check, X, UserCheck, Save, Printer } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type Employee = { id: string; name: string; position: string | null; mobile: string; dailySalary: number; status: string };
@@ -38,24 +38,40 @@ export default function AttendanceManager({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  useEffect(() => {
+    setSelectedDate(dateStr.slice(0, 10));
+    setAttendance(initialAttendance);
+  }, [dateStr, initialAttendance]);
+
   // ── Staff form state ──────────────────────────────────────
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", mobile: "", position: "", dailySalary: "" });
 
+
   // ── Attendance ────────────────────────────────────────────
   const getStatus = (employeeId: string) =>
     attendance.find(a => a.employeeId === employeeId)?.status ?? null;
 
-  const handleMark = async (employeeId: string, status: string) => {
-    setMarkingId(employeeId);
-    await markAttendance({ employeeId, status, date: new Date(selectedDate) });
+  const handleMark = (employeeId: string, status: string) => {
     setAttendance(prev => {
       const existing = prev.find(a => a.employeeId === employeeId);
       if (existing) return prev.map(a => a.employeeId === employeeId ? { ...a, status } : a);
       return [...prev, { employeeId, status, date: selectedDate }];
     });
-    setMarkingId(null);
+  };
+
+  const handleSave = () => {
+    startTransition(async () => {
+      const { batchMarkAttendance } = await import('@/app/actions/attendance');
+      await batchMarkAttendance({ date: new Date(selectedDate), records: attendance });
+      alert('Attendance saved successfully!');
+      router.refresh();
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
   };
 
   // ── Staff CRUD ────────────────────────────────────────────
@@ -104,7 +120,7 @@ export default function AttendanceManager({
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Tab Selector */}
-      <div className="flex bg-gray-100 p-1 rounded-xl w-full sm:w-fit overflow-x-auto gap-1">
+      <div className="flex bg-gray-100 p-1 rounded-xl w-full sm:w-fit overflow-x-auto gap-1 print:hidden">
         {tabs.map(({ key, label, Icon }) => (
           <button 
             key={key} 
@@ -132,15 +148,28 @@ export default function AttendanceManager({
               </h2>
               <p className="text-xs text-gray-500">Tap buttons to mark attendance</p>
             </div>
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <span className="text-xs font-semibold text-gray-500 sm:hidden">Date:</span>
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto print:hidden">
               <input 
                 type="date" 
                 value={selectedDate} 
                 max={new Date().toISOString().slice(0, 10)}
-                onChange={e => { setSelectedDate(e.target.value); setAttendance([]); }}
+                onChange={e => router.push('?date=' + e.target.value)}
                 className="w-full sm:w-auto border border-gray-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-primary bg-white" 
               />
+              <button
+                onClick={handlePrint}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 active:scale-95 transition-all"
+                title="Print / Export to PDF"
+              >
+                <Printer size={16} /> Print / PDF
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={isPending}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-white bg-green-600 rounded-xl hover:bg-green-700 active:scale-95 transition-all disabled:opacity-50"
+              >
+                <Save size={16} /> Save Attendance
+              </button>
             </div>
           </div>
 
@@ -449,9 +478,18 @@ export default function AttendanceManager({
       {/* ── SALARY SUMMARY TAB ── */}
       {tab === "salary" && (
         <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
-          <div className="p-3.5 sm:p-4 border-b border-gray-100 bg-gray-50/60">
-            <h2 className="font-bold text-gray-900 text-sm sm:text-base">Salary Summary — {format(new Date(), 'MMMM yyyy')}</h2>
-            <p className="text-xs text-gray-500">Calculated based on attendance days (30 days basis)</p>
+          <div className="p-3.5 sm:p-4 border-b border-gray-100 bg-gray-50/60 flex justify-between items-center">
+            <div>
+              <h2 className="font-bold text-gray-900 text-sm sm:text-base">Salary Summary — {format(new Date(), 'MMMM yyyy')}</h2>
+              <p className="text-xs text-gray-500">Calculated based on attendance days (30 days basis)</p>
+            </div>
+            <button
+              onClick={handlePrint}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 active:scale-95 transition-all print:hidden"
+              title="Print / Export to PDF"
+            >
+              <Printer size={16} /> Print / PDF
+            </button>
           </div>
 
           {/* Mobile Salary Cards */}
