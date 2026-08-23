@@ -46,21 +46,7 @@ export function MobileBottomNav({ onOpenMenu }: { onOpenMenu: () => void }) {
           );
         })}
 
-        {/* Create Bill Quick Action */}
-        <Link
-          href="/billing/new"
-          className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all min-w-[56px] active:scale-95 ${
-            pathname === "/billing/new" 
-              ? "text-primary font-bold" 
-              : "text-primary font-medium"
-          }`}
-          title="New Bill"
-        >
-          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md mb-0.5 -mt-2">
-            <PlusCircle className="w-5 h-5 stroke-[2.5]" />
-          </div>
-          <span className="text-[11px] leading-tight text-primary font-semibold">New Bill</span>
-        </Link>
+
 
         {/* Full Menu / More Drawer Button */}
         <button

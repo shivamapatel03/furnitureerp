@@ -17,13 +17,7 @@ export default async function DashboardPage() {
           <p className="text-xs sm:text-sm text-gray-500">Business overview & quick metrics</p>
         </div>
         <div className="flex items-center gap-2">
-          <Link 
-            href="/estimator" 
-            className="bg-gradient-to-r from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm border border-gray-700"
-          >
-            <Sparkles size={16} className="text-amber-400" />
-            AI Estimator
-          </Link>
+
           <Link 
             href="/billing/new" 
             className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
