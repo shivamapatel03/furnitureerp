@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Employee: 'Employee',
+  StaffPayment: 'StaffPayment',
   Attendance: 'Attendance',
   Customer: 'Customer',
   Product: 'Product',
@@ -99,13 +100,26 @@ export const EmployeeScalarFieldEnum = {
   name: 'name',
   mobile: 'mobile',
   position: 'position',
-  dailySalary: 'dailySalary',
   status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  dailySalary: 'dailySalary'
+} as const
+
+export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+
+
+export const StaffPaymentScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  amount: 'amount',
+  date: 'date',
+  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+export type StaffPaymentScalarFieldEnum = (typeof StaffPaymentScalarFieldEnum)[keyof typeof StaffPaymentScalarFieldEnum]
 
 
 export const AttendanceScalarFieldEnum = {
@@ -199,11 +213,11 @@ export const ProjectScalarFieldEnum = {
   customerId: 'customerId',
   siteAddress: 'siteAddress',
   startDate: 'startDate',
-  deadline: 'deadline',
   status: 'status',
-  notes: 'notes',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deadline: 'deadline',
+  notes: 'notes'
 } as const
 
 export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]

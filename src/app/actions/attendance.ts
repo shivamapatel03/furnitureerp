@@ -17,10 +17,11 @@ export async function createEmployee(formData: FormData) {
 
   if (!name || !mobile) throw new Error("Name and mobile required");
 
-  await prisma.employee.create({
+  const employee = await prisma.employee.create({
     data: { name, mobile, position: position || null, dailySalary }
   });
   revalidatePath("/attendance");
+  return employee;
 }
 
 export async function updateEmployee(id: string, formData: FormData) {
@@ -29,16 +30,18 @@ export async function updateEmployee(id: string, formData: FormData) {
   const position = formData.get("position") as string;
   const dailySalary = parseFloat(formData.get("dailySalary") as string) || 0;
 
-  await prisma.employee.update({
+  const employee = await prisma.employee.update({
     where: { id },
     data: { name, mobile, position: position || null, dailySalary }
   });
   revalidatePath("/attendance");
+  return employee;
 }
 
 export async function deleteEmployee(id: string) {
   await prisma.employee.delete({ where: { id } });
   revalidatePath("/attendance");
+  return { success: true };
 }
 
 // ─── Attendance ────────────────────────────────────────────────
@@ -107,6 +110,26 @@ export async function batchMarkAttendance(data: {
   return { success: true };
 }
 
+// ─── Staff Payments ──────────────────────────────────────────────
+
+export async function addStaffPayment(data: {
+  employeeId: string;
+  amount: number;
+  date: Date;
+  description?: string;
+}) {
+  await prisma.staffPayment.create({
+    data: {
+      employeeId: data.employeeId,
+      amount: data.amount,
+      date: new Date(data.date),
+      description: data.description,
+    },
+  });
+  revalidatePath("/attendance");
+  return { success: true };
+}
+
 // ─── Salary Summary ────────────────────────────────────────────
 
 export async function getMonthlySalary(year: number, month: number) {
@@ -116,6 +139,9 @@ export async function getMonthlySalary(year: number, month: number) {
 
   const employees = await prisma.employee.findMany({ orderBy: { name: 'asc' } });
   const attendances = await prisma.attendance.findMany({
+    where: { date: { gte: start, lte: end } }
+  });
+  const staffPayments = await prisma.staffPayment.findMany({
     where: { date: { gte: start, lte: end } }
   });
 
@@ -133,6 +159,11 @@ export async function getMonthlySalary(year: number, month: number) {
     const deductionAmount = deductionDays * emp.dailySalary;
     const earnedSalary = fullMonthSalary - deductionAmount;
 
+    // Advances / Payments
+    const empPayments = staffPayments.filter(p => p.employeeId === emp.id);
+    const totalAdvances = empPayments.reduce((sum, p) => sum + p.amount, 0);
+    const netSalary = earnedSalary - totalAdvances;
+
     return {
       employee: emp,
       presentDays,
@@ -142,6 +173,8 @@ export async function getMonthlySalary(year: number, month: number) {
       fullMonthSalary,
       deductionAmount,
       earnedSalary,
+      totalAdvances,
+      netSalary,
     };
   });
 }

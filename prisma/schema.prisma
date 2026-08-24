@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
   moduleFormat = "cjs"
 }
 
@@ -13,33 +13,45 @@ model User {
   name      String?
   email     String   @unique
   password  String
-  role      String   @default("STAFF") // ADMIN, STAFF
+  role      String   @default("STAFF")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Employee {
-  id           String       @id @default(cuid())
-  name         String
-  mobile       String       @unique
-  position     String?
-  dailySalary  Float        @default(0)
-  status       String       @default("Active") // Active, Inactive
-  attendances  Attendance[]
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id          String       @id @default(cuid())
+  name        String
+  mobile      String       @unique
+  position    String?
+  status      String       @default("Active")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  dailySalary Float          @default(0)
+  attendances Attendance[]
+  payments    StaffPayment[]
+}
+
+model StaffPayment {
+  id          String   @id @default(cuid())
+  employeeId  String
+  amount      Float
+  date        DateTime @default(now())
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
 
 model Attendance {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   employeeId String
-  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  date       DateTime // Stored as midnight for the given day
-  status     String   // PRESENT, ABSENT, LATE
+  date       DateTime
+  status     String
   checkIn    DateTime?
   checkOut   DateTime?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  employee   Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
   @@unique([employeeId, date])
 }
@@ -49,94 +61,94 @@ model Customer {
   name           String
   mobile         String    @unique
   totalPurchased Float     @default(0)
-  bills          Bill[]
-  projects       Project[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+  bills          Bill[]
+  projects       Project[]
 }
 
 model Product {
   id             String          @id @default(cuid())
   name           String
   category       String?
-  unit           String          @default("Pcs") // Sheet, Pcs, Box, etc.
+  unit           String          @default("Pcs")
   sellingPrice   Float
   purchasePrice  Float?
   stock          Float           @default(0)
   lowStockLimit  Float           @default(10)
-  billItems      BillItem[]
-  materialUsages MaterialUsage[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+  billItems      BillItem[]
+  materialUsages MaterialUsage[]
 }
 
 model Bill {
-  id            String       @id @default(cuid())
-  billNumber    String       @unique
+  id            String     @id @default(cuid())
+  billNumber    String     @unique
   customerId    String
-  customer      Customer     @relation(fields: [customerId], references: [id])
-  subtotal      Float        @default(0)
-  discount      Float        @default(0)
-  tax           Float        @default(0)
-  grandTotal    Float        @default(0)
-  paymentStatus String       @default("PENDING") // PAID, PARTIAL, PENDING
+  subtotal      Float      @default(0)
+  discount      Float      @default(0)
+  tax           Float      @default(0)
+  grandTotal    Float      @default(0)
+  paymentStatus String     @default("PENDING")
+  date          DateTime   @default(now())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  customer      Customer   @relation(fields: [customerId], references: [id])
   items         BillItem[]
   payments      Payment[]
-  date          DateTime     @default(now())
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
 }
 
 model BillItem {
   id        String   @id @default(cuid())
   billId    String
-  bill      Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
   productId String
-  product   Product  @relation(fields: [productId], references: [id])
   quantity  Float
   price     Float
   total     Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  bill      Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Payment {
-  id            String   @id @default(cuid())
-  billId        String
-  bill          Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
-  amount        Float
-  method        String   // CASH, UPI, BANK_TRANSFER, CARD
-  date          DateTime @default(now())
-  createdAt     DateTime @default(now())
+  id        String   @id @default(cuid())
+  billId    String
+  amount    Float
+  method    String
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  bill      Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
 }
 
 model Project {
   id             String          @id @default(cuid())
   name           String
   customerId     String?
-  customer       Customer?       @relation(fields: [customerId], references: [id])
   siteAddress    String?
   startDate      DateTime?
-  deadline       DateTime?
-  status         String          @default("PLANNING") // PLANNING, IN_PROGRESS, COMPLETED
-  notes          String?
-  materialUsages MaterialUsage[]
+  status         String          @default("PLANNING")
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+  deadline       DateTime?
+  notes          String?
+  materialUsages MaterialUsage[]
+  customer       Customer?       @relation(fields: [customerId], references: [id])
 }
 
 model MaterialUsage {
   id        String   @id @default(cuid())
   projectId String
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   productId String
-  product   Product  @relation(fields: [productId], references: [id])
-  area      String?  // Kitchen, Bedroom, etc.
+  area      String?
   quantity  Float
   date      DateTime @default(now())
   notes     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Setting {
@@ -150,16 +162,15 @@ model Estimate {
   estimateNumber String   @unique
   clientName     String?
   clientMobile   String?
-  propertyType   String   // 1BHK, 2BHK, 3BHK, 4BHK, VILLA, STUDIO, OFFICE, CUSTOM
+  propertyType   String
   totalSqft      Float
-  qualityTier    String   // ECONOMY, STANDARD, LUXURY
-  style          String?  // MODERN, MINIMALIST, LUXURY, TRADITIONAL, SCANDINAVIAN
+  qualityTier    String
+  style          String?  @default("MODERN")
   totalCost      Float
-  roomsData      String   // JSON stringified array of rooms & furniture items
-  bomData        String?  // JSON stringified Bill of Materials (plywood, laminates, hardware)
+  roomsData      String
+  bomData        String
   notes          String?
-  status         String   @default("DRAFT") // DRAFT, SENT, CONVERTED_TO_PROJECT, CONVERTED_TO_BILL
+  status         String   @default("DRAFT")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
-

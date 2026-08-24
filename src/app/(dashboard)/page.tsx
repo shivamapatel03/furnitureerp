@@ -20,7 +20,7 @@ export default async function DashboardPage() {
 
           <Link 
             href="/billing/new" 
-            className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+            className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
           >
             <Plus size={18} />
             Create Bill
@@ -31,7 +31,7 @@ export default async function DashboardPage() {
       {/* KPI Cards: 2 cols on mobile, 4 cols on desktop */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Today's Sales */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">Today's Sales</span>
             <div className="p-1.5 sm:p-2 bg-green-50 text-green-600 rounded-lg shrink-0">
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* This Month */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">This Month</span>
             <div className="p-1.5 sm:p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Pending Payments */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">Pending</span>
             <div className="p-1.5 sm:p-2 bg-amber-50 text-amber-600 rounded-lg shrink-0">
@@ -79,7 +79,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Inventory / Customers */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">Products</span>
             <div className="p-1.5 sm:p-2 bg-purple-50 text-purple-600 rounded-lg shrink-0">
@@ -98,7 +98,7 @@ export default async function DashboardPage() {
       {/* Main Grid: Recent Bills & Low Stock */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Recent Bills Card */}
-        <div className="lg:col-span-2 bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-xs overflow-hidden">
           <div className="px-4 sm:px-6 py-3.5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
             <h3 className="font-bold text-gray-900 text-sm sm:text-base">Recent Bills</h3>
             <Link href="/billing" className="text-xs sm:text-sm text-primary font-semibold hover:underline flex items-center gap-1">
@@ -185,7 +185,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Low Stock Alerts Card */}
-        <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-xs overflow-hidden flex flex-col">
+        <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-xs overflow-hidden flex flex-col">
           <div className="px-4 sm:px-6 py-3.5 border-b border-gray-100 flex justify-between items-center bg-red-50/40">
             <h3 className="font-bold text-red-700 flex items-center gap-1.5 text-sm sm:text-base">
               <AlertTriangle className="w-4 h-4 text-red-600" />

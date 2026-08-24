@@ -254,7 +254,7 @@ export type EstimateGroupByOutputType = {
   style: string | null
   totalCost: number
   roomsData: string
-  bomData: string | null
+  bomData: string
   notes: string | null
   status: string
   createdAt: Date
@@ -295,7 +295,7 @@ export type EstimateWhereInput = {
   style?: Prisma.StringNullableFilter<"Estimate"> | string | null
   totalCost?: Prisma.FloatFilter<"Estimate"> | number
   roomsData?: Prisma.StringFilter<"Estimate"> | string
-  bomData?: Prisma.StringNullableFilter<"Estimate"> | string | null
+  bomData?: Prisma.StringFilter<"Estimate"> | string
   notes?: Prisma.StringNullableFilter<"Estimate"> | string | null
   status?: Prisma.StringFilter<"Estimate"> | string
   createdAt?: Prisma.DateTimeFilter<"Estimate"> | Date | string
@@ -313,7 +313,7 @@ export type EstimateOrderByWithRelationInput = {
   style?: Prisma.SortOrderInput | Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   roomsData?: Prisma.SortOrder
-  bomData?: Prisma.SortOrderInput | Prisma.SortOrder
+  bomData?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -334,7 +334,7 @@ export type EstimateWhereUniqueInput = Prisma.AtLeast<{
   style?: Prisma.StringNullableFilter<"Estimate"> | string | null
   totalCost?: Prisma.FloatFilter<"Estimate"> | number
   roomsData?: Prisma.StringFilter<"Estimate"> | string
-  bomData?: Prisma.StringNullableFilter<"Estimate"> | string | null
+  bomData?: Prisma.StringFilter<"Estimate"> | string
   notes?: Prisma.StringNullableFilter<"Estimate"> | string | null
   status?: Prisma.StringFilter<"Estimate"> | string
   createdAt?: Prisma.DateTimeFilter<"Estimate"> | Date | string
@@ -352,7 +352,7 @@ export type EstimateOrderByWithAggregationInput = {
   style?: Prisma.SortOrderInput | Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   roomsData?: Prisma.SortOrder
-  bomData?: Prisma.SortOrderInput | Prisma.SortOrder
+  bomData?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -378,7 +378,7 @@ export type EstimateScalarWhereWithAggregatesInput = {
   style?: Prisma.StringNullableWithAggregatesFilter<"Estimate"> | string | null
   totalCost?: Prisma.FloatWithAggregatesFilter<"Estimate"> | number
   roomsData?: Prisma.StringWithAggregatesFilter<"Estimate"> | string
-  bomData?: Prisma.StringNullableWithAggregatesFilter<"Estimate"> | string | null
+  bomData?: Prisma.StringWithAggregatesFilter<"Estimate"> | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Estimate"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Estimate"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Estimate"> | Date | string
@@ -396,7 +396,7 @@ export type EstimateCreateInput = {
   style?: string | null
   totalCost: number
   roomsData: string
-  bomData?: string | null
+  bomData: string
   notes?: string | null
   status?: string
   createdAt?: Date | string
@@ -414,7 +414,7 @@ export type EstimateUncheckedCreateInput = {
   style?: string | null
   totalCost: number
   roomsData: string
-  bomData?: string | null
+  bomData: string
   notes?: string | null
   status?: string
   createdAt?: Date | string
@@ -432,7 +432,7 @@ export type EstimateUpdateInput = {
   style?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalCost?: Prisma.FloatFieldUpdateOperationsInput | number
   roomsData?: Prisma.StringFieldUpdateOperationsInput | string
-  bomData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bomData?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -450,7 +450,7 @@ export type EstimateUncheckedUpdateInput = {
   style?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalCost?: Prisma.FloatFieldUpdateOperationsInput | number
   roomsData?: Prisma.StringFieldUpdateOperationsInput | string
-  bomData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bomData?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -468,7 +468,7 @@ export type EstimateCreateManyInput = {
   style?: string | null
   totalCost: number
   roomsData: string
-  bomData?: string | null
+  bomData: string
   notes?: string | null
   status?: string
   createdAt?: Date | string
@@ -486,7 +486,7 @@ export type EstimateUpdateManyMutationInput = {
   style?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalCost?: Prisma.FloatFieldUpdateOperationsInput | number
   roomsData?: Prisma.StringFieldUpdateOperationsInput | string
-  bomData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bomData?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -504,7 +504,7 @@ export type EstimateUncheckedUpdateManyInput = {
   style?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalCost?: Prisma.FloatFieldUpdateOperationsInput | number
   roomsData?: Prisma.StringFieldUpdateOperationsInput | string
-  bomData?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bomData?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -665,7 +665,7 @@ export type $EstimatePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     style: string | null
     totalCost: number
     roomsData: string
-    bomData: string | null
+    bomData: string
     notes: string | null
     status: string
     createdAt: Date

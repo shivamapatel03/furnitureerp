@@ -30,11 +30,11 @@ export type ProjectMinAggregateOutputType = {
   customerId: string | null
   siteAddress: string | null
   startDate: Date | null
-  deadline: Date | null
   status: string | null
-  notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deadline: Date | null
+  notes: string | null
 }
 
 export type ProjectMaxAggregateOutputType = {
@@ -43,11 +43,11 @@ export type ProjectMaxAggregateOutputType = {
   customerId: string | null
   siteAddress: string | null
   startDate: Date | null
-  deadline: Date | null
   status: string | null
-  notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deadline: Date | null
+  notes: string | null
 }
 
 export type ProjectCountAggregateOutputType = {
@@ -56,11 +56,11 @@ export type ProjectCountAggregateOutputType = {
   customerId: number
   siteAddress: number
   startDate: number
-  deadline: number
   status: number
-  notes: number
   createdAt: number
   updatedAt: number
+  deadline: number
+  notes: number
   _all: number
 }
 
@@ -71,11 +71,11 @@ export type ProjectMinAggregateInputType = {
   customerId?: true
   siteAddress?: true
   startDate?: true
-  deadline?: true
   status?: true
-  notes?: true
   createdAt?: true
   updatedAt?: true
+  deadline?: true
+  notes?: true
 }
 
 export type ProjectMaxAggregateInputType = {
@@ -84,11 +84,11 @@ export type ProjectMaxAggregateInputType = {
   customerId?: true
   siteAddress?: true
   startDate?: true
-  deadline?: true
   status?: true
-  notes?: true
   createdAt?: true
   updatedAt?: true
+  deadline?: true
+  notes?: true
 }
 
 export type ProjectCountAggregateInputType = {
@@ -97,11 +97,11 @@ export type ProjectCountAggregateInputType = {
   customerId?: true
   siteAddress?: true
   startDate?: true
-  deadline?: true
   status?: true
-  notes?: true
   createdAt?: true
   updatedAt?: true
+  deadline?: true
+  notes?: true
   _all?: true
 }
 
@@ -183,11 +183,11 @@ export type ProjectGroupByOutputType = {
   customerId: string | null
   siteAddress: string | null
   startDate: Date | null
-  deadline: Date | null
   status: string
-  notes: string | null
   createdAt: Date
   updatedAt: Date
+  deadline: Date | null
+  notes: string | null
   _count: ProjectCountAggregateOutputType | null
   _min: ProjectMinAggregateOutputType | null
   _max: ProjectMaxAggregateOutputType | null
@@ -217,13 +217,13 @@ export type ProjectWhereInput = {
   customerId?: Prisma.StringNullableFilter<"Project"> | string | null
   siteAddress?: Prisma.StringNullableFilter<"Project"> | string | null
   startDate?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
-  deadline?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
   status?: Prisma.StringFilter<"Project"> | string
-  notes?: Prisma.StringNullableFilter<"Project"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
-  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
+  deadline?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
+  notes?: Prisma.StringNullableFilter<"Project"> | string | null
   materialUsages?: Prisma.MaterialUsageListRelationFilter
+  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
 }
 
 export type ProjectOrderByWithRelationInput = {
@@ -232,13 +232,13 @@ export type ProjectOrderByWithRelationInput = {
   customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   siteAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  deadline?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  customer?: Prisma.CustomerOrderByWithRelationInput
+  deadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   materialUsages?: Prisma.MaterialUsageOrderByRelationAggregateInput
+  customer?: Prisma.CustomerOrderByWithRelationInput
 }
 
 export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -250,13 +250,13 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   customerId?: Prisma.StringNullableFilter<"Project"> | string | null
   siteAddress?: Prisma.StringNullableFilter<"Project"> | string | null
   startDate?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
-  deadline?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
   status?: Prisma.StringFilter<"Project"> | string
-  notes?: Prisma.StringNullableFilter<"Project"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
-  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
+  deadline?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
+  notes?: Prisma.StringNullableFilter<"Project"> | string | null
   materialUsages?: Prisma.MaterialUsageListRelationFilter
+  customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
 }, "id">
 
 export type ProjectOrderByWithAggregationInput = {
@@ -265,11 +265,11 @@ export type ProjectOrderByWithAggregationInput = {
   customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   siteAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  deadline?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProjectCountOrderByAggregateInput
   _max?: Prisma.ProjectMaxOrderByAggregateInput
   _min?: Prisma.ProjectMinOrderByAggregateInput
@@ -284,11 +284,11 @@ export type ProjectScalarWhereWithAggregatesInput = {
   customerId?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   siteAddress?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   startDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
-  deadline?: Prisma.DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
   status?: Prisma.StringWithAggregatesFilter<"Project"> | string
-  notes?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Project"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Project"> | Date | string
+  deadline?: Prisma.DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
 }
 
 export type ProjectCreateInput = {
@@ -296,13 +296,13 @@ export type ProjectCreateInput = {
   name: string
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  customer?: Prisma.CustomerCreateNestedOneWithoutProjectsInput
+  deadline?: Date | string | null
+  notes?: string | null
   materialUsages?: Prisma.MaterialUsageCreateNestedManyWithoutProjectInput
+  customer?: Prisma.CustomerCreateNestedOneWithoutProjectsInput
 }
 
 export type ProjectUncheckedCreateInput = {
@@ -311,11 +311,11 @@ export type ProjectUncheckedCreateInput = {
   customerId?: string | null
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadline?: Date | string | null
+  notes?: string | null
   materialUsages?: Prisma.MaterialUsageUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -324,13 +324,13 @@ export type ProjectUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  customer?: Prisma.CustomerUpdateOneWithoutProjectsNestedInput
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   materialUsages?: Prisma.MaterialUsageUpdateManyWithoutProjectNestedInput
+  customer?: Prisma.CustomerUpdateOneWithoutProjectsNestedInput
 }
 
 export type ProjectUncheckedUpdateInput = {
@@ -339,11 +339,11 @@ export type ProjectUncheckedUpdateInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   materialUsages?: Prisma.MaterialUsageUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -353,11 +353,11 @@ export type ProjectCreateManyInput = {
   customerId?: string | null
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadline?: Date | string | null
+  notes?: string | null
 }
 
 export type ProjectUpdateManyMutationInput = {
@@ -365,11 +365,11 @@ export type ProjectUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectUncheckedUpdateManyInput = {
@@ -378,11 +378,11 @@ export type ProjectUncheckedUpdateManyInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectListRelationFilter = {
@@ -401,11 +401,11 @@ export type ProjectCountOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   siteAddress?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
-  deadline?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deadline?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type ProjectMaxOrderByAggregateInput = {
@@ -414,11 +414,11 @@ export type ProjectMaxOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   siteAddress?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
-  deadline?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deadline?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type ProjectMinOrderByAggregateInput = {
@@ -427,11 +427,11 @@ export type ProjectMinOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   siteAddress?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
-  deadline?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deadline?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type ProjectScalarRelationFilter = {
@@ -500,11 +500,11 @@ export type ProjectCreateWithoutCustomerInput = {
   name: string
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadline?: Date | string | null
+  notes?: string | null
   materialUsages?: Prisma.MaterialUsageCreateNestedManyWithoutProjectInput
 }
 
@@ -513,11 +513,11 @@ export type ProjectUncheckedCreateWithoutCustomerInput = {
   name: string
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadline?: Date | string | null
+  notes?: string | null
   materialUsages?: Prisma.MaterialUsageUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -556,11 +556,11 @@ export type ProjectScalarWhereInput = {
   customerId?: Prisma.StringNullableFilter<"Project"> | string | null
   siteAddress?: Prisma.StringNullableFilter<"Project"> | string | null
   startDate?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
-  deadline?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
   status?: Prisma.StringFilter<"Project"> | string
-  notes?: Prisma.StringNullableFilter<"Project"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
+  deadline?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
+  notes?: Prisma.StringNullableFilter<"Project"> | string | null
 }
 
 export type ProjectCreateWithoutMaterialUsagesInput = {
@@ -568,11 +568,11 @@ export type ProjectCreateWithoutMaterialUsagesInput = {
   name: string
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadline?: Date | string | null
+  notes?: string | null
   customer?: Prisma.CustomerCreateNestedOneWithoutProjectsInput
 }
 
@@ -582,11 +582,11 @@ export type ProjectUncheckedCreateWithoutMaterialUsagesInput = {
   customerId?: string | null
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadline?: Date | string | null
+  notes?: string | null
 }
 
 export type ProjectCreateOrConnectWithoutMaterialUsagesInput = {
@@ -610,11 +610,11 @@ export type ProjectUpdateWithoutMaterialUsagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customer?: Prisma.CustomerUpdateOneWithoutProjectsNestedInput
 }
 
@@ -624,11 +624,11 @@ export type ProjectUncheckedUpdateWithoutMaterialUsagesInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProjectCreateManyCustomerInput = {
@@ -636,11 +636,11 @@ export type ProjectCreateManyCustomerInput = {
   name: string
   siteAddress?: string | null
   startDate?: Date | string | null
-  deadline?: Date | string | null
   status?: string
-  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadline?: Date | string | null
+  notes?: string | null
 }
 
 export type ProjectUpdateWithoutCustomerInput = {
@@ -648,11 +648,11 @@ export type ProjectUpdateWithoutCustomerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   materialUsages?: Prisma.MaterialUsageUpdateManyWithoutProjectNestedInput
 }
 
@@ -661,11 +661,11 @@ export type ProjectUncheckedUpdateWithoutCustomerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   materialUsages?: Prisma.MaterialUsageUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -674,11 +674,11 @@ export type ProjectUncheckedUpdateManyWithoutCustomerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   siteAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -718,13 +718,13 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   customerId?: boolean
   siteAddress?: boolean
   startDate?: boolean
-  deadline?: boolean
   status?: boolean
-  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  customer?: boolean | Prisma.Project$customerArgs<ExtArgs>
+  deadline?: boolean
+  notes?: boolean
   materialUsages?: boolean | Prisma.Project$materialUsagesArgs<ExtArgs>
+  customer?: boolean | Prisma.Project$customerArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -734,11 +734,11 @@ export type ProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   customerId?: boolean
   siteAddress?: boolean
   startDate?: boolean
-  deadline?: boolean
   status?: boolean
-  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deadline?: boolean
+  notes?: boolean
   customer?: boolean | Prisma.Project$customerArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -748,11 +748,11 @@ export type ProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   customerId?: boolean
   siteAddress?: boolean
   startDate?: boolean
-  deadline?: boolean
   status?: boolean
-  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deadline?: boolean
+  notes?: boolean
   customer?: boolean | Prisma.Project$customerArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -762,17 +762,17 @@ export type ProjectSelectScalar = {
   customerId?: boolean
   siteAddress?: boolean
   startDate?: boolean
-  deadline?: boolean
   status?: boolean
-  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deadline?: boolean
+  notes?: boolean
 }
 
-export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "customerId" | "siteAddress" | "startDate" | "deadline" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "customerId" | "siteAddress" | "startDate" | "status" | "createdAt" | "updatedAt" | "deadline" | "notes", ExtArgs["result"]["project"]>
 export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  customer?: boolean | Prisma.Project$customerArgs<ExtArgs>
   materialUsages?: boolean | Prisma.Project$materialUsagesArgs<ExtArgs>
+  customer?: boolean | Prisma.Project$customerArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -785,8 +785,8 @@ export type ProjectIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Project"
   objects: {
-    customer: Prisma.$CustomerPayload<ExtArgs> | null
     materialUsages: Prisma.$MaterialUsagePayload<ExtArgs>[]
+    customer: Prisma.$CustomerPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -794,11 +794,11 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     customerId: string | null
     siteAddress: string | null
     startDate: Date | null
-    deadline: Date | null
     status: string
-    notes: string | null
     createdAt: Date
     updatedAt: Date
+    deadline: Date | null
+    notes: string | null
   }, ExtArgs["result"]["project"]>
   composites: {}
 }
@@ -1193,8 +1193,8 @@ readonly fields: ProjectFieldRefs;
  */
 export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  customer<T extends Prisma.Project$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$customerArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   materialUsages<T extends Prisma.Project$materialUsagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$materialUsagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaterialUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  customer<T extends Prisma.Project$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$customerArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1229,11 +1229,11 @@ export interface ProjectFieldRefs {
   readonly customerId: Prisma.FieldRef<"Project", 'String'>
   readonly siteAddress: Prisma.FieldRef<"Project", 'String'>
   readonly startDate: Prisma.FieldRef<"Project", 'DateTime'>
-  readonly deadline: Prisma.FieldRef<"Project", 'DateTime'>
   readonly status: Prisma.FieldRef<"Project", 'String'>
-  readonly notes: Prisma.FieldRef<"Project", 'String'>
   readonly createdAt: Prisma.FieldRef<"Project", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Project", 'DateTime'>
+  readonly deadline: Prisma.FieldRef<"Project", 'DateTime'>
+  readonly notes: Prisma.FieldRef<"Project", 'String'>
 }
     
 
@@ -1635,25 +1635,6 @@ export type ProjectDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Project.customer
- */
-export type Project$customerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Customer
-   */
-  select?: Prisma.CustomerSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Customer
-   */
-  omit?: Prisma.CustomerOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CustomerInclude<ExtArgs> | null
-  where?: Prisma.CustomerWhereInput
-}
-
-/**
  * Project.materialUsages
  */
 export type Project$materialUsagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1675,6 +1656,25 @@ export type Project$materialUsagesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.MaterialUsageScalarFieldEnum | Prisma.MaterialUsageScalarFieldEnum[]
+}
+
+/**
+ * Project.customer
+ */
+export type Project$customerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Customer
+   */
+  select?: Prisma.CustomerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Customer
+   */
+  omit?: Prisma.CustomerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerInclude<ExtArgs> | null
+  where?: Prisma.CustomerWhereInput
 }
 
 /**

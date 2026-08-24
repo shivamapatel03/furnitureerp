@@ -399,6 +399,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Employee: 'Employee',
+  StaffPayment: 'StaffPayment',
   Attendance: 'Attendance',
   Customer: 'Customer',
   Product: 'Product',
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "employee" | "attendance" | "customer" | "product" | "bill" | "billItem" | "payment" | "project" | "materialUsage" | "setting" | "estimate"
+    modelProps: "user" | "employee" | "staffPayment" | "attendance" | "customer" | "product" | "bill" | "billItem" | "payment" | "project" | "materialUsage" | "setting" | "estimate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -573,6 +574,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.EmployeeCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.EmployeeCountAggregateOutputType> | number
+        }
+      }
+    }
+    StaffPayment: {
+      payload: Prisma.$StaffPaymentPayload<ExtArgs>
+      fields: Prisma.StaffPaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StaffPaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StaffPaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.StaffPaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StaffPaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>
+        }
+        findMany: {
+          args: Prisma.StaffPaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>[]
+        }
+        create: {
+          args: Prisma.StaffPaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>
+        }
+        createMany: {
+          args: Prisma.StaffPaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StaffPaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.StaffPaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>
+        }
+        update: {
+          args: Prisma.StaffPaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.StaffPaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StaffPaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StaffPaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.StaffPaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.StaffPaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStaffPayment>
+        }
+        groupBy: {
+          args: Prisma.StaffPaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StaffPaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StaffPaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StaffPaymentCountAggregateOutputType> | number
         }
       }
     }
@@ -1373,13 +1448,26 @@ export const EmployeeScalarFieldEnum = {
   name: 'name',
   mobile: 'mobile',
   position: 'position',
-  dailySalary: 'dailySalary',
   status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  dailySalary: 'dailySalary'
+} as const
+
+export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+
+
+export const StaffPaymentScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  amount: 'amount',
+  date: 'date',
+  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+export type StaffPaymentScalarFieldEnum = (typeof StaffPaymentScalarFieldEnum)[keyof typeof StaffPaymentScalarFieldEnum]
 
 
 export const AttendanceScalarFieldEnum = {
@@ -1473,11 +1561,11 @@ export const ProjectScalarFieldEnum = {
   customerId: 'customerId',
   siteAddress: 'siteAddress',
   startDate: 'startDate',
-  deadline: 'deadline',
   status: 'status',
-  notes: 'notes',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deadline: 'deadline',
+  notes: 'notes'
 } as const
 
 export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
@@ -1766,6 +1854,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   employee?: Prisma.EmployeeOmit
+  staffPayment?: Prisma.StaffPaymentOmit
   attendance?: Prisma.AttendanceOmit
   customer?: Prisma.CustomerOmit
   product?: Prisma.ProductOmit

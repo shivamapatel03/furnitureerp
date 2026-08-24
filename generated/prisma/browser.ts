@@ -28,6 +28,11 @@ export type User = Prisma.UserModel
  */
 export type Employee = Prisma.EmployeeModel
 /**
+ * Model StaffPayment
+ * 
+ */
+export type StaffPayment = Prisma.StaffPaymentModel
+/**
  * Model Attendance
  * 
  */

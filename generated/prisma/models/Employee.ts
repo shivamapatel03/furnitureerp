@@ -39,10 +39,10 @@ export type EmployeeMinAggregateOutputType = {
   name: string | null
   mobile: string | null
   position: string | null
-  dailySalary: number | null
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  dailySalary: number | null
 }
 
 export type EmployeeMaxAggregateOutputType = {
@@ -50,10 +50,10 @@ export type EmployeeMaxAggregateOutputType = {
   name: string | null
   mobile: string | null
   position: string | null
-  dailySalary: number | null
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  dailySalary: number | null
 }
 
 export type EmployeeCountAggregateOutputType = {
@@ -61,10 +61,10 @@ export type EmployeeCountAggregateOutputType = {
   name: number
   mobile: number
   position: number
-  dailySalary: number
   status: number
   createdAt: number
   updatedAt: number
+  dailySalary: number
   _all: number
 }
 
@@ -82,10 +82,10 @@ export type EmployeeMinAggregateInputType = {
   name?: true
   mobile?: true
   position?: true
-  dailySalary?: true
   status?: true
   createdAt?: true
   updatedAt?: true
+  dailySalary?: true
 }
 
 export type EmployeeMaxAggregateInputType = {
@@ -93,10 +93,10 @@ export type EmployeeMaxAggregateInputType = {
   name?: true
   mobile?: true
   position?: true
-  dailySalary?: true
   status?: true
   createdAt?: true
   updatedAt?: true
+  dailySalary?: true
 }
 
 export type EmployeeCountAggregateInputType = {
@@ -104,10 +104,10 @@ export type EmployeeCountAggregateInputType = {
   name?: true
   mobile?: true
   position?: true
-  dailySalary?: true
   status?: true
   createdAt?: true
   updatedAt?: true
+  dailySalary?: true
   _all?: true
 }
 
@@ -202,10 +202,10 @@ export type EmployeeGroupByOutputType = {
   name: string
   mobile: string
   position: string | null
-  dailySalary: number
   status: string
   createdAt: Date
   updatedAt: Date
+  dailySalary: number
   _count: EmployeeCountAggregateOutputType | null
   _avg: EmployeeAvgAggregateOutputType | null
   _sum: EmployeeSumAggregateOutputType | null
@@ -236,11 +236,12 @@ export type EmployeeWhereInput = {
   name?: Prisma.StringFilter<"Employee"> | string
   mobile?: Prisma.StringFilter<"Employee"> | string
   position?: Prisma.StringNullableFilter<"Employee"> | string | null
-  dailySalary?: Prisma.FloatFilter<"Employee"> | number
   status?: Prisma.StringFilter<"Employee"> | string
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
+  dailySalary?: Prisma.FloatFilter<"Employee"> | number
   attendances?: Prisma.AttendanceListRelationFilter
+  payments?: Prisma.StaffPaymentListRelationFilter
 }
 
 export type EmployeeOrderByWithRelationInput = {
@@ -248,11 +249,12 @@ export type EmployeeOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   mobile?: Prisma.SortOrder
   position?: Prisma.SortOrderInput | Prisma.SortOrder
-  dailySalary?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  dailySalary?: Prisma.SortOrder
   attendances?: Prisma.AttendanceOrderByRelationAggregateInput
+  payments?: Prisma.StaffPaymentOrderByRelationAggregateInput
 }
 
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
@@ -263,11 +265,12 @@ export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[]
   name?: Prisma.StringFilter<"Employee"> | string
   position?: Prisma.StringNullableFilter<"Employee"> | string | null
-  dailySalary?: Prisma.FloatFilter<"Employee"> | number
   status?: Prisma.StringFilter<"Employee"> | string
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
+  dailySalary?: Prisma.FloatFilter<"Employee"> | number
   attendances?: Prisma.AttendanceListRelationFilter
+  payments?: Prisma.StaffPaymentListRelationFilter
 }, "id" | "mobile">
 
 export type EmployeeOrderByWithAggregationInput = {
@@ -275,10 +278,10 @@ export type EmployeeOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   mobile?: Prisma.SortOrder
   position?: Prisma.SortOrderInput | Prisma.SortOrder
-  dailySalary?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  dailySalary?: Prisma.SortOrder
   _count?: Prisma.EmployeeCountOrderByAggregateInput
   _avg?: Prisma.EmployeeAvgOrderByAggregateInput
   _max?: Prisma.EmployeeMaxOrderByAggregateInput
@@ -294,10 +297,10 @@ export type EmployeeScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Employee"> | string
   mobile?: Prisma.StringWithAggregatesFilter<"Employee"> | string
   position?: Prisma.StringNullableWithAggregatesFilter<"Employee"> | string | null
-  dailySalary?: Prisma.FloatWithAggregatesFilter<"Employee"> | number
   status?: Prisma.StringWithAggregatesFilter<"Employee"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Employee"> | Date | string
+  dailySalary?: Prisma.FloatWithAggregatesFilter<"Employee"> | number
 }
 
 export type EmployeeCreateInput = {
@@ -305,11 +308,12 @@ export type EmployeeCreateInput = {
   name: string
   mobile: string
   position?: string | null
-  dailySalary?: number
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailySalary?: number
   attendances?: Prisma.AttendanceCreateNestedManyWithoutEmployeeInput
+  payments?: Prisma.StaffPaymentCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateInput = {
@@ -317,11 +321,12 @@ export type EmployeeUncheckedCreateInput = {
   name: string
   mobile: string
   position?: string | null
-  dailySalary?: number
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailySalary?: number
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+  payments?: Prisma.StaffPaymentUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUpdateInput = {
@@ -329,11 +334,12 @@ export type EmployeeUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   mobile?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   attendances?: Prisma.AttendanceUpdateManyWithoutEmployeeNestedInput
+  payments?: Prisma.StaffPaymentUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateInput = {
@@ -341,11 +347,12 @@ export type EmployeeUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   mobile?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  payments?: Prisma.StaffPaymentUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateManyInput = {
@@ -353,10 +360,10 @@ export type EmployeeCreateManyInput = {
   name: string
   mobile: string
   position?: string | null
-  dailySalary?: number
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailySalary?: number
 }
 
 export type EmployeeUpdateManyMutationInput = {
@@ -364,10 +371,10 @@ export type EmployeeUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   mobile?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type EmployeeUncheckedUpdateManyInput = {
@@ -375,10 +382,10 @@ export type EmployeeUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   mobile?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type EmployeeCountOrderByAggregateInput = {
@@ -386,10 +393,10 @@ export type EmployeeCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   mobile?: Prisma.SortOrder
   position?: Prisma.SortOrder
-  dailySalary?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  dailySalary?: Prisma.SortOrder
 }
 
 export type EmployeeAvgOrderByAggregateInput = {
@@ -401,10 +408,10 @@ export type EmployeeMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   mobile?: Prisma.SortOrder
   position?: Prisma.SortOrder
-  dailySalary?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  dailySalary?: Prisma.SortOrder
 }
 
 export type EmployeeMinOrderByAggregateInput = {
@@ -412,10 +419,10 @@ export type EmployeeMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   mobile?: Prisma.SortOrder
   position?: Prisma.SortOrder
-  dailySalary?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  dailySalary?: Prisma.SortOrder
 }
 
 export type EmployeeSumOrderByAggregateInput = {
@@ -435,6 +442,20 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type EmployeeCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutPaymentsInput, Prisma.EmployeeUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutPaymentsInput, Prisma.EmployeeUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.EmployeeUpsertWithoutPaymentsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutPaymentsInput, Prisma.EmployeeUpdateWithoutPaymentsInput>, Prisma.EmployeeUncheckedUpdateWithoutPaymentsInput>
+}
+
 export type EmployeeCreateNestedOneWithoutAttendancesInput = {
   create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendancesInput, Prisma.EmployeeUncheckedCreateWithoutAttendancesInput>
   connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendancesInput
@@ -449,15 +470,80 @@ export type EmployeeUpdateOneRequiredWithoutAttendancesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutAttendancesInput, Prisma.EmployeeUpdateWithoutAttendancesInput>, Prisma.EmployeeUncheckedUpdateWithoutAttendancesInput>
 }
 
+export type EmployeeCreateWithoutPaymentsInput = {
+  id?: string
+  name: string
+  mobile: string
+  position?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dailySalary?: number
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  name: string
+  mobile: string
+  position?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dailySalary?: number
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutPaymentsInput, Prisma.EmployeeUncheckedCreateWithoutPaymentsInput>
+}
+
+export type EmployeeUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutPaymentsInput, Prisma.EmployeeUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutPaymentsInput, Prisma.EmployeeUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutPaymentsInput, Prisma.EmployeeUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type EmployeeUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
+  attendances?: Prisma.AttendanceUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
 export type EmployeeCreateWithoutAttendancesInput = {
   id?: string
   name: string
   mobile: string
   position?: string | null
-  dailySalary?: number
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailySalary?: number
+  payments?: Prisma.StaffPaymentCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAttendancesInput = {
@@ -465,10 +551,11 @@ export type EmployeeUncheckedCreateWithoutAttendancesInput = {
   name: string
   mobile: string
   position?: string | null
-  dailySalary?: number
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  dailySalary?: number
+  payments?: Prisma.StaffPaymentUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAttendancesInput = {
@@ -492,10 +579,11 @@ export type EmployeeUpdateWithoutAttendancesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   mobile?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
+  payments?: Prisma.StaffPaymentUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAttendancesInput = {
@@ -503,10 +591,11 @@ export type EmployeeUncheckedUpdateWithoutAttendancesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   mobile?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailySalary?: Prisma.FloatFieldUpdateOperationsInput | number
+  payments?: Prisma.StaffPaymentUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 
@@ -516,10 +605,12 @@ export type EmployeeUncheckedUpdateWithoutAttendancesInput = {
 
 export type EmployeeCountOutputType = {
   attendances: number
+  payments: number
 }
 
 export type EmployeeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attendances?: boolean | EmployeeCountOutputTypeCountAttendancesArgs
+  payments?: boolean | EmployeeCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -539,17 +630,25 @@ export type EmployeeCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.
   where?: Prisma.AttendanceWhereInput
 }
 
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StaffPaymentWhereInput
+}
+
 
 export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   mobile?: boolean
   position?: boolean
-  dailySalary?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  dailySalary?: boolean
   attendances?: boolean | Prisma.Employee$attendancesArgs<ExtArgs>
+  payments?: boolean | Prisma.Employee$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["employee"]>
 
@@ -558,10 +657,10 @@ export type EmployeeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   name?: boolean
   mobile?: boolean
   position?: boolean
-  dailySalary?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  dailySalary?: boolean
 }, ExtArgs["result"]["employee"]>
 
 export type EmployeeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -569,10 +668,10 @@ export type EmployeeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   name?: boolean
   mobile?: boolean
   position?: boolean
-  dailySalary?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  dailySalary?: boolean
 }, ExtArgs["result"]["employee"]>
 
 export type EmployeeSelectScalar = {
@@ -580,15 +679,16 @@ export type EmployeeSelectScalar = {
   name?: boolean
   mobile?: boolean
   position?: boolean
-  dailySalary?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  dailySalary?: boolean
 }
 
-export type EmployeeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "mobile" | "position" | "dailySalary" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
+export type EmployeeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "mobile" | "position" | "status" | "createdAt" | "updatedAt" | "dailySalary", ExtArgs["result"]["employee"]>
 export type EmployeeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attendances?: boolean | Prisma.Employee$attendancesArgs<ExtArgs>
+  payments?: boolean | Prisma.Employee$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EmployeeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -598,16 +698,17 @@ export type $EmployeePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Employee"
   objects: {
     attendances: Prisma.$AttendancePayload<ExtArgs>[]
+    payments: Prisma.$StaffPaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     mobile: string
     position: string | null
-    dailySalary: number
     status: string
     createdAt: Date
     updatedAt: Date
+    dailySalary: number
   }, ExtArgs["result"]["employee"]>
   composites: {}
 }
@@ -1003,6 +1104,7 @@ readonly fields: EmployeeFieldRefs;
 export interface Prisma__EmployeeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   attendances<T extends Prisma.Employee$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Employee$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1036,10 +1138,10 @@ export interface EmployeeFieldRefs {
   readonly name: Prisma.FieldRef<"Employee", 'String'>
   readonly mobile: Prisma.FieldRef<"Employee", 'String'>
   readonly position: Prisma.FieldRef<"Employee", 'String'>
-  readonly dailySalary: Prisma.FieldRef<"Employee", 'Float'>
   readonly status: Prisma.FieldRef<"Employee", 'String'>
   readonly createdAt: Prisma.FieldRef<"Employee", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Employee", 'DateTime'>
+  readonly dailySalary: Prisma.FieldRef<"Employee", 'Float'>
 }
     
 
@@ -1454,6 +1556,30 @@ export type Employee$attendancesArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.AttendanceScalarFieldEnum | Prisma.AttendanceScalarFieldEnum[]
+}
+
+/**
+ * Employee.payments
+ */
+export type Employee$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StaffPayment
+   */
+  select?: Prisma.StaffPaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StaffPayment
+   */
+  omit?: Prisma.StaffPaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffPaymentInclude<ExtArgs> | null
+  where?: Prisma.StaffPaymentWhereInput
+  orderBy?: Prisma.StaffPaymentOrderByWithRelationInput | Prisma.StaffPaymentOrderByWithRelationInput[]
+  cursor?: Prisma.StaffPaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StaffPaymentScalarFieldEnum | Prisma.StaffPaymentScalarFieldEnum[]
 }
 
 /**

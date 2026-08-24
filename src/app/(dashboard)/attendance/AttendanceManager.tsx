@@ -17,6 +17,8 @@ type SalaryRow = {
   fullMonthSalary: number;
   deductionAmount: number;
   earnedSalary: number;
+  totalAdvances: number;
+  netSalary: number;
 };
 
 export default function AttendanceManager({
@@ -41,12 +43,33 @@ export default function AttendanceManager({
   useEffect(() => {
     setSelectedDate(dateStr.slice(0, 10));
     setAttendance(initialAttendance);
-  }, [dateStr, initialAttendance]);
+    setEmployees(initialEmployees);
+  }, [dateStr, initialAttendance, initialEmployees]);
 
   // ── Staff form state ──────────────────────────────────────
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", mobile: "", position: "", dailySalary: "" });
+
+  // ── Advance Form State ────────────────────────────────────
+  const [showAdvanceModal, setShowAdvanceModal] = useState(false);
+  const [advanceData, setAdvanceData] = useState({ employeeId: "", amount: "", date: new Date().toISOString().slice(0, 10), description: "" });
+
+  const handleAddAdvance = () => {
+    startTransition(async () => {
+      const { addStaffPayment } = await import('@/app/actions/attendance');
+      await addStaffPayment({
+        employeeId: advanceData.employeeId,
+        amount: parseFloat(advanceData.amount),
+        date: new Date(advanceData.date),
+        description: advanceData.description
+      });
+      setShowAdvanceModal(false);
+      setAdvanceData({ employeeId: "", amount: "", date: new Date().toISOString().slice(0, 10), description: "" });
+      alert('Advance paid successfully!');
+      router.refresh();
+    });
+  };
 
 
   // ── Attendance ────────────────────────────────────────────
@@ -84,7 +107,10 @@ export default function AttendanceManager({
     const fd = new FormData();
     Object.entries(formData).forEach(([k, v]) => fd.append(k, v));
     startTransition(async () => {
-      await createEmployee(fd);
+      const newEmp = await createEmployee(fd);
+      if (newEmp) {
+        setEmployees(prev => [...prev, newEmp as any].sort((a, b) => a.name.localeCompare(b.name)));
+      }
       setShowAddForm(false);
       setFormData({ name: "", mobile: "", position: "", dailySalary: "" });
       router.refresh();
@@ -95,7 +121,10 @@ export default function AttendanceManager({
     const fd = new FormData();
     Object.entries(formData).forEach(([k, v]) => fd.append(k, v));
     startTransition(async () => {
-      await updateEmployee(id, fd);
+      const updated = await updateEmployee(id, fd);
+      if (updated) {
+        setEmployees(prev => prev.map(e => e.id === id ? (updated as any) : e));
+      }
       setEditingId(null);
       router.refresh();
     });
@@ -103,6 +132,7 @@ export default function AttendanceManager({
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Delete "${name}"? All attendance records will be removed.`)) return;
+    setEmployees(prev => prev.filter(e => e.id !== id));
     startTransition(async () => {
       await deleteEmployee(id);
       router.refresh();
@@ -503,8 +533,20 @@ export default function AttendanceManager({
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] text-gray-400 block">Earned Net</span>
-                    <span className="text-base font-extrabold text-green-700">₹{row.earnedSalary.toLocaleString()}</span>
+                    <span className="text-base font-extrabold text-green-700">₹{row.netSalary?.toLocaleString() ?? row.earnedSalary.toLocaleString()}</span>
                   </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => {
+                      setAdvanceData(prev => ({ ...prev, employeeId: row.employee.id }));
+                      setShowAdvanceModal(true);
+                    }}
+                    className="flex-1 py-1.5 text-xs font-semibold text-primary bg-primary/10 rounded-lg border border-primary/20 active:scale-95 transition-all"
+                  >
+                    + Pay Advance
+                  </button>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 bg-gray-50 p-2.5 rounded-xl text-center text-xs">
@@ -522,9 +564,13 @@ export default function AttendanceManager({
                   </div>
                 </div>
 
+                <div className="flex justify-between text-xs text-gray-500 pt-1 border-t border-gray-100">
+                  <span>Base: ₹{row.employee.dailySalary}/day</span>
+                  <span>Absent Deduct: <span className="font-semibold text-red-600">-₹{row.deductionAmount.toLocaleString()}</span></span>
+                </div>
                 <div className="flex justify-between text-xs text-gray-500 pt-1">
-                  <span>Base Rate: ₹{row.employee.dailySalary}/day</span>
-                  <span>Deductions: <span className="font-semibold text-red-600">-₹{row.deductionAmount.toLocaleString()}</span></span>
+                  <span>Earned: ₹{row.earnedSalary.toLocaleString()}</span>
+                  <span>Advances Paid: <span className="font-semibold text-amber-600">-₹{(row.totalAdvances || 0).toLocaleString()}</span></span>
                 </div>
               </div>
             ))}
@@ -544,7 +590,10 @@ export default function AttendanceManager({
                   <th className="px-6 py-3.5 text-center">Half Day</th>
                   <th className="px-6 py-3.5 text-center">Absent</th>
                   <th className="px-6 py-3.5 text-right">Deductions</th>
-                  <th className="px-6 py-3.5 text-right font-bold text-gray-900">Earned Salary</th>
+                  <th className="px-6 py-3.5 text-right font-bold text-gray-900">Earned</th>
+                  <th className="px-6 py-3.5 text-right text-amber-600">Advances Paid</th>
+                  <th className="px-6 py-3.5 text-right font-bold text-gray-900 border-l border-gray-100">Net Payable</th>
+                  <th className="px-6 py-3.5 text-center">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -556,7 +605,20 @@ export default function AttendanceManager({
                     <td className="px-6 py-4 text-center font-bold text-amber-600">{row.halfDays}</td>
                     <td className="px-6 py-4 text-center font-bold text-red-600">{row.absentDays}</td>
                     <td className="px-6 py-4 text-right text-red-600 font-semibold">-₹{row.deductionAmount.toLocaleString()}</td>
-                    <td className="px-6 py-4 text-right font-extrabold text-green-700 text-base">₹{row.earnedSalary.toLocaleString()}</td>
+                    <td className="px-6 py-4 text-right font-bold text-gray-900">₹{row.earnedSalary.toLocaleString()}</td>
+                    <td className="px-6 py-4 text-right text-amber-600 font-semibold">-₹{(row.totalAdvances || 0).toLocaleString()}</td>
+                    <td className="px-6 py-4 text-right font-extrabold text-green-700 text-base border-l border-gray-100 bg-green-50/30">₹{row.netSalary?.toLocaleString() ?? row.earnedSalary.toLocaleString()}</td>
+                    <td className="px-6 py-4 text-center">
+                      <button 
+                        onClick={() => {
+                          setAdvanceData(prev => ({ ...prev, employeeId: row.employee.id }));
+                          setShowAdvanceModal(true);
+                        }}
+                        className="px-3 py-1.5 text-xs font-bold text-primary bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-colors print:hidden"
+                      >
+                        Add Advance
+                      </button>
+                    </td>
                   </tr>
                 ))}
                 {initialSalary.length === 0 && (
@@ -564,6 +626,55 @@ export default function AttendanceManager({
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── ADVANCE PAYMENT MODAL ── */}
+      {showAdvanceModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm print:hidden">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <h3 className="font-bold text-gray-900">Pay Staff Advance</h3>
+              <button onClick={() => setShowAdvanceModal(false)} className="text-gray-400 hover:text-gray-700 p-1 rounded-lg transition-colors">
+                <X size={18} />
+              </button>
+            </div>
+            <div className="p-5 space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Staff Member</label>
+                <select 
+                  value={advanceData.employeeId}
+                  onChange={e => setAdvanceData({ ...advanceData, employeeId: e.target.value })}
+                  className={inputCls}
+                >
+                  <option value="" disabled>Select Staff...</option>
+                  {employees.map(e => <option key={e.id} value={e.id}>{e.name} (₹{e.dailySalary}/d)</option>)}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">Amount (₹)</label>
+                  <input type="number" placeholder="0" value={advanceData.amount} onChange={e => setAdvanceData({ ...advanceData, amount: e.target.value })} className={inputCls} />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">Date</label>
+                  <input type="date" value={advanceData.date} onChange={e => setAdvanceData({ ...advanceData, date: e.target.value })} className={inputCls} />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Note (Optional)</label>
+                <input placeholder="e.g. Festival bonus, emergency" value={advanceData.description} onChange={e => setAdvanceData({ ...advanceData, description: e.target.value })} className={inputCls} />
+              </div>
+              
+              <button
+                onClick={handleAddAdvance}
+                disabled={isPending || !advanceData.employeeId || !advanceData.amount}
+                className="w-full mt-2 py-2.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl active:scale-95 transition-all shadow-xs disabled:opacity-50 flex justify-center items-center gap-2"
+              >
+                {isPending ? 'Processing...' : 'Record Payment'}
+              </button>
+            </div>
           </div>
         </div>
       )}

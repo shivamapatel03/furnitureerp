@@ -248,8 +248,8 @@ export type MaterialUsageWhereInput = {
   notes?: Prisma.StringNullableFilter<"MaterialUsage"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MaterialUsage"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaterialUsage"> | Date | string
-  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
 }
 
 export type MaterialUsageOrderByWithRelationInput = {
@@ -262,8 +262,8 @@ export type MaterialUsageOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  project?: Prisma.ProjectOrderByWithRelationInput
   product?: Prisma.ProductOrderByWithRelationInput
+  project?: Prisma.ProjectOrderByWithRelationInput
 }
 
 export type MaterialUsageWhereUniqueInput = Prisma.AtLeast<{
@@ -279,8 +279,8 @@ export type MaterialUsageWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"MaterialUsage"> | string | null
   createdAt?: Prisma.DateTimeFilter<"MaterialUsage"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaterialUsage"> | Date | string
-  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
 }, "id">
 
 export type MaterialUsageOrderByWithAggregationInput = {
@@ -323,8 +323,8 @@ export type MaterialUsageCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  project: Prisma.ProjectCreateNestedOneWithoutMaterialUsagesInput
   product: Prisma.ProductCreateNestedOneWithoutMaterialUsagesInput
+  project: Prisma.ProjectCreateNestedOneWithoutMaterialUsagesInput
 }
 
 export type MaterialUsageUncheckedCreateInput = {
@@ -347,8 +347,8 @@ export type MaterialUsageUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  project?: Prisma.ProjectUpdateOneRequiredWithoutMaterialUsagesNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutMaterialUsagesNestedInput
+  project?: Prisma.ProjectUpdateOneRequiredWithoutMaterialUsagesNestedInput
 }
 
 export type MaterialUsageUncheckedUpdateInput = {
@@ -746,8 +746,8 @@ export type MaterialUsageSelect<ExtArgs extends runtime.Types.Extensions.Interna
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["materialUsage"]>
 
 export type MaterialUsageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -760,8 +760,8 @@ export type MaterialUsageSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["materialUsage"]>
 
 export type MaterialUsageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -774,8 +774,8 @@ export type MaterialUsageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["materialUsage"]>
 
 export type MaterialUsageSelectScalar = {
@@ -792,23 +792,23 @@ export type MaterialUsageSelectScalar = {
 
 export type MaterialUsageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "productId" | "area" | "quantity" | "date" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["materialUsage"]>
 export type MaterialUsageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }
 export type MaterialUsageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }
 export type MaterialUsageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }
 
 export type $MaterialUsagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "MaterialUsage"
   objects: {
-    project: Prisma.$ProjectPayload<ExtArgs>
     product: Prisma.$ProductPayload<ExtArgs>
+    project: Prisma.$ProjectPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1214,8 +1214,8 @@ readonly fields: MaterialUsageFieldRefs;
  */
 export interface Prisma__MaterialUsageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  project<T extends Prisma.ProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   product<T extends Prisma.ProductDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  project<T extends Prisma.ProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

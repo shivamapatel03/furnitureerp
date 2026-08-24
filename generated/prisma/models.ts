@@ -10,6 +10,7 @@
  */
 export type * from './models/User'
 export type * from './models/Employee'
+export type * from './models/StaffPayment'
 export type * from './models/Attendance'
 export type * from './models/Customer'
 export type * from './models/Product'
