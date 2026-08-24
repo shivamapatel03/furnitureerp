@@ -31,47 +31,47 @@ export default async function DashboardPage() {
       {/* KPI Cards: 2 cols on mobile, 4 cols on desktop */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Today's Sales */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-[#18181B] p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-red-900/40 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">Today's Sales</span>
-            <div className="p-1.5 sm:p-2 bg-green-50 text-green-600 rounded-lg shrink-0">
+            <span className="text-xs sm:text-sm text-gray-300 font-medium truncate">Today's Sales</span>
+            <div className="p-1.5 sm:p-2 bg-neutral-800 text-green-400 border border-neutral-700/50 rounded-lg shrink-0">
               <IndianRupee className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
           </div>
           <div>
-            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight">
+            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
               ₹{data.todaySales.toLocaleString()}
             </p>
-            <p className="text-[11px] text-green-600 font-medium mt-0.5">Recorded today</p>
+            <p className="text-[11px] text-gray-400 font-medium mt-0.5">Recorded today</p>
           </div>
         </div>
 
         {/* This Month */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-[#18181B] p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-red-900/40 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">This Month</span>
-            <div className="p-1.5 sm:p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+            <span className="text-xs sm:text-sm text-gray-300 font-medium truncate">This Month</span>
+            <div className="p-1.5 sm:p-2 bg-neutral-800 text-blue-400 border border-neutral-700/50 rounded-lg shrink-0">
               <CreditCard className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
           </div>
           <div>
-            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight">
+            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
               ₹{data.monthSales.toLocaleString()}
             </p>
-            <p className="text-[11px] text-blue-600 font-medium mt-0.5">Monthly revenue</p>
+            <p className="text-[11px] text-gray-400 font-medium mt-0.5">Monthly revenue</p>
           </div>
         </div>
 
         {/* Pending Payments */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-[#18181B] p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-red-900/40 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">Pending</span>
-            <div className="p-1.5 sm:p-2 bg-amber-50 text-amber-600 rounded-lg shrink-0">
+            <span className="text-xs sm:text-sm text-gray-300 font-medium truncate">Pending</span>
+            <div className="p-1.5 sm:p-2 bg-neutral-800 text-amber-400 border border-neutral-700/50 rounded-lg shrink-0">
               <AlertTriangle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
           </div>
           <div>
-            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-amber-600 tracking-tight">
+            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
               ₹{data.pendingAmount.toLocaleString()}
             </p>
             <p className="text-[11px] text-gray-400 font-medium mt-0.5 truncate">From {data.totalBillsCount} bills</p>
@@ -79,15 +79,15 @@ export default async function DashboardPage() {
         </div>
 
         {/* Inventory / Customers */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-[#18181B] p-3.5 sm:p-5 rounded-lg sm:rounded-xl border border-red-900/40 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs sm:text-sm text-gray-500 font-medium truncate">Products</span>
-            <div className="p-1.5 sm:p-2 bg-purple-50 text-purple-600 rounded-lg shrink-0">
+            <span className="text-xs sm:text-sm text-gray-300 font-medium truncate">Products</span>
+            <div className="p-1.5 sm:p-2 bg-neutral-800 text-purple-400 border border-neutral-700/50 rounded-lg shrink-0">
               <Package className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
           </div>
           <div>
-            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight">
+            <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
               {data.totalProducts}
             </p>
             <p className="text-[11px] text-gray-400 font-medium mt-0.5 truncate">{data.totalCustomers} Customers</p>

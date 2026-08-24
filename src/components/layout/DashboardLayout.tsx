@@ -54,9 +54,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <Image 
               src={logoImg} 
               alt="Bhurjala Furniture" 
-              width={120} 
-              height={36} 
-              className="object-contain max-h-9 w-auto"
+              width={100} 
+              height={28} 
+              style={{ width: 'auto', height: 'auto' }}
+              className="object-contain max-h-7 w-auto"
               priority
             />
           </Link>

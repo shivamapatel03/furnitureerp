@@ -49,6 +49,7 @@ export default function LoginPage() {
               alt="Bhurjala Furniture" 
               width={160} 
               height={55} 
+              style={{ width: 'auto', height: 'auto' }}
               className="object-contain max-h-12 w-auto"
               priority
             />

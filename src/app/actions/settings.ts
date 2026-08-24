@@ -13,12 +13,17 @@ const DEFAULT_SETTINGS: Record<string, string> = {
 };
 
 export async function getSettings(): Promise<Record<string, string>> {
-  const rows = await prisma.setting.findMany();
-  const result = { ...DEFAULT_SETTINGS };
-  for (const row of rows) {
-    result[row.key] = row.value;
+  try {
+    const rows = await prisma.setting.findMany();
+    const result = { ...DEFAULT_SETTINGS };
+    for (const row of rows) {
+      result[row.key] = row.value;
+    }
+    return result;
+  } catch (error) {
+    console.warn("Could not fetch settings from DB (cold start/network), using defaults:", error);
+    return { ...DEFAULT_SETTINGS };
   }
-  return result;
 }
 
 export async function saveSettings(formData: FormData) {

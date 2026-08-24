@@ -127,9 +127,10 @@ export function Sidebar({
             <Image 
               src={logoImg} 
               alt="Bhurjala Furniture" 
-              width={130} 
-              height={40} 
-              className="object-contain h-10 w-auto"
+              width={100} 
+              height={28} 
+              style={{ width: 'auto', height: 'auto' }}
+              className="object-contain h-7 w-auto"
               priority
             />
           </Link>
@@ -157,9 +158,10 @@ export function Sidebar({
                 <Image 
                   src={logoImg} 
                   alt="Bhurjala Furniture" 
-                  width={130} 
-                  height={40} 
-                  className="object-contain h-10 w-auto"
+                  width={100} 
+                  height={28} 
+                  style={{ width: 'auto', height: 'auto' }}
+                  className="object-contain h-7 w-auto"
                   priority
                 />
               </Link>
