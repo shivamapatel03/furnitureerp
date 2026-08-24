@@ -119,7 +119,7 @@ export default function NewBillPage() {
     setSubmitting(false);
 
     if (result.success && result.billId) {
-      setSuccess({ id: result.billId });
+      router.push(`/billing/${result.billId}/print`);
     } else {
       alert(result.error || "Failed to create bill");
     }
@@ -145,12 +145,11 @@ export default function NewBillPage() {
         
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Link 
-            href={`/billing-print/${success.id}`}
-            target="_blank"
+            href={`/billing/${success.id}/print`}
             className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark active:scale-98 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-sm"
           >
             <FileText size={18} />
-            Print / View Invoice
+            View & Download Invoice
           </Link>
           <button
             onClick={() => {

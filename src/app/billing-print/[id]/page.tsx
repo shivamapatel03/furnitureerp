@@ -5,6 +5,8 @@ import { format } from "date-fns";
 import Image from "next/image";
 import logoImg from "@/logo/logo.png";
 import AutoPrint from "@/app/(dashboard)/billing/[id]/print/AutoPrint";
+import SuccessModal from "@/app/(dashboard)/billing/[id]/print/SuccessModal";
+import ActionButtons from "@/app/(dashboard)/billing/[id]/print/ActionButtons";
 
 export default async function StandalonePrintPage(props: { params: Promise<{ id: string }> }) {
   const { id } = await props.params;
@@ -17,8 +19,13 @@ export default async function StandalonePrintPage(props: { params: Promise<{ id:
   const paidAmount = bill.payments.reduce((acc, p) => acc + p.amount, 0);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-8 pb-28 sm:pb-8 flex flex-col items-center relative">
       <AutoPrint />
+      <SuccessModal billNumber={bill.billNumber} />
+      
+      <div className="mb-6 w-full max-w-3xl flex justify-center sm:justify-end no-print">
+        <ActionButtons billNumber={bill.billNumber} />
+      </div>
 
       <div id="print-area" className="w-full max-w-3xl bg-white shadow-xl overflow-hidden relative print:shadow-none print:w-full">
         {/* Dark Header with slight curve */}

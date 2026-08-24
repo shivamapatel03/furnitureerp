@@ -3,8 +3,11 @@
 import { useState, useEffect } from "react";
 import { CheckCircle2, Download, Printer, X } from "lucide-react";
 
+import { downloadInvoicePdf } from "@/lib/downloadPdf";
+
 export default function SuccessModal({ billNumber }: { billNumber: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     // Show modal on mount
@@ -18,69 +21,57 @@ export default function SuccessModal({ billNumber }: { billNumber: string }) {
   };
 
   const handleDownload = async () => {
+    setIsDownloading(true);
     try {
-      const html2pdfModule = await import("html2pdf.js");
-      const html2pdf = html2pdfModule.default || html2pdfModule;
-      
-      const element = document.getElementById("print-area");
-      if (!element) return;
-      
-      const opt = {
-        margin: 0.2,
-        filename: `Invoice_${billNumber}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      };
-      
-      // @ts-expect-error - loosely typed
-      html2pdf().set(opt).from(element).save();
-    } catch (e) {
-      console.error("Failed to generate PDF", e);
-      alert("Failed to generate PDF. Please use the Print option and save as PDF instead.");
+      await downloadInvoicePdf("print-area", `Invoice_${billNumber}.pdf`);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 print:hidden backdrop-blur-sm">
-      <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative animate-in fade-in zoom-in duration-300">
+    <div className="fixed inset-0 z-50 flex items-end sm:hidden bg-black/60 p-0 print:hidden backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="bg-white rounded-t-3xl p-6 w-full shadow-2xl relative animate-in slide-in-from-bottom duration-300 border-t border-gray-100 max-h-[90vh] overflow-y-auto">
+        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-5" />
+        
         <button 
           onClick={() => setIsOpen(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
+          className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+          aria-label="Close modal"
         >
           <X size={20} />
         </button>
         
         <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 mt-2">
-            <CheckCircle2 size={32} className="text-green-600" />
+          <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <CheckCircle2 size={30} className="text-green-600" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Bill Generated!</h2>
-          <p className="text-gray-500 text-sm">Invoice #{billNumber} has been successfully created and saved.</p>
+          <h2 className="text-xl font-bold text-gray-900 mb-1">Bill Generated!</h2>
+          <p className="text-gray-500 text-xs font-medium">Invoice #{billNumber} is ready to download</p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 pb-2">
           <button
             onClick={handleDownload}
-            className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-xl font-bold transition-all shadow-sm active:scale-95"
+            className="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark active:scale-98 text-white px-5 py-3.5 rounded-xl font-bold text-base transition-all shadow-md"
           >
             <Download size={20} />
-            Download PDF
+            Download PDF Invoice
           </button>
           
           <button
             onClick={handlePrint}
-            className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-black text-white px-4 py-3 rounded-xl font-bold transition-all shadow-sm active:scale-95"
+            className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-black active:scale-98 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-xs"
           >
-            <Printer size={20} />
-            Print Invoice
+            <Printer size={18} />
+            Print / System PDF
           </button>
           
           <button
             onClick={() => setIsOpen(false)}
-            className="w-full text-center py-2 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors mt-2 block"
+            className="w-full text-center py-2.5 text-xs font-semibold text-gray-500 hover:text-gray-800 transition-colors mt-1 block"
           >
-            Close & View Bill
+            View Bill on Screen
           </button>
         </div>
       </div>

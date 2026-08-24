@@ -1,33 +1,22 @@
 "use client";
 
 import { Download, Printer } from "lucide-react";
+import { downloadInvoicePdf } from "@/lib/downloadPdf";
+import { useState } from "react";
 
 export default function ActionButtons({ billNumber }: { billNumber: string }) {
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const handlePrint = () => {
     window.print();
   };
 
   const handleDownload = async () => {
+    setIsDownloading(true);
     try {
-      const html2pdfModule = await import("html2pdf.js");
-      const html2pdf = html2pdfModule.default || html2pdfModule;
-      
-      const element = document.getElementById("print-area");
-      if (!element) return;
-      
-      const opt = {
-        margin: 0.2,
-        filename: `Invoice_${billNumber}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      };
-      
-      // @ts-expect-error - loosely typed
-      html2pdf().set(opt).from(element).save();
-    } catch (e) {
-      console.error("Failed to generate PDF", e);
-      alert("Failed to generate PDF. Please use the Print option and save as PDF instead.");
+      await downloadInvoicePdf("print-area", `Invoice_${billNumber}.pdf`);
+    } finally {
+      setIsDownloading(false);
     }
   };
 

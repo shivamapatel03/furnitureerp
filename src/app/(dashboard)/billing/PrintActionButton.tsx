@@ -11,8 +11,7 @@ export default function PrintActionButton({ billId }: { billId: string }) {
     <>
       <div className="flex items-center gap-1">
         <Link
-          href={`/billing-print/${billId}`}
-          target="_blank"
+          href={`/billing/${billId}/print`}
           className="sm:hidden p-2 text-gray-600 active:text-primary active:bg-primary/10 rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold"
           title="Print Invoice"
         >
