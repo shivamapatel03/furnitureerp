@@ -14,7 +14,7 @@ import {
   Trash2, 
   Check, 
   FileText, 
-  Printer, 
+  Download, 
   Layers, 
   Hammer, 
   Package, 
@@ -593,10 +593,10 @@ export default function AIEstimatorPage() {
                           href={`/estimator/${item.id}/print`}
                           target="_blank"
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg text-xs"
-                          title="Print Quotation"
+                          title="Download Quotation PDF"
                         >
-                          <Printer className="w-3.5 h-3.5" />
-                          <span>Print</span>
+                          <Download className="w-3.5 h-3.5" />
+                          <span>Download</span>
                         </Link>
                         <button
                           onClick={() => handleDeleteSaved(item.id)}
@@ -1314,8 +1314,8 @@ export default function AIEstimatorPage() {
                       target="_blank"
                       className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs flex items-center gap-1"
                     >
-                      <Printer className="w-3.5 h-3.5" />
-                      <span>Print Proposal</span>
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download Proposal</span>
                     </Link>
                   </div>
                 )}

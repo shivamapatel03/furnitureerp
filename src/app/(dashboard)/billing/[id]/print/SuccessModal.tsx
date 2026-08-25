@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CheckCircle2, Download, Printer, X } from "lucide-react";
+import { CheckCircle2, Download, X } from "lucide-react";
 
 import { downloadInvoicePdf } from "@/lib/downloadPdf";
 
@@ -15,10 +15,6 @@ export default function SuccessModal({ billNumber }: { billNumber: string }) {
   }, []);
 
   if (!isOpen) return null;
-
-  const handlePrint = () => {
-    window.print();
-  };
 
   const handleDownload = async () => {
     setIsDownloading(true);
@@ -70,18 +66,10 @@ export default function SuccessModal({ billNumber }: { billNumber: string }) {
           </button>
           
           <button
-            onClick={handlePrint}
-            className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-black active:scale-98 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-xs"
-          >
-            <Printer size={18} />
-            Print / System PDF
-          </button>
-          
-          <button
             onClick={() => setIsOpen(false)}
-            className="w-full text-center py-2.5 text-xs font-semibold text-gray-500 hover:text-gray-800 transition-colors mt-1 block"
+            className="w-full text-center py-2.5 text-xs font-semibold text-gray-500 hover:text-gray-800 transition-colors mt-2 block"
           >
-            View Bill on Screen
+            Close & View Bill on Screen
           </button>
         </div>
       </div>

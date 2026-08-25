@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import Image from "next/image";
 import logoImg from "@/logo/logo.png";
-import AutoPrint from "@/app/(dashboard)/billing/[id]/print/AutoPrint";
 import SuccessModal from "@/app/(dashboard)/billing/[id]/print/SuccessModal";
 import ActionButtons from "@/app/(dashboard)/billing/[id]/print/ActionButtons";
 
@@ -20,7 +19,6 @@ export default async function StandalonePrintPage(props: { params: Promise<{ id:
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8 pb-28 sm:pb-8 flex flex-col items-center relative">
-      <AutoPrint />
       <SuccessModal billNumber={bill.billNumber} />
       
       <div className="mb-6 w-full max-w-3xl flex justify-center sm:justify-end no-print">

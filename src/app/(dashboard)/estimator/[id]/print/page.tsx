@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import Image from "next/image";
 import logoImg from "@/logo/logo.png";
-import AutoPrint from "@/app/(dashboard)/billing/[id]/print/AutoPrint";
+import ActionButtons from "@/app/(dashboard)/billing/[id]/print/ActionButtons";
 import { RoomEstimate, BillOfMaterials } from "@/lib/estimator/types";
 
 export default async function EstimatePrintPage(props: { params: Promise<{ id: string }> }) {
@@ -33,8 +33,10 @@ export default async function EstimatePrintPage(props: { params: Promise<{ id: s
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-8 flex flex-col items-center">
-      <AutoPrint />
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-8 pb-28 sm:pb-8 flex flex-col items-center">
+      <div className="mb-6 w-full max-w-4xl flex justify-center sm:justify-end no-print">
+        <ActionButtons billNumber={estimate.estimateNumber} />
+      </div>
 
       <div id="print-area" className="w-full max-w-4xl bg-white p-8 sm:p-12 shadow-sm border border-gray-200">
         {/* Company Header */}

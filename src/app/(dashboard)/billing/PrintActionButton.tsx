@@ -1,6 +1,6 @@
 "use client";
 
-import { Printer, X, ExternalLink } from "lucide-react";
+import { Download, X, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -13,18 +13,18 @@ export default function PrintActionButton({ billId }: { billId: string }) {
         <Link
           href={`/billing/${billId}/print`}
           className="sm:hidden p-2 text-gray-600 active:text-primary active:bg-primary/10 rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold"
-          title="Print Invoice"
+          title="Download Invoice"
         >
-          <Printer size={16} />
-          <span>Print</span>
+          <Download size={16} />
+          <span>Download</span>
         </Link>
 
         <button 
           onClick={() => setShowModal(true)}
           className="hidden sm:inline-flex p-2 text-gray-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-          title="Preview & Print Invoice"
+          title="Preview & Download Invoice"
         >
-          <Printer size={18} />
+          <Download size={18} />
         </button>
       </div>
 
