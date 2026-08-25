@@ -3,8 +3,8 @@ import jsPDF from "jspdf";
 
 /**
  * Modern, ultra-reliable PDF download utility.
- * Uses browser-native SVG/Canvas rasterization (html-to-image) to completely bypass
- * html2canvas CSS parsing bugs (like unsupported color function "lab").
+ * Captures full-width desktop invoice at 2x retina resolution and scales
+ * it to perfectly fill an A4 PDF page without narrow column distortion.
  */
 export async function downloadInvoicePdf(elementId: string, filename: string): Promise<boolean> {
   const element = document.getElementById(elementId);
@@ -35,7 +35,8 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
     const pageWidth = pdf.internal.pageSize.getWidth(); // 210 mm
     const pageHeight = pdf.internal.pageSize.getHeight(); // 297 mm
     const margin = 8; // 8 mm margin
-    const contentWidth = pageWidth - margin * 2; // 194 mm
+    const maxWidth = pageWidth - margin * 2; // 194 mm
+    const maxHeight = pageHeight - margin * 2; // 281 mm
 
     // Calculate exact aspect ratio
     const img = new Image();
@@ -45,15 +46,19 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
       img.onerror = reject;
     });
 
-    const contentHeight = (img.height * contentWidth) / img.width;
+    const imgRatio = img.width / img.height;
+    let renderWidth = maxWidth;
+    let renderHeight = renderWidth / imgRatio;
 
-    if (contentHeight <= pageHeight - margin * 2) {
-      pdf.addImage(imgData, "JPEG", margin, margin, contentWidth, contentHeight);
-    } else {
-      const scaledWidth = ((pageHeight - margin * 2) * img.width) / img.height;
-      const xOffset = (pageWidth - scaledWidth) / 2;
-      pdf.addImage(imgData, "JPEG", xOffset, margin, scaledWidth, pageHeight - margin * 2);
+    if (renderHeight > maxHeight) {
+      renderHeight = maxHeight;
+      renderWidth = renderHeight * imgRatio;
     }
+
+    const xOffset = (pageWidth - renderWidth) / 2;
+    const yOffset = margin;
+
+    pdf.addImage(imgData, "JPEG", xOffset, yOffset, renderWidth, renderHeight);
 
     // 3. Create real binary PDF Blob
     const pdfBlob = pdf.output("blob");
