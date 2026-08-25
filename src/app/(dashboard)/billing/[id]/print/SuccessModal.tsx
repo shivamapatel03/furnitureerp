@@ -53,10 +53,20 @@ export default function SuccessModal({ billNumber }: { billNumber: string }) {
         <div className="space-y-3 pb-2">
           <button
             onClick={handleDownload}
-            className="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark active:scale-98 text-white px-5 py-3.5 rounded-xl font-bold text-base transition-all shadow-md"
+            disabled={isDownloading}
+            className="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark active:scale-98 disabled:opacity-75 text-white px-5 py-3.5 rounded-xl font-bold text-base transition-all shadow-md"
           >
-            <Download size={20} />
-            Download PDF Invoice
+            {isDownloading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Generating PDF...</span>
+              </>
+            ) : (
+              <>
+                <Download size={20} />
+                <span>Download PDF Invoice</span>
+              </>
+            )}
           </button>
           
           <button
