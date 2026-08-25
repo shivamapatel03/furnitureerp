@@ -34,7 +34,7 @@ export function MobileBottomNav({ onOpenMenu }: { onOpenMenu: () => void }) {
             <Link
               key={item.name}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all min-w-[56px] active:scale-95 ${
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-lg transition-all min-w-[56px] active:scale-95 ${
                 isActive 
                   ? "text-primary font-bold" 
                   : "text-gray-500 hover:text-gray-900 font-medium"
@@ -52,7 +52,7 @@ export function MobileBottomNav({ onOpenMenu }: { onOpenMenu: () => void }) {
         <button
           type="button"
           onClick={onOpenMenu}
-          className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-gray-500 hover:text-gray-900 transition-all min-w-[56px] active:scale-95"
+          className="flex flex-col items-center justify-center py-1 px-2.5 rounded-lg text-gray-500 hover:text-gray-900 transition-all min-w-[56px] active:scale-95"
           aria-label="Open all navigation items"
         >
           <Menu className="w-5 h-5 mb-0.5 text-gray-500" />

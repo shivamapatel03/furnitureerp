@@ -40,12 +40,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col print:bg-white min-w-0">
       {/* Mobile Top App Bar (visible on < lg) */}
-      <header className="lg:hidden sticky top-0 z-30 bg-primary text-white px-3.5 py-3 rounded-b-2xl shadow-md flex items-center justify-between print:hidden">
+      <header className="lg:hidden sticky top-0 z-30 bg-primary text-white px-3.5 py-3 rounded-b-lg shadow-md flex items-center justify-between print:hidden">
         <div className="flex items-center gap-2.5 min-w-0">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-1.5 text-white hover:bg-white/10 active:bg-white/20 rounded-lg transition-colors shrink-0"
+            className="p-1.5 text-white hover:bg-white/10 active:bg-white/20 rounded-md transition-colors shrink-0"
             aria-label="Open Navigation Menu"
           >
             <Menu className="w-5 h-5 stroke-[2.5]" />
@@ -60,7 +60,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         <div className="flex items-center shrink-0">
           <Link
             href="/billing/new"
-            className="flex items-center gap-1.5 bg-white text-primary hover:bg-gray-50 active:scale-95 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all"
+            className="flex items-center gap-1.5 bg-white text-primary hover:bg-gray-50 active:scale-95 text-xs font-semibold px-3 py-1.5 rounded-md transition-all"
           >
             <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
             <span>Bill</span>

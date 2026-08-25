@@ -445,7 +445,7 @@ export default function NewBillPage() {
             <button
               type="submit"
               disabled={submitting || items.length === 0}
-              className="w-full bg-primary hover:bg-primary-dark active:scale-98 text-white font-bold py-3.5 px-4 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md text-sm sm:text-base mt-2"
+              className="w-full bg-primary hover:bg-primary-dark active:scale-98 text-white font-bold py-3.5 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md text-sm sm:text-base mt-2"
             >
               {submitting ? "Generating..." : "Generate Invoice"}
               <FileText size={18} />

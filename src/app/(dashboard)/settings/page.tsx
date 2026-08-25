@@ -110,7 +110,7 @@ export default async function SettingsPage() {
           <div className="pt-4 border-t border-gray-100 flex justify-end">
             <button 
               type="submit" 
-              className="w-full sm:w-auto px-6 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary-dark active:scale-98 rounded-xl transition-all shadow-sm"
+              className="w-full sm:w-auto px-6 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary-dark active:scale-98 rounded-lg transition-all shadow-sm"
             >
               Save Settings
             </button>

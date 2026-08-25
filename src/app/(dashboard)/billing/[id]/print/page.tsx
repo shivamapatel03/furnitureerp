@@ -18,11 +18,9 @@ export default async function PrintBillPage(props: { params: Promise<{ id: strin
   const paidAmount = bill.payments.reduce((acc, p) => acc + p.amount, 0);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 pb-28 sm:pb-8 flex flex-col items-center relative">
+    <div className="min-h-screen bg-gray-100 p-2.5 sm:p-8 pb-28 sm:pb-8 flex flex-col items-center relative w-full">
       <SuccessModal billNumber={bill.billNumber} customerName={bill.customer.name} />
-      <div className="mb-6 w-full max-w-3xl flex justify-center sm:justify-end no-print">
-        <ActionButtons billNumber={bill.billNumber} customerName={bill.customer.name} />
-      </div>
+      <ActionButtons billNumber={bill.billNumber} customerName={bill.customer.name} />
 
       <div className="w-full max-w-full overflow-x-auto flex justify-center">
         <div id="print-area" className="w-[794px] min-w-[794px] max-w-[794px] bg-white shadow-xl overflow-hidden relative print:shadow-none print:w-full">

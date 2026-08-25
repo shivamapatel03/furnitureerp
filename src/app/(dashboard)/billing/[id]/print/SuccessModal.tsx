@@ -29,7 +29,7 @@ export default function SuccessModal({ billNumber, customerName }: { billNumber:
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:hidden bg-black/60 p-0 print:hidden backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-t-3xl p-6 w-full shadow-2xl relative animate-in slide-in-from-bottom duration-300 border-t border-gray-100 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-t-2xl p-6 w-full shadow-2xl relative animate-in slide-in-from-bottom duration-300 border-t border-gray-100 max-h-[90vh] overflow-y-auto">
         <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-5" />
         
         <button 
@@ -52,7 +52,7 @@ export default function SuccessModal({ billNumber, customerName }: { billNumber:
           <button
             onClick={handleDownload}
             disabled={isDownloading}
-            className="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark active:scale-98 disabled:opacity-75 text-white px-5 py-3.5 rounded-xl font-bold text-base transition-all shadow-md"
+            className="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark active:scale-98 disabled:opacity-75 text-white px-5 py-3.5 rounded-lg font-bold text-base transition-all shadow-md"
           >
             {isDownloading ? (
               <>

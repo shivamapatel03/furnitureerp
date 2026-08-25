@@ -22,7 +22,7 @@ export default async function ProductsPage(props: { searchParams: Promise<{ q?: 
         </div>
         <Link 
           href="/products/new"
-          className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+          className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
         >
           <Plus size={18} />
           Add Product
