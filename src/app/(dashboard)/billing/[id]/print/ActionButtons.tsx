@@ -4,13 +4,15 @@ import { Download } from "lucide-react";
 import { downloadInvoicePdf } from "@/lib/downloadPdf";
 import { useState } from "react";
 
-export default function ActionButtons({ billNumber }: { billNumber: string }) {
+export default function ActionButtons({ billNumber, customerName }: { billNumber: string; customerName?: string | null }) {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      await downloadInvoicePdf("print-area", `Invoice_${billNumber}.pdf`);
+      const safeName = customerName ? customerName.trim().replace(/[/\\?%*:|"<>]/g, "_") : "";
+      const filename = safeName ? `${safeName}_${billNumber}.pdf` : `Invoice_${billNumber}.pdf`;
+      await downloadInvoicePdf("print-area", filename);
     } finally {
       setIsDownloading(false);
     }

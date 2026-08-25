@@ -35,7 +35,7 @@ export default async function EstimatePrintPage(props: { params: Promise<{ id: s
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8 pb-28 sm:pb-8 flex flex-col items-center">
       <div className="mb-6 w-full max-w-4xl flex justify-center sm:justify-end no-print">
-        <ActionButtons billNumber={estimate.estimateNumber} />
+        <ActionButtons billNumber={estimate.estimateNumber} customerName={estimate.clientName} />
       </div>
 
       <div id="print-area" className="w-full max-w-4xl bg-white p-8 sm:p-12 shadow-sm border border-gray-200">

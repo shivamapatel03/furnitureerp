@@ -5,7 +5,7 @@ import { CheckCircle2, Download, X } from "lucide-react";
 
 import { downloadInvoicePdf } from "@/lib/downloadPdf";
 
-export default function SuccessModal({ billNumber }: { billNumber: string }) {
+export default function SuccessModal({ billNumber, customerName }: { billNumber: string; customerName?: string | null }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -19,7 +19,9 @@ export default function SuccessModal({ billNumber }: { billNumber: string }) {
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      await downloadInvoicePdf("print-area", `Invoice_${billNumber}.pdf`);
+      const safeName = customerName ? customerName.trim().replace(/[/\\?%*:|"<>]/g, "_") : "";
+      const filename = safeName ? `${safeName}_${billNumber}.pdf` : `Invoice_${billNumber}.pdf`;
+      await downloadInvoicePdf("print-area", filename);
     } finally {
       setIsDownloading(false);
     }
