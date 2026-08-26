@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logoImg from "@/logo/logo.png";
 import { Menu, Plus } from "lucide-react";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -24,10 +25,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950">
         <div className="flex flex-col items-center gap-3">
           <div className="animate-spin rounded-full h-9 w-9 border-b-2 border-primary"></div>
-          <p className="text-sm font-medium text-gray-500">Loading Bhurjala ERP...</p>
+          <p className="text-sm font-medium text-gray-500 dark:text-slate-400">Loading Bhurjala ERP...</p>
         </div>
       </div>
     );
@@ -38,7 +39,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col print:bg-white min-w-0">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 flex flex-col print:bg-white min-w-0 transition-colors duration-150">
       {/* Mobile Top App Bar (visible on < lg) */}
       <header className="lg:hidden sticky top-0 z-30 bg-primary text-white px-3.5 py-3 rounded-b-lg shadow-md flex items-center justify-between print:hidden">
         <div className="flex items-center gap-2.5 min-w-0">
@@ -57,7 +58,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
 
-        <div className="flex items-center shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0">
+          <ThemeToggle variant="header" />
           <Link
             href="/billing/new"
             className="flex items-center gap-1.5 bg-white text-primary hover:bg-gray-50 active:scale-95 text-xs font-semibold px-3 py-1.5 rounded-md transition-all"

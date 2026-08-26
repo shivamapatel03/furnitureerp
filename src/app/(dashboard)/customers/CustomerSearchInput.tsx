@@ -31,7 +31,7 @@ export default function CustomerSearchInput() {
         defaultValue={searchParams.get("q") ?? ""}
         onChange={handleChange}
         placeholder="Search by customer name or mobile number..."
-        className={`pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full transition-all bg-white ${isPending ? "opacity-60" : ""}`}
+        className={`pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full transition-all ${isPending ? "opacity-60" : ""}`}
       />
     </div>
   );

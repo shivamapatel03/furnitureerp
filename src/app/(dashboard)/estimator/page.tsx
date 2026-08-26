@@ -518,26 +518,26 @@ export default function AIEstimatorPage() {
 
       {activeTab === "saved" ? (
         /* SAVED ESTIMATES TAB */
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-xs p-5 sm:p-6 space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-gray-100 pb-4">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs p-5 sm:p-6 space-y-4 transition-colors">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-gray-100 dark:border-slate-800 pb-4">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Saved Client Estimates</h2>
-              <p className="text-xs text-gray-500">View, print or convert saved proposals</p>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100">Saved Client Estimates</h2>
+              <p className="text-xs text-gray-500 dark:text-slate-400">View, print or convert saved proposals</p>
             </div>
             <div className="relative w-full sm:w-64">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500" />
               <input
                 type="text"
                 placeholder="Search estimate or client..."
                 value={savedQuery}
                 onChange={(e) => setSavedQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-xl outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
           </div>
 
           {isLoadingSaved ? (
-            <div className="py-12 text-center text-gray-400">
+            <div className="py-12 text-center text-gray-400 dark:text-slate-500">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2" />
               <p className="text-xs font-semibold">Loading saved estimates...</p>
             </div>
@@ -545,7 +545,7 @@ export default function AIEstimatorPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 text-gray-500 font-semibold uppercase text-[11px] bg-gray-50">
+                  <tr className="border-b border-gray-200 dark:border-slate-800 text-gray-500 dark:text-slate-400 font-semibold uppercase text-[11px] bg-gray-50 dark:bg-slate-800/60">
                     <th className="py-3 px-4">Estimate No.</th>
                     <th className="py-3 px-4">Client</th>
                     <th className="py-3 px-4">Property & Area</th>
@@ -555,26 +555,26 @@ export default function AIEstimatorPage() {
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
                   {savedEstimates.map((item) => (
-                    <tr key={item.id} className="hover:bg-gray-50/80 transition-colors">
-                      <td className="py-3.5 px-4 font-bold text-gray-900">{item.estimateNumber}</td>
+                    <tr key={item.id} className="hover:bg-gray-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="py-3.5 px-4 font-bold text-gray-900 dark:text-slate-100">{item.estimateNumber}</td>
                       <td className="py-3.5 px-4">
-                        <p className="font-semibold text-gray-900">{item.clientName || "Walk-in Customer"}</p>
-                        <p className="text-xs text-gray-400">{item.clientMobile || "No mobile"}</p>
+                        <p className="font-semibold text-gray-900 dark:text-slate-100">{item.clientName || "Walk-in Customer"}</p>
+                        <p className="text-xs text-gray-400 dark:text-slate-500">{item.clientMobile || "No mobile"}</p>
                       </td>
                       <td className="py-3.5 px-4">
-                        <span className="font-bold text-gray-800">{item.propertyType}</span>
-                        <span className="text-gray-500 ml-1">({item.totalSqft} sqft)</span>
+                        <span className="font-bold text-gray-800 dark:text-slate-200">{item.propertyType}</span>
+                        <span className="text-gray-500 dark:text-slate-400 ml-1">({item.totalSqft} sqft)</span>
                       </td>
                       <td className="py-3.5 px-4">
                         <span
                           className={`px-2 py-0.5 rounded-md text-xs font-bold ${
                             item.qualityTier === "LUXURY"
-                              ? "bg-purple-100 text-purple-700"
+                              ? "bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400"
                               : item.qualityTier === "STANDARD"
-                              ? "bg-blue-100 text-blue-700"
-                              : "bg-amber-100 text-amber-700"
+                              ? "bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400"
+                              : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400"
                           }`}
                         >
                           {item.qualityTier}
@@ -623,14 +623,14 @@ export default function AIEstimatorPage() {
         /* WIZARD & GENERATOR VIEW */
         <div className="space-y-6">
           {/* STEP 1: SPACE & PROPERTY CONFIGURATION */}
-          <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-gray-200 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-slate-800 shadow-xs space-y-6 transition-colors">
             <div>
               <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-primary mb-1">
                 <span>Step 1</span>
-                <span className="text-gray-300">•</span>
-                <span className="text-gray-500">Property & Space Specs</span>
+                <span className="text-gray-300 dark:text-slate-600">•</span>
+                <span className="text-gray-500 dark:text-slate-400">Property & Space Specs</span>
               </div>
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-slate-100">
                 Select House Type & Square Footage
               </h2>
             </div>
@@ -646,13 +646,13 @@ export default function AIEstimatorPage() {
                     onClick={() => handleSelectPreset(preset)}
                     className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border text-left transition-all relative flex flex-col justify-between ${
                       isSelected
-                        ? "border-primary bg-primary/5 text-gray-900 shadow-sm ring-2 ring-primary/20"
-                        : "border-gray-200 bg-gray-50/60 hover:bg-gray-100/80 text-gray-600"
+                        ? "border-primary bg-primary/5 dark:bg-primary/10 text-gray-900 dark:text-slate-100 shadow-sm ring-2 ring-primary/20"
+                        : "border-gray-200 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-800/40 hover:bg-gray-100/80 dark:hover:bg-slate-800 text-gray-600 dark:text-slate-300"
                     }`}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className={`text-base font-extrabold ${isSelected ? "text-primary" : "text-gray-800"}`}>
+                        <span className={`text-base font-extrabold ${isSelected ? "text-primary" : "text-gray-800 dark:text-slate-200"}`}>
                           {preset.id}
                         </span>
                         {isSelected && (
@@ -661,22 +661,22 @@ export default function AIEstimatorPage() {
                           </span>
                         )}
                       </div>
-                      <p className="text-xs font-semibold text-gray-900 leading-tight">{preset.label}</p>
+                      <p className="text-xs font-semibold text-gray-900 dark:text-slate-100 leading-tight">{preset.label}</p>
                     </div>
-                    <p className="text-[11px] text-gray-400 mt-2 font-medium">~{preset.defaultSqft} sqft</p>
+                    <p className="text-[11px] text-gray-400 dark:text-slate-500 mt-2 font-medium">~{preset.defaultSqft} sqft</p>
                   </button>
                 );
               })}
             </div>
 
             {/* Sqft Slider & Number Input */}
-            <div className="bg-gray-50/80 p-4 sm:p-5 rounded-2xl border border-gray-200/80 space-y-3">
+            <div className="bg-gray-50/80 dark:bg-slate-800/60 p-4 sm:p-5 rounded-2xl border border-gray-200/80 dark:border-slate-700 space-y-3">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <div>
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <label className="text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wider">
                     Total Built-up / Carpet Area (Sq.Ft.)
                   </label>
-                  <p className="text-xs text-gray-400">Drag slider or enter exact square feet</p>
+                  <p className="text-xs text-gray-400 dark:text-slate-500">Drag slider or enter exact square feet</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -686,9 +686,9 @@ export default function AIEstimatorPage() {
                     step="25"
                     value={totalSqft}
                     onChange={(e) => setTotalSqft(Math.max(100, parseInt(e.target.value) || 100))}
-                    className="w-28 px-3 py-1.5 font-extrabold text-base text-gray-900 bg-white border border-gray-300 rounded-xl text-right outline-none focus:ring-2 focus:ring-primary"
+                    className="w-28 px-3 py-1.5 font-extrabold text-base text-gray-900 dark:text-slate-100 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-right outline-none focus:ring-2 focus:ring-primary"
                   />
-                  <span className="text-xs font-bold text-gray-500">SQFT</span>
+                  <span className="text-xs font-bold text-gray-500 dark:text-slate-400">SQFT</span>
                 </div>
               </div>
 
@@ -700,7 +700,7 @@ export default function AIEstimatorPage() {
                 step="25"
                 value={totalSqft}
                 onChange={(e) => setTotalSqft(parseInt(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
               />
 
               {/* Quick Jump Buttons */}
@@ -712,8 +712,8 @@ export default function AIEstimatorPage() {
                     onClick={() => setTotalSqft(val)}
                     className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
                       totalSqft === val
-                        ? "bg-gray-900 text-white"
-                        : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
+                        ? "bg-gray-900 dark:bg-white text-white dark:text-slate-900"
+                        : "bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
                     }`}
                   >
                     {val} sqft
@@ -724,7 +724,7 @@ export default function AIEstimatorPage() {
 
             {/* Quality Tier Selector */}
             <div className="space-y-3">
-              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+              <label className="text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wider block">
                 Interior Quality & Finish Tier
               </label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -738,8 +738,8 @@ export default function AIEstimatorPage() {
                       onClick={() => switchQualityTier(tierKey)}
                       className={`p-4 rounded-2xl border text-left transition-all relative flex flex-col justify-between ${
                         isSelected
-                          ? "border-primary bg-primary/5 text-gray-900 ring-2 ring-primary/20 shadow-sm"
-                          : "border-gray-200 bg-white hover:bg-gray-50 text-gray-600"
+                          ? "border-primary bg-primary/5 dark:bg-primary/10 text-gray-900 dark:text-slate-100 ring-2 ring-primary/20 shadow-sm"
+                          : "border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800/60 text-gray-600 dark:text-slate-300"
                       }`}
                     >
                       <div>
@@ -747,10 +747,10 @@ export default function AIEstimatorPage() {
                           <span
                             className={`font-extrabold text-sm ${
                               tierKey === "LUXURY"
-                                ? "text-purple-700"
+                                ? "text-purple-700 dark:text-purple-400"
                                 : tierKey === "STANDARD"
                                 ? "text-primary"
-                                : "text-amber-700"
+                                : "text-amber-700 dark:text-amber-400"
                             }`}
                           >
                             {cfg.name}
@@ -761,15 +761,15 @@ export default function AIEstimatorPage() {
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-gray-600 font-medium mb-2">{cfg.description}</p>
+                        <p className="text-xs text-gray-600 dark:text-slate-400 font-medium mb-2">{cfg.description}</p>
                       </div>
 
-                      <div className="pt-2 border-t border-gray-100 text-[11px] text-gray-500 space-y-1">
+                      <div className="pt-2 border-t border-gray-100 dark:border-slate-800 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
                         <p>
-                          <strong className="text-gray-700">Material:</strong> {cfg.materialSummary}
+                          <strong className="text-gray-700 dark:text-slate-300">Material:</strong> {cfg.materialSummary}
                         </p>
                         <p>
-                          <strong className="text-gray-700">Hardware:</strong> {cfg.hardwareSummary}
+                          <strong className="text-gray-700 dark:text-slate-300">Hardware:</strong> {cfg.hardwareSummary}
                         </p>
                       </div>
                     </button>
@@ -782,16 +782,16 @@ export default function AIEstimatorPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Style dropdown */}
               <div>
-                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1.5">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wider block mb-1.5">
                   Design Theme / Style
                 </label>
                 <select
                   value={interiorStyle}
                   onChange={(e) => setInteriorStyle(e.target.value as InteriorStyle)}
-                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary outline-none"
+                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-primary outline-none"
                 >
                   {STYLE_OPTIONS.map((opt) => (
-                    <option key={opt.id} value={opt.id}>
+                    <option key={opt.id} value={opt.id} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100">
                       {opt.label} — {opt.desc}
                     </option>
                   ))}
@@ -800,7 +800,7 @@ export default function AIEstimatorPage() {
 
               {/* Natural Language Prompt Input */}
               <div>
-                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-primary" />
                   <span>AI Prompt / Client Custom Requirements (Optional)</span>
                 </label>
@@ -809,7 +809,7 @@ export default function AIEstimatorPage() {
                   placeholder="e.g. 3BHK flat in Karamsad, need kids bunk bed, breakfast counter, budget 7 Lakhs"
                   value={aiPrompt}
                   onChange={(e) => setAiPrompt(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary outline-none"
+                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-primary outline-none"
                 />
               </div>
             </div>
@@ -869,20 +869,20 @@ export default function AIEstimatorPage() {
                   onClick={() => switchQualityTier("ECONOMY")}
                   className={`p-5 rounded-2xl sm:rounded-3xl border text-left transition-all flex flex-col justify-between ${
                     estimate.qualityTier === "ECONOMY"
-                      ? "border-amber-500 bg-amber-50/80 ring-2 ring-amber-400"
-                      : "bg-white border-gray-200 hover:bg-gray-50"
+                      ? "border-amber-500 bg-amber-50/80 dark:bg-amber-950/40 ring-2 ring-amber-400"
+                      : "bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800/60"
                   }`}
                 >
                   <div>
-                    <span className="text-xs font-extrabold uppercase text-amber-700 tracking-wider">
+                    <span className="text-xs font-extrabold uppercase text-amber-700 dark:text-amber-400 tracking-wider">
                       Economy Budget Tier
                     </span>
-                    <p className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
+                    <p className="text-xl sm:text-2xl font-black text-gray-900 dark:text-slate-100 mt-2">
                       ₹{estimate.tierSummary.economyTotal.toLocaleString()}
                     </p>
-                    <p className="text-[11px] text-gray-500 mt-0.5">Commercial Plywood + 0.8mm Laminate</p>
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5">Commercial Plywood + 0.8mm Laminate</p>
                   </div>
-                  <span className="text-xs text-amber-700 font-bold mt-2">Select Economy</span>
+                  <span className="text-xs text-amber-700 dark:text-amber-400 font-bold mt-2">Select Economy</span>
                 </button>
 
                 {/* Standard Option */}
@@ -891,25 +891,25 @@ export default function AIEstimatorPage() {
                   onClick={() => switchQualityTier("STANDARD")}
                   className={`p-5 rounded-2xl sm:rounded-3xl border text-left transition-all flex flex-col justify-between ${
                     estimate.qualityTier === "STANDARD"
-                      ? "border-primary bg-primary/5 ring-2 ring-primary/30"
-                      : "bg-white border-gray-200 hover:bg-gray-50"
+                      ? "border-primary bg-primary/5 dark:bg-primary/10 ring-2 ring-primary/30"
+                      : "bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800/60"
                   }`}
                 >
                   <div>
                     <div className="flex items-center gap-1">
-                      <span className="text-xs font-extrabold uppercase text-primary tracking-wider">
+                      <span className="text-xs font-extrabold uppercase text-primary dark:text-primary-light tracking-wider">
                         Standard Premium
                       </span>
                       <span className="px-1.5 py-0.2 text-[9px] bg-primary text-white rounded-full font-bold">
                         Popular
                       </span>
                     </div>
-                    <p className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
+                    <p className="text-xl sm:text-2xl font-black text-gray-900 dark:text-slate-100 mt-2">
                       ₹{estimate.tierSummary.standardTotal.toLocaleString()}
                     </p>
-                    <p className="text-[11px] text-gray-500 mt-0.5">BWR Marine Ply + 1mm High Gloss</p>
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5">BWR Marine Ply + 1mm High Gloss</p>
                   </div>
-                  <span className="text-xs text-primary font-bold mt-2">Select Standard</span>
+                  <span className="text-xs text-primary dark:text-primary-light font-bold mt-2">Select Standard</span>
                 </button>
 
                 {/* Luxury Option */}
@@ -918,35 +918,35 @@ export default function AIEstimatorPage() {
                   onClick={() => switchQualityTier("LUXURY")}
                   className={`p-5 rounded-2xl sm:rounded-3xl border text-left transition-all flex flex-col justify-between ${
                     estimate.qualityTier === "LUXURY"
-                      ? "border-purple-600 bg-purple-50/80 ring-2 ring-purple-400"
-                      : "bg-white border-gray-200 hover:bg-gray-50"
+                      ? "border-purple-600 bg-purple-50/80 dark:bg-purple-950/40 ring-2 ring-purple-400"
+                      : "bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800/60"
                   }`}
                 >
                   <div>
-                    <span className="text-xs font-extrabold uppercase text-purple-700 tracking-wider">
+                    <span className="text-xs font-extrabold uppercase text-purple-700 dark:text-purple-400 tracking-wider">
                       Luxury Royal Custom
                     </span>
-                    <p className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
+                    <p className="text-xl sm:text-2xl font-black text-gray-900 dark:text-slate-100 mt-2">
                       ₹{estimate.tierSummary.luxuryTotal.toLocaleString()}
                     </p>
-                    <p className="text-[11px] text-gray-500 mt-0.5">HDHMR/Teak + Acrylic/PU + Hafele</p>
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5">HDHMR/Teak + Acrylic/PU + Hafele</p>
                   </div>
-                  <span className="text-xs text-purple-700 font-bold mt-2">Select Luxury</span>
+                  <span className="text-xs text-purple-700 dark:text-purple-400 font-bold mt-2">Select Luxury</span>
                 </button>
               </div>
 
               {/* BILL OF MATERIALS & PRODUCTION REQUIREMENTS */}
-              <div className="bg-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-200 shadow-xs space-y-4">
-                <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+                <div className="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-3">
                   <div className="flex items-center gap-2">
-                    <div className="p-2 bg-amber-50 text-amber-600 rounded-xl">
+                    <div className="p-2 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-xl">
                       <Layers className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-gray-900">
+                      <h3 className="text-base font-bold text-gray-900 dark:text-slate-100">
                         Estimated Material & Production Bill of Materials (BOM)
                       </h3>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-slate-400">
                         Raw materials and carpentry days required to fabricate this project
                       </p>
                     </div>
@@ -954,51 +954,51 @@ export default function AIEstimatorPage() {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200/70">
-                    <p className="text-[11px] text-gray-500 font-semibold uppercase">18mm Plywood</p>
-                    <p className="text-lg font-extrabold text-gray-900 mt-1">
+                  <div className="p-3.5 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 font-semibold uppercase">18mm Plywood</p>
+                    <p className="text-lg font-extrabold text-gray-900 dark:text-slate-100 mt-1">
                       {estimate.bom.plywood18mmSheets}{" "}
-                      <span className="text-xs font-normal text-gray-500">Sheets (8x4)</span>
+                      <span className="text-xs font-normal text-gray-500 dark:text-slate-400">Sheets (8x4)</span>
                     </p>
                   </div>
 
-                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200/70">
-                    <p className="text-[11px] text-gray-500 font-semibold uppercase">12mm / 6mm Ply</p>
-                    <p className="text-lg font-extrabold text-gray-900 mt-1">
+                  <div className="p-3.5 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 font-semibold uppercase">12mm / 6mm Ply</p>
+                    <p className="text-lg font-extrabold text-gray-900 dark:text-slate-100 mt-1">
                       {estimate.bom.plywood12mmSheets + estimate.bom.plywood6mmSheets}{" "}
-                      <span className="text-xs font-normal text-gray-500">Sheets</span>
+                      <span className="text-xs font-normal text-gray-500 dark:text-slate-400">Sheets</span>
                     </p>
                   </div>
 
-                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200/70">
-                    <p className="text-[11px] text-gray-500 font-semibold uppercase">Laminates</p>
-                    <p className="text-lg font-extrabold text-gray-900 mt-1">
+                  <div className="p-3.5 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 font-semibold uppercase">Laminates</p>
+                    <p className="text-lg font-extrabold text-gray-900 dark:text-slate-100 mt-1">
                       {estimate.bom.laminateSheets}{" "}
-                      <span className="text-xs font-normal text-gray-500">Sheets (8x4)</span>
+                      <span className="text-xs font-normal text-gray-500 dark:text-slate-400">Sheets (8x4)</span>
                     </p>
                   </div>
 
-                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200/70">
-                    <p className="text-[11px] text-gray-500 font-semibold uppercase">Soft-Close Hinges</p>
-                    <p className="text-lg font-extrabold text-gray-900 mt-1">
+                  <div className="p-3.5 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 font-semibold uppercase">Soft-Close Hinges</p>
+                    <p className="text-lg font-extrabold text-gray-900 dark:text-slate-100 mt-1">
                       {estimate.bom.softCloseHingesPairs}{" "}
-                      <span className="text-xs font-normal text-gray-500">Pairs</span>
+                      <span className="text-xs font-normal text-gray-500 dark:text-slate-400">Pairs</span>
                     </p>
                   </div>
 
-                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200/70">
-                    <p className="text-[11px] text-gray-500 font-semibold uppercase">Drawer Channels</p>
-                    <p className="text-lg font-extrabold text-gray-900 mt-1">
+                  <div className="p-3.5 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 font-semibold uppercase">Drawer Channels</p>
+                    <p className="text-lg font-extrabold text-gray-900 dark:text-slate-100 mt-1">
                       {estimate.bom.telescopicSlidesSets}{" "}
-                      <span className="text-xs font-normal text-gray-500">Sets</span>
+                      <span className="text-xs font-normal text-gray-500 dark:text-slate-400">Sets</span>
                     </p>
                   </div>
 
-                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200/70">
-                    <p className="text-[11px] text-gray-500 font-semibold uppercase">Carpentry Labor</p>
-                    <p className="text-lg font-extrabold text-gray-900 mt-1">
+                  <div className="p-3.5 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
+                    <p className="text-[11px] text-gray-500 dark:text-slate-400 font-semibold uppercase">Carpentry Labor</p>
+                    <p className="text-lg font-extrabold text-gray-900 dark:text-slate-100 mt-1">
                       ~{estimate.bom.laborCarpenterDays}{" "}
-                      <span className="text-xs font-normal text-gray-500">Man-Days</span>
+                      <span className="text-xs font-normal text-gray-500 dark:text-slate-400">Man-Days</span>
                     </p>
                   </div>
                 </div>
@@ -1006,15 +1006,15 @@ export default function AIEstimatorPage() {
 
               {/* AI SPACE PLANNING & DESIGN INSIGHTS */}
               {estimate.designInsights && estimate.designInsights.length > 0 && (
-                <div className="bg-amber-50/60 p-4 sm:p-5 rounded-2xl border border-amber-200/70 space-y-2">
-                  <div className="flex items-center gap-2 text-amber-900 font-bold text-xs uppercase tracking-wider">
-                    <Sparkles className="w-4 h-4 text-amber-600" />
+                <div className="bg-amber-50/60 dark:bg-amber-950/20 p-4 sm:p-5 rounded-2xl border border-amber-200/70 dark:border-amber-900/40 space-y-2">
+                  <div className="flex items-center gap-2 text-amber-900 dark:text-amber-300 font-bold text-xs uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                     <span>AI Space Planning & Architectural Insights</span>
                   </div>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-amber-900">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-amber-900 dark:text-amber-200/90">
                     {estimate.designInsights.map((insight, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <span className="text-amber-500 font-bold">•</span>
+                        <span className="text-amber-500 dark:text-amber-400 font-bold">•</span>
                         <span>{insight}</span>
                       </li>
                     ))}
@@ -1026,8 +1026,8 @@ export default function AIEstimatorPage() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900">Room-by-Room Furniture Plan</h3>
-                    <p className="text-xs text-gray-500">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100">Room-by-Room Furniture Plan</h3>
+                    <p className="text-xs text-gray-500 dark:text-slate-400">
                       Customize quantities, adjust prices, or add bespoke items per room
                     </p>
                   </div>
@@ -1041,8 +1041,8 @@ export default function AIEstimatorPage() {
                         key={room.id}
                         className={`rounded-2xl border transition-all ${
                           room.isSelected
-                            ? "bg-white border-gray-200 shadow-xs"
-                            : "bg-gray-50/60 border-gray-200 opacity-60"
+                            ? "bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 shadow-xs"
+                            : "bg-gray-50/60 dark:bg-slate-800/40 border-gray-200 dark:border-slate-800 opacity-60"
                         }`}
                       >
                         {/* Room Header Accordion */}
@@ -1059,14 +1059,14 @@ export default function AIEstimatorPage() {
                               className="cursor-pointer min-w-0"
                             >
                               <div className="flex items-center gap-2">
-                                <h4 className="font-extrabold text-sm sm:text-base text-gray-900 truncate">
+                                <h4 className="font-extrabold text-sm sm:text-base text-gray-900 dark:text-slate-100 truncate">
                                   {room.name}
                                 </h4>
-                                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-[11px] font-bold rounded-md">
+                                <span className="px-2 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 text-[11px] font-bold rounded-md">
                                   {room.approxSqft} sqft
                                 </span>
                               </div>
-                              <p className="text-xs text-gray-400 mt-0.5">
+                              <p className="text-xs text-gray-400 dark:text-slate-500 mt-0.5">
                                 {room.furnitureItems.filter((i) => i.isSelected).length} items included
                               </p>
                             </div>
@@ -1074,14 +1074,14 @@ export default function AIEstimatorPage() {
 
                           <div className="flex items-center gap-3 shrink-0">
                             <div className="text-right">
-                              <p className="text-sm sm:text-base font-extrabold text-gray-900">
+                              <p className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-slate-100">
                                 ₹{room.subtotal.toLocaleString()}
                               </p>
                             </div>
                             <button
                               type="button"
                               onClick={() => toggleRoomExpand(room.id)}
-                              className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100"
+                              className="p-1.5 text-gray-400 dark:text-slate-500 hover:text-gray-700 dark:hover:text-slate-300 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800"
                             >
                               {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                             </button>
@@ -1090,14 +1090,14 @@ export default function AIEstimatorPage() {
 
                         {/* Items Table */}
                         {isExpanded && room.isSelected && (
-                          <div className="border-t border-gray-100 p-4 sm:p-5 space-y-3 bg-gray-50/40 rounded-b-2xl">
+                          <div className="border-t border-gray-100 dark:border-slate-800 p-4 sm:p-5 space-y-3 bg-gray-50/40 dark:bg-slate-800/40 rounded-b-2xl">
                             {room.furnitureItems.map((item) => (
                               <div
                                 key={item.id}
                                 className={`p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                                   item.isSelected
-                                    ? "bg-white border-gray-200"
-                                    : "bg-gray-100/50 border-gray-200/60 opacity-50"
+                                    ? "bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700"
+                                    : "bg-gray-100/50 dark:bg-slate-800/50 border-gray-200/60 dark:border-slate-700/60 opacity-50"
                                 }`}
                               >
                                 <div className="flex items-start gap-3 min-w-0 flex-1">
@@ -1109,37 +1109,37 @@ export default function AIEstimatorPage() {
                                   />
                                   <div className="min-w-0">
                                     <div className="flex flex-wrap items-center gap-2">
-                                      <p className="text-sm font-bold text-gray-900">{item.name}</p>
-                                      <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-semibold">
+                                      <p className="text-sm font-bold text-gray-900 dark:text-slate-100">{item.name}</p>
+                                      <span className="px-2 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 rounded text-[10px] font-semibold">
                                         {item.category}
                                       </span>
                                     </div>
-                                    <p className="text-xs text-gray-500 font-medium mt-0.5">
-                                      Size: <strong className="text-gray-700">{item.dimensions}</strong>
+                                    <p className="text-xs text-gray-500 dark:text-slate-400 font-medium mt-0.5">
+                                      Size: <strong className="text-gray-700 dark:text-slate-300">{item.dimensions}</strong>
                                     </p>
-                                    <p className="text-[11px] text-gray-400 mt-0.5 line-clamp-1">
+                                    <p className="text-[11px] text-gray-400 dark:text-slate-500 mt-0.5 line-clamp-1">
                                       Specs: {item.recommendedMaterial}
                                     </p>
                                   </div>
                                 </div>
 
-                                <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
+                                <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100 dark:border-slate-800">
                                   {/* Quantity Controls */}
-                                  <div className="flex items-center border border-gray-200 rounded-lg bg-gray-50">
+                                  <div className="flex items-center border border-gray-200 dark:border-slate-700 rounded-lg bg-gray-50 dark:bg-slate-800">
                                     <button
                                       type="button"
                                       onClick={() => updateItemQuantity(room.id, item.id, -1)}
-                                      className="px-2 py-1 text-gray-600 hover:bg-gray-200 font-bold rounded-l-lg"
+                                      className="px-2 py-1 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700 font-bold rounded-l-lg"
                                     >
                                       -
                                     </button>
-                                    <span className="px-2.5 py-1 text-xs font-bold text-gray-900">
+                                    <span className="px-2.5 py-1 text-xs font-bold text-gray-900 dark:text-slate-100">
                                       {item.quantity}
                                     </span>
                                     <button
                                       type="button"
                                       onClick={() => updateItemQuantity(room.id, item.id, 1)}
-                                      className="px-2 py-1 text-gray-600 hover:bg-gray-200 font-bold rounded-r-lg"
+                                      className="px-2 py-1 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700 font-bold rounded-r-lg"
                                     >
                                       +
                                     </button>
@@ -1159,14 +1159,14 @@ export default function AIEstimatorPage() {
                                           parseFloat(e.target.value) || 0
                                         )
                                       }
-                                      className="w-full px-2 py-1 text-xs border border-gray-200 rounded-lg text-right font-medium outline-none focus:ring-1 focus:ring-primary"
+                                      className="w-full px-2 py-1 text-xs border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 rounded-lg text-right font-medium outline-none focus:ring-1 focus:ring-primary"
                                     />
-                                    <span className="text-[10px] text-gray-400 block">per unit</span>
+                                    <span className="text-[10px] text-gray-400 dark:text-slate-500 block">per unit</span>
                                   </div>
 
                                   {/* Total Item Price */}
                                   <div className="w-24 text-right">
-                                    <p className="font-extrabold text-gray-900 text-sm">
+                                    <p className="font-extrabold text-gray-900 dark:text-slate-100 text-sm">
                                       ₹{item.totalPrice.toLocaleString()}
                                     </p>
                                   </div>
@@ -1175,7 +1175,7 @@ export default function AIEstimatorPage() {
                                   <button
                                     type="button"
                                     onClick={() => deleteItemFromRoom(room.id, item.id)}
-                                    className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50"
+                                    className="p-1.5 text-gray-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/50"
                                     title="Remove item"
                                   >
                                     <Trash2 size={16} />
@@ -1186,36 +1186,36 @@ export default function AIEstimatorPage() {
 
                             {/* Add Custom Item Section */}
                             {addingItemToRoomId === room.id ? (
-                              <div className="p-4 bg-white rounded-xl border border-primary/40 space-y-3">
-                                <h5 className="text-xs font-bold text-gray-900">Add Custom Item to {room.name}</h5>
+                              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-primary/40 dark:border-primary/60 space-y-3">
+                                <h5 className="text-xs font-bold text-gray-900 dark:text-slate-100">Add Custom Item to {room.name}</h5>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                   <div>
-                                    <label className="text-[11px] font-semibold text-gray-600">Item Name</label>
+                                    <label className="text-[11px] font-semibold text-gray-600 dark:text-slate-300">Item Name</label>
                                     <input
                                       type="text"
                                       placeholder="e.g. Fluted Wall Panelling"
                                       value={newItemName}
                                       onChange={(e) => setNewItemName(e.target.value)}
-                                      className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-primary"
+                                      className="w-full px-2.5 py-1.5 text-xs border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-1 focus:ring-primary rounded-lg"
                                     />
                                   </div>
                                   <div>
-                                    <label className="text-[11px] font-semibold text-gray-600">Dimensions</label>
+                                    <label className="text-[11px] font-semibold text-gray-600 dark:text-slate-300">Dimensions</label>
                                     <input
                                       type="text"
                                       placeholder="e.g. 8ft x 6ft"
                                       value={newItemDimensions}
                                       onChange={(e) => setNewItemDimensions(e.target.value)}
-                                      className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-primary"
+                                      className="w-full px-2.5 py-1.5 text-xs border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-1 focus:ring-primary rounded-lg"
                                     />
                                   </div>
                                   <div>
-                                    <label className="text-[11px] font-semibold text-gray-600">Price (₹)</label>
+                                    <label className="text-[11px] font-semibold text-gray-600 dark:text-slate-300">Price (₹)</label>
                                     <input
                                       type="number"
                                       value={newItemPrice}
                                       onChange={(e) => setNewItemPrice(parseFloat(e.target.value) || 0)}
-                                      className="w-full px-2.5 py-1.5 text-xs border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-primary"
+                                      className="w-full px-2.5 py-1.5 text-xs border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 outline-none focus:ring-1 focus:ring-primary rounded-lg"
                                     />
                                   </div>
                                 </div>
@@ -1223,7 +1223,7 @@ export default function AIEstimatorPage() {
                                   <button
                                     type="button"
                                     onClick={() => setAddingItemToRoomId(null)}
-                                    className="px-3 py-1.5 text-xs text-gray-600 hover:bg-gray-100 rounded-lg font-semibold"
+                                    className="px-3 py-1.5 text-xs text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg font-semibold"
                                   >
                                     Cancel
                                   </button>
@@ -1243,7 +1243,7 @@ export default function AIEstimatorPage() {
                                   setAddingItemToRoomId(room.id);
                                   setNewItemName("");
                                 }}
-                                className="w-full py-2.5 border border-dashed border-gray-300 hover:border-primary text-primary font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors bg-white/70"
+                                className="w-full py-2.5 border border-dashed border-gray-300 dark:border-slate-700 hover:border-primary text-primary dark:text-primary-light font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors bg-white/70 dark:bg-slate-900/70"
                               >
                                 <Plus size={15} />
                                 <span>Add Custom Furniture / Cabinetry to {room.name}</span>
@@ -1258,55 +1258,55 @@ export default function AIEstimatorPage() {
               </div>
 
               {/* STEP 4: CLIENT INFO, SAVE & ERP INTEGRATIONS */}
-              <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-gray-200 shadow-sm space-y-5">
+              <div className="bg-white dark:bg-slate-900 p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-gray-200 dark:border-slate-800 shadow-sm space-y-5 transition-colors">
                 <div>
                   <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-primary mb-1">
                     <span>Step 4</span>
-                    <span className="text-gray-300">•</span>
-                    <span className="text-gray-500">Proposal & ERP Actions</span>
+                    <span className="text-gray-300 dark:text-slate-600">•</span>
+                    <span className="text-gray-500 dark:text-slate-400">Proposal & ERP Actions</span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100">
                     Client Proposal & Direct ERP Conversion
                   </h3>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="text-xs font-semibold text-gray-700 block mb-1">Client Full Name</label>
+                    <label className="text-xs font-semibold text-gray-700 dark:text-slate-300 block mb-1">Client Full Name</label>
                     <input
                       type="text"
                       placeholder="e.g. Ramesh Patel"
                       value={clientName}
                       onChange={(e) => setClientName(e.target.value)}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-xl outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-gray-700 block mb-1">Client Mobile Number</label>
+                    <label className="text-xs font-semibold text-gray-700 dark:text-slate-300 block mb-1">Client Mobile Number</label>
                     <input
                       type="tel"
                       placeholder="e.g. 9876543210"
                       value={clientMobile}
                       onChange={(e) => setClientMobile(e.target.value)}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-xl outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-gray-700 block mb-1">Special Notes / Terms</label>
+                    <label className="text-xs font-semibold text-gray-700 dark:text-slate-300 block mb-1">Special Notes / Terms</label>
                     <input
                       type="text"
                       placeholder="e.g. Includes GST, delivery in 35 days"
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-xl outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
                 </div>
 
                 {saveSuccess && (
-                  <div className="p-3.5 bg-green-50 border border-green-200 rounded-xl flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-green-800 text-xs font-bold">
-                      <CheckCircle2 className="w-4 h-4 text-green-600" />
+                  <div className="p-3.5 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800/60 rounded-xl flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-green-800 dark:text-green-300 text-xs font-bold">
+                      <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
                       <span>Estimate #{saveSuccess.number} saved successfully to database!</span>
                     </div>
                     <Link
@@ -1321,12 +1321,12 @@ export default function AIEstimatorPage() {
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-gray-100 dark:border-slate-800">
                   <button
                     type="button"
                     onClick={handleSaveEstimate}
                     disabled={isSaving}
-                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs disabled:opacity-50"
+                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-gray-900 dark:bg-slate-800 hover:bg-black dark:hover:bg-slate-700 border border-transparent dark:border-slate-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs disabled:opacity-50"
                   >
                     <Copy className="w-4 h-4" />
                     <span>{isSaving ? "Saving..." : "Save Estimate"}</span>

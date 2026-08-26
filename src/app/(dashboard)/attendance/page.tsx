@@ -21,8 +21,8 @@ export default async function AttendancePage({
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 print:hidden">Staff Attendance</h1>
-        <p className="text-gray-500 print:hidden">Mark attendance, manage staff, and view salary summaries</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 print:hidden">Staff Attendance</h1>
+        <p className="text-gray-500 dark:text-slate-400 print:hidden">Mark attendance, manage staff, and view salary summaries</p>
       </div>
 
       <AttendanceManager
