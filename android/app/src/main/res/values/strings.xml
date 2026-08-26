@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Bhurjala Furniture</string>
+    <string name="title_activity_main">Bhurjala Furniture</string>
+    <string name="package_name">com.bhurjalafurniture.erp</string>
+    <string name="custom_url_scheme">com.bhurjalafurniture.erp</string>
+</resources>
