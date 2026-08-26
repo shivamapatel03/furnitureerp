@@ -22,6 +22,7 @@ const createBillSchema = z.object({
   paymentStatus: z.enum(["PAID", "PARTIAL", "PENDING"]),
   paymentMethod: z.enum(["CASH", "UPI", "BANK_TRANSFER", "CARD"]),
   paidAmount: z.number().min(0),
+  notes: z.string().optional().nullable(),
 });
 
 export async function createBill(data: z.infer<typeof createBillSchema>) {
@@ -71,6 +72,7 @@ export async function createBill(data: z.infer<typeof createBillSchema>) {
           tax: validatedData.tax,
           grandTotal: validatedData.grandTotal,
           paymentStatus: validatedData.paymentStatus,
+          notes: validatedData.notes || null,
           items: {
             create: validatedData.items.map(item => ({
               productId: item.productId,

@@ -49,6 +49,7 @@ export type BillMinAggregateOutputType = {
   tax: number | null
   grandTotal: number | null
   paymentStatus: string | null
+  notes: string | null
   date: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -63,6 +64,7 @@ export type BillMaxAggregateOutputType = {
   tax: number | null
   grandTotal: number | null
   paymentStatus: string | null
+  notes: string | null
   date: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -77,6 +79,7 @@ export type BillCountAggregateOutputType = {
   tax: number
   grandTotal: number
   paymentStatus: number
+  notes: number
   date: number
   createdAt: number
   updatedAt: number
@@ -107,6 +110,7 @@ export type BillMinAggregateInputType = {
   tax?: true
   grandTotal?: true
   paymentStatus?: true
+  notes?: true
   date?: true
   createdAt?: true
   updatedAt?: true
@@ -121,6 +125,7 @@ export type BillMaxAggregateInputType = {
   tax?: true
   grandTotal?: true
   paymentStatus?: true
+  notes?: true
   date?: true
   createdAt?: true
   updatedAt?: true
@@ -135,6 +140,7 @@ export type BillCountAggregateInputType = {
   tax?: true
   grandTotal?: true
   paymentStatus?: true
+  notes?: true
   date?: true
   createdAt?: true
   updatedAt?: true
@@ -236,6 +242,7 @@ export type BillGroupByOutputType = {
   tax: number
   grandTotal: number
   paymentStatus: string
+  notes: string | null
   date: Date
   createdAt: Date
   updatedAt: Date
@@ -273,6 +280,7 @@ export type BillWhereInput = {
   tax?: Prisma.FloatFilter<"Bill"> | number
   grandTotal?: Prisma.FloatFilter<"Bill"> | number
   paymentStatus?: Prisma.StringFilter<"Bill"> | string
+  notes?: Prisma.StringNullableFilter<"Bill"> | string | null
   date?: Prisma.DateTimeFilter<"Bill"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Bill"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Bill"> | Date | string
@@ -290,6 +298,7 @@ export type BillOrderByWithRelationInput = {
   tax?: Prisma.SortOrder
   grandTotal?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   date?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -310,6 +319,7 @@ export type BillWhereUniqueInput = Prisma.AtLeast<{
   tax?: Prisma.FloatFilter<"Bill"> | number
   grandTotal?: Prisma.FloatFilter<"Bill"> | number
   paymentStatus?: Prisma.StringFilter<"Bill"> | string
+  notes?: Prisma.StringNullableFilter<"Bill"> | string | null
   date?: Prisma.DateTimeFilter<"Bill"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Bill"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Bill"> | Date | string
@@ -327,6 +337,7 @@ export type BillOrderByWithAggregationInput = {
   tax?: Prisma.SortOrder
   grandTotal?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   date?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -349,6 +360,7 @@ export type BillScalarWhereWithAggregatesInput = {
   tax?: Prisma.FloatWithAggregatesFilter<"Bill"> | number
   grandTotal?: Prisma.FloatWithAggregatesFilter<"Bill"> | number
   paymentStatus?: Prisma.StringWithAggregatesFilter<"Bill"> | string
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Bill"> | string | null
   date?: Prisma.DateTimeWithAggregatesFilter<"Bill"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Bill"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Bill"> | Date | string
@@ -362,6 +374,7 @@ export type BillCreateInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -379,6 +392,7 @@ export type BillUncheckedCreateInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -394,6 +408,7 @@ export type BillUpdateInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -411,6 +426,7 @@ export type BillUncheckedUpdateInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -427,6 +443,7 @@ export type BillCreateManyInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -440,6 +457,7 @@ export type BillUpdateManyMutationInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -454,6 +472,7 @@ export type BillUncheckedUpdateManyInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -478,6 +497,7 @@ export type BillCountOrderByAggregateInput = {
   tax?: Prisma.SortOrder
   grandTotal?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   date?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -499,6 +519,7 @@ export type BillMaxOrderByAggregateInput = {
   tax?: Prisma.SortOrder
   grandTotal?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   date?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -513,6 +534,7 @@ export type BillMinOrderByAggregateInput = {
   tax?: Prisma.SortOrder
   grandTotal?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   date?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -608,6 +630,7 @@ export type BillCreateWithoutCustomerInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -623,6 +646,7 @@ export type BillUncheckedCreateWithoutCustomerInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -668,6 +692,7 @@ export type BillScalarWhereInput = {
   tax?: Prisma.FloatFilter<"Bill"> | number
   grandTotal?: Prisma.FloatFilter<"Bill"> | number
   paymentStatus?: Prisma.StringFilter<"Bill"> | string
+  notes?: Prisma.StringNullableFilter<"Bill"> | string | null
   date?: Prisma.DateTimeFilter<"Bill"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Bill"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Bill"> | Date | string
@@ -681,6 +706,7 @@ export type BillCreateWithoutItemsInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -697,6 +723,7 @@ export type BillUncheckedCreateWithoutItemsInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -727,6 +754,7 @@ export type BillUpdateWithoutItemsInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -743,6 +771,7 @@ export type BillUncheckedUpdateWithoutItemsInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -757,6 +786,7 @@ export type BillCreateWithoutPaymentsInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -773,6 +803,7 @@ export type BillUncheckedCreateWithoutPaymentsInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -803,6 +834,7 @@ export type BillUpdateWithoutPaymentsInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -819,6 +851,7 @@ export type BillUncheckedUpdateWithoutPaymentsInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -833,6 +866,7 @@ export type BillCreateManyCustomerInput = {
   tax?: number
   grandTotal?: number
   paymentStatus?: string
+  notes?: string | null
   date?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -846,6 +880,7 @@ export type BillUpdateWithoutCustomerInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -861,6 +896,7 @@ export type BillUncheckedUpdateWithoutCustomerInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -876,6 +912,7 @@ export type BillUncheckedUpdateManyWithoutCustomerInput = {
   tax?: Prisma.FloatFieldUpdateOperationsInput | number
   grandTotal?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -930,6 +967,7 @@ export type BillSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tax?: boolean
   grandTotal?: boolean
   paymentStatus?: boolean
+  notes?: boolean
   date?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -948,6 +986,7 @@ export type BillSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   tax?: boolean
   grandTotal?: boolean
   paymentStatus?: boolean
+  notes?: boolean
   date?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -963,6 +1002,7 @@ export type BillSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   tax?: boolean
   grandTotal?: boolean
   paymentStatus?: boolean
+  notes?: boolean
   date?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -978,12 +1018,13 @@ export type BillSelectScalar = {
   tax?: boolean
   grandTotal?: boolean
   paymentStatus?: boolean
+  notes?: boolean
   date?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BillOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "billNumber" | "customerId" | "subtotal" | "discount" | "tax" | "grandTotal" | "paymentStatus" | "date" | "createdAt" | "updatedAt", ExtArgs["result"]["bill"]>
+export type BillOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "billNumber" | "customerId" | "subtotal" | "discount" | "tax" | "grandTotal" | "paymentStatus" | "notes" | "date" | "createdAt" | "updatedAt", ExtArgs["result"]["bill"]>
 export type BillInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   items?: boolean | Prisma.Bill$itemsArgs<ExtArgs>
@@ -1013,6 +1054,7 @@ export type $BillPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tax: number
     grandTotal: number
     paymentStatus: string
+    notes: string | null
     date: Date
     createdAt: Date
     updatedAt: Date
@@ -1450,6 +1492,7 @@ export interface BillFieldRefs {
   readonly tax: Prisma.FieldRef<"Bill", 'Float'>
   readonly grandTotal: Prisma.FieldRef<"Bill", 'Float'>
   readonly paymentStatus: Prisma.FieldRef<"Bill", 'String'>
+  readonly notes: Prisma.FieldRef<"Bill", 'String'>
   readonly date: Prisma.FieldRef<"Bill", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Bill", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Bill", 'DateTime'>

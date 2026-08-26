@@ -90,12 +90,21 @@ export default async function StandalonePrintPage(props: { params: Promise<{ id:
             </div>
 
             {/* Totals & Payment Info */}
-            <div className="flex flex-row justify-between items-start mb-16">
-              <div className="w-1/2 pr-8 text-sm text-gray-600">
-                <h4 className="font-bold text-gray-900 mb-3 uppercase text-xs tracking-wider">Payment Info</h4>
-                <p className="mb-1">Amount Paid: <span className="font-medium text-gray-900">₹{paidAmount.toLocaleString()}</span></p>
-                {bill.grandTotal - paidAmount > 0 && (
-                  <p className="text-red-600 font-bold">Balance Due: ₹{(bill.grandTotal - paidAmount).toLocaleString()}</p>
+            <div className="flex flex-row justify-between items-start mb-12">
+              <div className="w-1/2 pr-8 text-sm text-gray-600 space-y-3">
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-2 uppercase text-xs tracking-wider">Payment Info</h4>
+                  <p className="mb-1">Amount Paid: <span className="font-medium text-gray-900">₹{paidAmount.toLocaleString()}</span></p>
+                  {bill.grandTotal - paidAmount > 0 && (
+                    <p className="text-red-600 font-bold">Balance Due: ₹{(bill.grandTotal - paidAmount).toLocaleString()}</p>
+                  )}
+                </div>
+
+                {bill.notes && (
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <h5 className="font-bold text-gray-900 uppercase text-[10px] tracking-wider mb-1">Notes / Remarks:</h5>
+                    <p className="text-xs text-gray-700 whitespace-pre-wrap leading-relaxed">{bill.notes}</p>
+                  </div>
                 )}
               </div>
               

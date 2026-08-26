@@ -40,6 +40,7 @@ export default function NewBillPage() {
   const [paymentStatus, setPaymentStatus] = useState<"PAID" | "PARTIAL" | "PENDING">("PAID");
   const [paymentMethod, setPaymentMethod] = useState<"CASH" | "UPI" | "BANK_TRANSFER" | "CARD">("CASH");
   const [paidAmount, setPaidAmount] = useState(0);
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     getProducts().then(data => {
@@ -113,7 +114,8 @@ export default function NewBillPage() {
       grandTotal,
       paymentStatus,
       paymentMethod,
-      paidAmount
+      paidAmount,
+      notes: notes.trim() || undefined
     });
 
     setSubmitting(false);
@@ -146,7 +148,7 @@ export default function NewBillPage() {
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Link 
             href={`/billing/${success.id}/print`}
-            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark active:scale-98 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-sm"
+            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark active:scale-98 text-white px-5 py-3 rounded-lg font-semibold text-sm transition-all shadow-sm"
           >
             <FileText size={18} />
             View & Download Invoice
@@ -160,8 +162,9 @@ export default function NewBillPage() {
               setDiscount(0);
               setTax(0);
               setPaymentStatus("PAID");
+              setNotes("");
             }}
-            className="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 active:scale-98 text-gray-700 px-5 py-3 rounded-xl font-semibold text-sm transition-all"
+            className="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 active:scale-98 text-gray-700 px-5 py-3 rounded-lg font-semibold text-sm transition-all"
           >
             <Plus size={18} />
             Create Another Bill
@@ -366,7 +369,7 @@ export default function NewBillPage() {
               <select
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value as any)}
-                className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-primary outline-none"
+                className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary outline-none"
               >
                 <option value="CASH">Cash</option>
                 <option value="UPI">UPI / GPay / PhonePe</option>
@@ -385,10 +388,23 @@ export default function NewBillPage() {
                   value={paidAmount || ""}
                   onChange={(e) => setPaidAmount(parseFloat(e.target.value) || 0)}
                   placeholder="Amount received"
-                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
                 />
               </div>
             )}
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Bill Notes / Remarks (Optional)
+              </label>
+              <textarea
+                rows={2}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="e.g. 5-year warranty included, delivery within 7 days, special custom finish..."
+                className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary outline-none resize-none"
+              />
+            </div>
           </div>
 
           {/* Bill Summary Card */}

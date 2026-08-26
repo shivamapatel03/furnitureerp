@@ -91,6 +91,7 @@ model Bill {
   tax           Float      @default(0)
   grandTotal    Float      @default(0)
   paymentStatus String     @default("PENDING")
+  notes         String?
   date          DateTime   @default(now())
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt

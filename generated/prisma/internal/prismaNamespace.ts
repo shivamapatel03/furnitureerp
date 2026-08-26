@@ -1521,6 +1521,7 @@ export const BillScalarFieldEnum = {
   tax: 'tax',
   grandTotal: 'grandTotal',
   paymentStatus: 'paymentStatus',
+  notes: 'notes',
   date: 'date',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
