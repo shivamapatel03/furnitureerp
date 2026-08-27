@@ -158,7 +158,7 @@ export function Sidebar({
           />
           {/* Drawer content */}
           <div className="relative flex-1 flex flex-col justify-between max-w-xs w-full bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 shadow-2xl z-10 h-full transition-transform animate-in slide-in-from-left duration-200">
-            <div className="h-16 flex items-center justify-between px-5 border-b border-gray-100 dark:border-slate-800 shrink-0">
+            <div className="min-h-16 pt-[max(0.75rem,env(safe-area-inset-top))] pb-2.5 flex items-center justify-between px-5 border-b border-gray-100 dark:border-slate-800 shrink-0">
               <Link href="/" className="flex items-center">
                 <Image 
                   src={logoImg} 

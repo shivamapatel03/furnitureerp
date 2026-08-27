@@ -41,7 +41,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-950 flex flex-col print:bg-white min-w-0 transition-colors duration-150">
       {/* Mobile Top App Bar (visible on < lg) */}
-      <header className="lg:hidden sticky top-0 z-30 bg-primary text-white px-3.5 py-3 rounded-b-lg shadow-md flex items-center justify-between print:hidden">
+      <header className="lg:hidden sticky top-0 z-30 bg-primary text-white px-3.5 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 rounded-b-lg shadow-md flex items-center justify-between print:hidden">
         <div className="flex items-center gap-2.5 min-w-0">
           <button
             type="button"

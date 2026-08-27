@@ -132,22 +132,23 @@ export default async function StandalonePrintPage(props: { params: Promise<{ id:
               </div>
             </div>
 
-            {/* Footer & Stamp */}
-            <div className="flex flex-row justify-between items-end">
-              <div className="w-2/3">
-                <h4 className="font-bold text-gray-900 text-lg mb-2">Thank you for your business!</h4>
-                <p className="text-[10px] text-gray-400 leading-tight uppercase">
+            {/* Footer & Signature */}
+            <div className="flex flex-row justify-between items-end pt-4">
+              <div className="w-1/2">
+                <h4 className="font-bold text-gray-900 text-base mb-1">Thank you for your business!</h4>
+                <p className="text-[10px] text-gray-500 leading-tight uppercase">
                   Terms: Goods once sold will not be taken back. Subject to local jurisdiction.
                 </p>
               </div>
 
-              {/* Circular Verified Stamp */}
-              <div className="relative w-28 h-28 flex flex-col items-center justify-center -rotate-12 opacity-80 border-[3px] border-red-600 rounded-full shrink-0 select-none">
-                <div className="absolute inset-1 border border-red-600 rounded-full pointer-events-none" />
-                <div className="text-center text-red-600 px-2 mt-1">
-                  <p className="text-[8px] font-bold uppercase tracking-widest text-center leading-tight mb-1">Bhurjala<br/>Furniture</p>
-                  <div className="w-16 h-px bg-red-600 mx-auto my-1" />
-                  <p className="font-black text-sm tracking-widest">VERIFIED</p>
+              {/* Physical Signature Section */}
+              <div className="w-52 flex flex-col items-center justify-end text-center shrink-0">
+                <div className="h-14 w-full flex items-end justify-center">
+                  {/* Space for owner physical signature */}
+                </div>
+                <div className="border-t border-gray-400 w-full pt-1.5">
+                  <p className="font-extrabold text-xs text-gray-900 uppercase tracking-wide">For, Bhurjala Furniture</p>
+                  <p className="text-[10px] text-gray-500 font-semibold uppercase mt-0.5">Authorized Signatory</p>
                 </div>
               </div>
             </div>

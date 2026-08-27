@@ -61,6 +61,8 @@ export function CapacitorProvider({ children }: { children: React.ReactNode }) {
         if (!Capacitor.isNativePlatform()) return;
 
         const { StatusBar, Style } = await import("@capacitor/status-bar");
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        
         if (theme === "dark") {
           await StatusBar.setStyle({ style: Style.Dark });
           await StatusBar.setBackgroundColor({ color: "#0f172a" });

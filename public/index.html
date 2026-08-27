@@ -20,40 +20,136 @@
       justify-content: center;
       min-height: 100vh;
       text-align: center;
-      padding: 20px;
+      padding: 24px;
     }
-    .logo-container {
+    .card {
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logo {
+      width: 180px;
+      height: auto;
       margin-bottom: 24px;
+      filter: brightness(0) invert(1);
     }
     .spinner {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border: 3px solid rgba(220, 64, 65, 0.2);
       border-top-color: #DC4041;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px auto;
+      margin-bottom: 16px;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
     h1 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     p {
       font-size: 13px;
       color: #94a3b8;
+      line-height: 1.5;
+    }
+    .server-box {
+      display: none;
+      margin-top: 24px;
+      width: 100%;
+      background: #1e293b;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #334155;
+      text-align: left;
+    }
+    .server-box label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .server-box input {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #ffffff;
+      outline: none;
+      margin-bottom: 12px;
+    }
+    .server-box button {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 10px;
+      border: none;
+      background: #DC4041;
+      color: #ffffff;
+      cursor: pointer;
+    }
+    .tip {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="logo-container">
-    <div class="spinner"></div>
-    <h1>Bhurjala Furniture ERP</h1>
-    <p>Connecting to ERP System...</p>
+  <div class="card">
+    <img src="logo.png" alt="Bhurjala Furniture" class="logo" />
+    <div class="spinner" id="spinner"></div>
+    <h1 id="title">Bhurjala Furniture ERP</h1>
+    <p id="status">Connecting to ERP System...</p>
+
+    <div class="server-box" id="serverBox">
+      <label>ERP Server Address</label>
+      <input type="url" id="serverUrl" placeholder="https://furnitureerp.vercel.app" />
+      <button type="button" onclick="connectToServer()">Connect to ERP</button>
+      <p class="tip">Connecting to Bhurjala Furniture Cloud ERP.</p>
+    </div>
   </div>
+
+  <script>
+    const DEFAULT_SERVER = "https://furnitureerp.vercel.app";
+    const savedServer = localStorage.getItem("erp_server_url") || DEFAULT_SERVER;
+    const urlInput = document.getElementById("serverUrl");
+    urlInput.value = savedServer;
+
+    function redirectTo(url) {
+      document.getElementById("status").innerText = "Loading " + url + "...";
+      window.location.href = url;
+    }
+
+    function connectToServer() {
+      const target = urlInput.value.trim() || DEFAULT_SERVER;
+      localStorage.setItem("erp_server_url", target);
+      redirectTo(target);
+    }
+
+    // Try connecting immediately
+    setTimeout(() => {
+      redirectTo(savedServer);
+    }, 200);
+
+    // If still here after 3.5 seconds, show configuration box
+    setTimeout(() => {
+      document.getElementById("spinner").style.display = "none";
+      document.getElementById("status").innerText = "Unable to reach server automatically. Please check the address below:";
+      document.getElementById("serverBox").style.display = "block";
+    }, 3500);
+  </script>
 </body>
 </html>

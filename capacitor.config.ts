@@ -5,15 +5,14 @@ const config: CapacitorConfig = {
   appName: 'Bhurjala Furniture',
   webDir: 'public',
   server: {
-    // In production: replace with your live deployment URL (e.g. https://furniture-erp.vercel.app)
-    // In development: points to local development server
-    url: process.env.CAPACITOR_SERVER_URL || undefined,
+    url: 'https://furnitureerp.vercel.app',
     cleartext: true,
   },
   plugins: {
     StatusBar: {
       style: 'DARK',
       backgroundColor: '#DC4041',
+      overlaysWebView: false,
     },
     SplashScreen: {
       launchShowDuration: 2000,
