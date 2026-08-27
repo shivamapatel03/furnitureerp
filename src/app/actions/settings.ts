@@ -28,15 +28,21 @@ export async function getSettings(): Promise<Record<string, string>> {
 }
 
 export async function saveSettings(formData: FormData) {
-  const keys = ["companyName", "address", "phone", "email", "geminiApiKey", "secretAccessCode", "defaultSqftRate"];
-  for (const key of keys) {
-    const value = (formData.get(key) as string) ?? "";
-    await prisma.setting.upsert({
-      where: { key },
-      update: { value },
-      create: { key, value },
-    });
+  try {
+    const keys = ["companyName", "address", "phone", "email", "geminiApiKey", "secretAccessCode", "defaultSqftRate"];
+    for (const key of keys) {
+      const value = (formData.get(key) as string) ?? "";
+      await prisma.setting.upsert({
+        where: { key },
+        update: { value },
+        create: { key, value },
+      });
+    }
+    revalidatePath("/settings");
+    revalidatePath("/billing");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error saving settings:", error);
+    return { success: false, error: error.message || "Failed to save settings." };
   }
-  revalidatePath("/settings");
-  revalidatePath("/billing");
 }
