@@ -30,12 +30,16 @@ export type BillItemAvgAggregateOutputType = {
   quantity: number | null
   price: number | null
   total: number | null
+  sqft: number | null
+  ratePerSqft: number | null
 }
 
 export type BillItemSumAggregateOutputType = {
   quantity: number | null
   price: number | null
   total: number | null
+  sqft: number | null
+  ratePerSqft: number | null
 }
 
 export type BillItemMinAggregateOutputType = {
@@ -45,6 +49,9 @@ export type BillItemMinAggregateOutputType = {
   quantity: number | null
   price: number | null
   total: number | null
+  calculationType: string | null
+  sqft: number | null
+  ratePerSqft: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +63,9 @@ export type BillItemMaxAggregateOutputType = {
   quantity: number | null
   price: number | null
   total: number | null
+  calculationType: string | null
+  sqft: number | null
+  ratePerSqft: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -67,6 +77,9 @@ export type BillItemCountAggregateOutputType = {
   quantity: number
   price: number
   total: number
+  calculationType: number
+  sqft: number
+  ratePerSqft: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -77,12 +90,16 @@ export type BillItemAvgAggregateInputType = {
   quantity?: true
   price?: true
   total?: true
+  sqft?: true
+  ratePerSqft?: true
 }
 
 export type BillItemSumAggregateInputType = {
   quantity?: true
   price?: true
   total?: true
+  sqft?: true
+  ratePerSqft?: true
 }
 
 export type BillItemMinAggregateInputType = {
@@ -92,6 +109,9 @@ export type BillItemMinAggregateInputType = {
   quantity?: true
   price?: true
   total?: true
+  calculationType?: true
+  sqft?: true
+  ratePerSqft?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -103,6 +123,9 @@ export type BillItemMaxAggregateInputType = {
   quantity?: true
   price?: true
   total?: true
+  calculationType?: true
+  sqft?: true
+  ratePerSqft?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -114,6 +137,9 @@ export type BillItemCountAggregateInputType = {
   quantity?: true
   price?: true
   total?: true
+  calculationType?: true
+  sqft?: true
+  ratePerSqft?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -212,6 +238,9 @@ export type BillItemGroupByOutputType = {
   quantity: number
   price: number
   total: number
+  calculationType: string
+  sqft: number | null
+  ratePerSqft: number | null
   createdAt: Date
   updatedAt: Date
   _count: BillItemCountAggregateOutputType | null
@@ -246,6 +275,9 @@ export type BillItemWhereInput = {
   quantity?: Prisma.FloatFilter<"BillItem"> | number
   price?: Prisma.FloatFilter<"BillItem"> | number
   total?: Prisma.FloatFilter<"BillItem"> | number
+  calculationType?: Prisma.StringFilter<"BillItem"> | string
+  sqft?: Prisma.FloatNullableFilter<"BillItem"> | number | null
+  ratePerSqft?: Prisma.FloatNullableFilter<"BillItem"> | number | null
   createdAt?: Prisma.DateTimeFilter<"BillItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BillItem"> | Date | string
   bill?: Prisma.XOR<Prisma.BillScalarRelationFilter, Prisma.BillWhereInput>
@@ -259,6 +291,9 @@ export type BillItemOrderByWithRelationInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  calculationType?: Prisma.SortOrder
+  sqft?: Prisma.SortOrderInput | Prisma.SortOrder
+  ratePerSqft?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   bill?: Prisma.BillOrderByWithRelationInput
@@ -275,6 +310,9 @@ export type BillItemWhereUniqueInput = Prisma.AtLeast<{
   quantity?: Prisma.FloatFilter<"BillItem"> | number
   price?: Prisma.FloatFilter<"BillItem"> | number
   total?: Prisma.FloatFilter<"BillItem"> | number
+  calculationType?: Prisma.StringFilter<"BillItem"> | string
+  sqft?: Prisma.FloatNullableFilter<"BillItem"> | number | null
+  ratePerSqft?: Prisma.FloatNullableFilter<"BillItem"> | number | null
   createdAt?: Prisma.DateTimeFilter<"BillItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BillItem"> | Date | string
   bill?: Prisma.XOR<Prisma.BillScalarRelationFilter, Prisma.BillWhereInput>
@@ -288,6 +326,9 @@ export type BillItemOrderByWithAggregationInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  calculationType?: Prisma.SortOrder
+  sqft?: Prisma.SortOrderInput | Prisma.SortOrder
+  ratePerSqft?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BillItemCountOrderByAggregateInput
@@ -307,6 +348,9 @@ export type BillItemScalarWhereWithAggregatesInput = {
   quantity?: Prisma.FloatWithAggregatesFilter<"BillItem"> | number
   price?: Prisma.FloatWithAggregatesFilter<"BillItem"> | number
   total?: Prisma.FloatWithAggregatesFilter<"BillItem"> | number
+  calculationType?: Prisma.StringWithAggregatesFilter<"BillItem"> | string
+  sqft?: Prisma.FloatNullableWithAggregatesFilter<"BillItem"> | number | null
+  ratePerSqft?: Prisma.FloatNullableWithAggregatesFilter<"BillItem"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"BillItem"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"BillItem"> | Date | string
 }
@@ -316,6 +360,9 @@ export type BillItemCreateInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bill: Prisma.BillCreateNestedOneWithoutItemsInput
@@ -329,6 +376,9 @@ export type BillItemUncheckedCreateInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -338,6 +388,9 @@ export type BillItemUpdateInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bill?: Prisma.BillUpdateOneRequiredWithoutItemsNestedInput
@@ -351,6 +404,9 @@ export type BillItemUncheckedUpdateInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -362,6 +418,9 @@ export type BillItemCreateManyInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -371,6 +430,9 @@ export type BillItemUpdateManyMutationInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -382,6 +444,9 @@ export type BillItemUncheckedUpdateManyInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -403,6 +468,9 @@ export type BillItemCountOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  calculationType?: Prisma.SortOrder
+  sqft?: Prisma.SortOrder
+  ratePerSqft?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -411,6 +479,8 @@ export type BillItemAvgOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  sqft?: Prisma.SortOrder
+  ratePerSqft?: Prisma.SortOrder
 }
 
 export type BillItemMaxOrderByAggregateInput = {
@@ -420,6 +490,9 @@ export type BillItemMaxOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  calculationType?: Prisma.SortOrder
+  sqft?: Prisma.SortOrder
+  ratePerSqft?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -431,6 +504,9 @@ export type BillItemMinOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  calculationType?: Prisma.SortOrder
+  sqft?: Prisma.SortOrder
+  ratePerSqft?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -439,6 +515,8 @@ export type BillItemSumOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   total?: Prisma.SortOrder
+  sqft?: Prisma.SortOrder
+  ratePerSqft?: Prisma.SortOrder
 }
 
 export type BillItemCreateNestedManyWithoutProductInput = {
@@ -530,6 +608,9 @@ export type BillItemCreateWithoutProductInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bill: Prisma.BillCreateNestedOneWithoutItemsInput
@@ -541,6 +622,9 @@ export type BillItemUncheckedCreateWithoutProductInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -581,6 +665,9 @@ export type BillItemScalarWhereInput = {
   quantity?: Prisma.FloatFilter<"BillItem"> | number
   price?: Prisma.FloatFilter<"BillItem"> | number
   total?: Prisma.FloatFilter<"BillItem"> | number
+  calculationType?: Prisma.StringFilter<"BillItem"> | string
+  sqft?: Prisma.FloatNullableFilter<"BillItem"> | number | null
+  ratePerSqft?: Prisma.FloatNullableFilter<"BillItem"> | number | null
   createdAt?: Prisma.DateTimeFilter<"BillItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BillItem"> | Date | string
 }
@@ -590,6 +677,9 @@ export type BillItemCreateWithoutBillInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   product: Prisma.ProductCreateNestedOneWithoutBillItemsInput
@@ -601,6 +691,9 @@ export type BillItemUncheckedCreateWithoutBillInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -637,6 +730,9 @@ export type BillItemCreateManyProductInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -646,6 +742,9 @@ export type BillItemUpdateWithoutProductInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bill?: Prisma.BillUpdateOneRequiredWithoutItemsNestedInput
@@ -657,6 +756,9 @@ export type BillItemUncheckedUpdateWithoutProductInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -667,6 +769,9 @@ export type BillItemUncheckedUpdateManyWithoutProductInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -677,6 +782,9 @@ export type BillItemCreateManyBillInput = {
   quantity: number
   price: number
   total: number
+  calculationType?: string
+  sqft?: number | null
+  ratePerSqft?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -686,6 +794,9 @@ export type BillItemUpdateWithoutBillInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   product?: Prisma.ProductUpdateOneRequiredWithoutBillItemsNestedInput
@@ -697,6 +808,9 @@ export type BillItemUncheckedUpdateWithoutBillInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -707,6 +821,9 @@ export type BillItemUncheckedUpdateManyWithoutBillInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   total?: Prisma.FloatFieldUpdateOperationsInput | number
+  calculationType?: Prisma.StringFieldUpdateOperationsInput | string
+  sqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ratePerSqft?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -720,6 +837,9 @@ export type BillItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   quantity?: boolean
   price?: boolean
   total?: boolean
+  calculationType?: boolean
+  sqft?: boolean
+  ratePerSqft?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   bill?: boolean | Prisma.BillDefaultArgs<ExtArgs>
@@ -733,6 +853,9 @@ export type BillItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   quantity?: boolean
   price?: boolean
   total?: boolean
+  calculationType?: boolean
+  sqft?: boolean
+  ratePerSqft?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   bill?: boolean | Prisma.BillDefaultArgs<ExtArgs>
@@ -746,6 +869,9 @@ export type BillItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   quantity?: boolean
   price?: boolean
   total?: boolean
+  calculationType?: boolean
+  sqft?: boolean
+  ratePerSqft?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   bill?: boolean | Prisma.BillDefaultArgs<ExtArgs>
@@ -759,11 +885,14 @@ export type BillItemSelectScalar = {
   quantity?: boolean
   price?: boolean
   total?: boolean
+  calculationType?: boolean
+  sqft?: boolean
+  ratePerSqft?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BillItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "billId" | "productId" | "quantity" | "price" | "total" | "createdAt" | "updatedAt", ExtArgs["result"]["billItem"]>
+export type BillItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "billId" | "productId" | "quantity" | "price" | "total" | "calculationType" | "sqft" | "ratePerSqft" | "createdAt" | "updatedAt", ExtArgs["result"]["billItem"]>
 export type BillItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bill?: boolean | Prisma.BillDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
@@ -790,6 +919,9 @@ export type $BillItemPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     quantity: number
     price: number
     total: number
+    calculationType: string
+    sqft: number | null
+    ratePerSqft: number | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["billItem"]>
@@ -1223,6 +1355,9 @@ export interface BillItemFieldRefs {
   readonly quantity: Prisma.FieldRef<"BillItem", 'Float'>
   readonly price: Prisma.FieldRef<"BillItem", 'Float'>
   readonly total: Prisma.FieldRef<"BillItem", 'Float'>
+  readonly calculationType: Prisma.FieldRef<"BillItem", 'String'>
+  readonly sqft: Prisma.FieldRef<"BillItem", 'Float'>
+  readonly ratePerSqft: Prisma.FieldRef<"BillItem", 'Float'>
   readonly createdAt: Prisma.FieldRef<"BillItem", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"BillItem", 'DateTime'>
 }

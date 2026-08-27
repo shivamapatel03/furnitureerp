@@ -51,9 +51,16 @@ export default async function PrintBillPage(props: { params: Promise<{ id: strin
             {/* Info Row */}
             <div className="flex flex-row justify-between items-start mb-10">
               <div className="w-1/2">
-                <p className="text-xs font-bold text-gray-500 mb-2">TO:</p>
+                <p className="text-xs font-bold text-gray-500 mb-2">BILLED TO:</p>
                 <p className="text-lg font-bold text-gray-900 uppercase">{bill.customer.name}</p>
                 <p className="text-sm text-gray-600 mt-1">Mobile: {bill.customer.mobile}</p>
+                {bill.category && (
+                  <div className="mt-2.5">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 text-red-700 text-xs font-bold rounded-md border border-red-100">
+                      🏢 Project / Usage: {bill.category}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="w-1/2 text-right">
                 <h2 className="text-4xl font-light tracking-widest text-gray-800 mb-4 uppercase">Invoice</h2>
@@ -71,20 +78,44 @@ export default async function PrintBillPage(props: { params: Promise<{ id: strin
                 <thead>
                   <tr className="bg-red-600 text-white font-bold text-xs uppercase tracking-wider">
                     <th className="py-3 px-4 text-left">Item Description</th>
-                    <th className="py-3 px-4 text-center">Price</th>
-                    <th className="py-3 px-4 text-center">Qty</th>
+                    <th className="py-3 px-4 text-center">Rate</th>
+                    <th className="py-3 px-4 text-center">Quantity / Area</th>
                     <th className="py-3 px-4 text-right">Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {bill.items.map((item, index) => (
-                    <tr key={item.id} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                      <td className="py-4 px-4 text-gray-900 font-medium border-b border-gray-100">{item.product.name}</td>
-                      <td className="py-4 px-4 text-center text-gray-600 border-b border-gray-100">₹{item.price.toLocaleString()}</td>
-                      <td className="py-4 px-4 text-center text-gray-600 border-b border-gray-100">{item.quantity} {item.product.unit}</td>
-                      <td className="py-4 px-4 text-right text-gray-900 font-bold border-b border-gray-100">₹{item.total.toLocaleString()}</td>
-                    </tr>
-                  ))}
+                  {bill.items.map((item, index) => {
+                    const isSqft = item.calculationType === "SQFT" || Boolean(item.sqft);
+                    return (
+                      <tr key={item.id} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                        <td className="py-3.5 px-4 text-gray-900 font-medium border-b border-gray-100">
+                          <p className="font-bold text-gray-900">{item.product.name}</p>
+                          {isSqft && (
+                            <p className="text-[11px] font-semibold text-emerald-700 mt-0.5">
+                              📐 Custom Sqft calculation ({item.sqft} sqft @ ₹{item.ratePerSqft || item.price}/sqft)
+                            </p>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-4 text-center text-gray-600 border-b border-gray-100">
+                          {isSqft ? (
+                            <span className="font-medium">₹{(item.ratePerSqft || item.price).toLocaleString()} <span className="text-[10px] text-gray-400">/sqft</span></span>
+                          ) : (
+                            <span>₹{item.price.toLocaleString()}</span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-4 text-center text-gray-600 border-b border-gray-100 font-medium">
+                          {isSqft ? (
+                            <span>{item.sqft} sqft {item.quantity > 1 ? `(×${item.quantity})` : ''}</span>
+                          ) : (
+                            <span>{item.quantity} {item.product.unit}</span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-4 text-right text-gray-900 font-bold border-b border-gray-100">
+                          ₹{item.total.toLocaleString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

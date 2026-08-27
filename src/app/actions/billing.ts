@@ -9,11 +9,15 @@ const billItemSchema = z.object({
   quantity: z.number().positive(),
   price: z.number().positive(),
   total: z.number().positive(),
+  calculationType: z.string().optional(),
+  sqft: z.number().optional().nullable(),
+  ratePerSqft: z.number().optional().nullable(),
 });
 
 const createBillSchema = z.object({
   customerName: z.string().min(1, "Customer name is required"),
   customerMobile: z.string().min(10, "Valid mobile number is required"),
+  category: z.string().optional().nullable(),
   items: z.array(billItemSchema).min(1, "At least one product is required"),
   subtotal: z.number().min(0),
   discount: z.number().min(0),
@@ -67,6 +71,7 @@ export async function createBill(data: z.infer<typeof createBillSchema>) {
         data: {
           billNumber,
           customerId: customer.id,
+          category: validatedData.category || "House",
           subtotal: validatedData.subtotal,
           discount: validatedData.discount,
           tax: validatedData.tax,
@@ -78,7 +83,10 @@ export async function createBill(data: z.infer<typeof createBillSchema>) {
               productId: item.productId,
               quantity: item.quantity,
               price: item.price,
-              total: item.total
+              total: item.total,
+              calculationType: item.calculationType || "UNIT",
+              sqft: item.sqft ?? null,
+              ratePerSqft: item.ratePerSqft ?? null,
             }))
           }
         }
@@ -137,6 +145,7 @@ export async function getBills(query?: string) {
     ? {
         OR: [
           { billNumber: { contains: query, mode: 'insensitive' as const } },
+          { category: { contains: query, mode: 'insensitive' as const } },
           { customer: { name: { contains: query, mode: 'insensitive' as const } } },
           { customer: { mobile: { contains: query, mode: 'insensitive' as const } } },
         ],

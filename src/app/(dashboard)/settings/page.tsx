@@ -1,5 +1,5 @@
 import { getSettings, saveSettings } from "@/app/actions/settings";
-import { Building2, Phone, Mail, MapPin, KeyRound } from "lucide-react";
+import { Building2, Phone, Mail, MapPin, KeyRound, Ruler } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 
@@ -88,6 +88,29 @@ export default async function SettingsPage() {
                 placeholder="info@example.com" 
               />
             </div>
+          </div>
+
+          {/* Square Feet Rate Setting */}
+          <div className="space-y-1.5 pt-2 border-t border-gray-100 dark:border-slate-800">
+            <label htmlFor="defaultSqftRate" className="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-slate-300">
+              <Ruler size={14} className="text-primary" /> Default Square Feet Rate (₹ / sqft)
+            </label>
+            <div className="relative">
+              <span className="absolute left-3.5 top-2.5 text-gray-400 font-bold text-sm">₹</span>
+              <input 
+                type="number" 
+                id="defaultSqftRate" 
+                name="defaultSqftRate" 
+                min="0"
+                step="any"
+                defaultValue={settings.defaultSqftRate || "850"}
+                className="w-full pl-8 pr-3.5 py-2.5 text-sm font-semibold border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                placeholder="e.g. 850" 
+              />
+            </div>
+            <p className="text-[11px] text-gray-400 dark:text-slate-500">
+              Standard base rate used automatically when calculating custom furniture by square feet (sqft) in the billing section.
+            </p>
           </div>
 
           <div className="space-y-1.5 pt-2 border-t border-gray-100 dark:border-slate-800">

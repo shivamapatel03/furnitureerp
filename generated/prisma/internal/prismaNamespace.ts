@@ -1516,6 +1516,7 @@ export const BillScalarFieldEnum = {
   id: 'id',
   billNumber: 'billNumber',
   customerId: 'customerId',
+  category: 'category',
   subtotal: 'subtotal',
   discount: 'discount',
   tax: 'tax',
@@ -1537,6 +1538,9 @@ export const BillItemScalarFieldEnum = {
   quantity: 'quantity',
   price: 'price',
   total: 'total',
+  calculationType: 'calculationType',
+  sqft: 'sqft',
+  ratePerSqft: 'ratePerSqft',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

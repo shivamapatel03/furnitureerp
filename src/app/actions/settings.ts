@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   email: "",
   geminiApiKey: "",
   secretAccessCode: "2026",
+  defaultSqftRate: "850",
 };
 
 export async function getSettings(): Promise<Record<string, string>> {
@@ -27,7 +28,7 @@ export async function getSettings(): Promise<Record<string, string>> {
 }
 
 export async function saveSettings(formData: FormData) {
-  const keys = ["companyName", "address", "phone", "email", "geminiApiKey", "secretAccessCode"];
+  const keys = ["companyName", "address", "phone", "email", "geminiApiKey", "secretAccessCode", "defaultSqftRate"];
   for (const key of keys) {
     const value = (formData.get(key) as string) ?? "";
     await prisma.setting.upsert({

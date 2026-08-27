@@ -86,6 +86,7 @@ model Bill {
   id            String     @id @default(cuid())
   billNumber    String     @unique
   customerId    String
+  category      String?    @default("House")
   subtotal      Float      @default(0)
   discount      Float      @default(0)
   tax           Float      @default(0)
@@ -101,16 +102,19 @@ model Bill {
 }
 
 model BillItem {
-  id        String   @id @default(cuid())
-  billId    String
-  productId String
-  quantity  Float
-  price     Float
-  total     Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  bill      Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id])
+  id              String   @id @default(cuid())
+  billId          String
+  productId       String
+  quantity        Float
+  price           Float
+  total           Float
+  calculationType String   @default("UNIT")
+  sqft            Float?
+  ratePerSqft     Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  bill            Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
+  product         Product  @relation(fields: [productId], references: [id])
 }
 
 model Payment {

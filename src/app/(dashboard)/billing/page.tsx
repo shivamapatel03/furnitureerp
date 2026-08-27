@@ -57,7 +57,14 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
 
                 <div className="flex items-center justify-between text-sm">
                   <div>
-                    <p className="font-semibold text-gray-800 dark:text-slate-200">{bill.customer.name}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold text-gray-800 dark:text-slate-200">{bill.customer.name}</p>
+                      {bill.category && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700">
+                          {bill.category}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-gray-400 dark:text-slate-500">{bill.customer.mobile}</p>
                   </div>
                   <div className="text-right">
@@ -91,7 +98,7 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
               <tr className="bg-gray-50 dark:bg-slate-800/60 text-gray-500 dark:text-slate-400 text-xs uppercase font-semibold tracking-wider">
                 <th className="px-6 py-3.5">Bill No.</th>
                 <th className="px-6 py-3.5">Date</th>
-                <th className="px-6 py-3.5">Customer</th>
+                <th className="px-6 py-3.5">Customer / Category</th>
                 <th className="px-6 py-3.5 text-right">Amount</th>
                 <th className="px-6 py-3.5 text-center">Status</th>
                 <th className="px-6 py-3.5 text-right">Actions</th>
@@ -104,7 +111,14 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
                     <td className="px-6 py-4 font-bold text-gray-900 dark:text-slate-100">{bill.billNumber}</td>
                     <td className="px-6 py-4 text-gray-500 dark:text-slate-400 text-xs">{format(new Date(bill.date), 'dd MMM yyyy')}</td>
                     <td className="px-6 py-4">
-                      <p className="font-semibold text-gray-800 dark:text-slate-200">{bill.customer.name}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-gray-800 dark:text-slate-200">{bill.customer.name}</p>
+                        {bill.category && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700">
+                            {bill.category}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-gray-400 dark:text-slate-500">{bill.customer.mobile}</p>
                     </td>
                     <td className="px-6 py-4 font-extrabold text-right text-gray-900 dark:text-slate-100">₹{bill.grandTotal.toLocaleString()}</td>
