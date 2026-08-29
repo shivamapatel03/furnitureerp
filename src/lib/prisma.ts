@@ -10,7 +10,10 @@ function getPool() {
       connectionString: process.env.DATABASE_URL,
       max: 10,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 10000,
+      connectionTimeoutMillis: 20000,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     })
   }
   return globalForPrisma.pool

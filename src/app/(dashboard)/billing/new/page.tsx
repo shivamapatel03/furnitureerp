@@ -125,9 +125,9 @@ export default function NewBillPage() {
               }
               const sq = updated.sqft || 0;
               const rate = updated.ratePerSqft || 0;
-              const qty = updated.quantity || 1;
+              updated.quantity = 1;
               updated.price = rate;
-              updated.total = qty * sq * rate;
+              updated.total = sq * rate;
             }
           }
         } else if (field === "calculationType") {
@@ -136,9 +136,9 @@ export default function NewBillPage() {
           if (newType === "SQFT") {
             updated.sqft = updated.sqft || 10;
             updated.ratePerSqft = updated.ratePerSqft || defaultSqftRate;
-            updated.quantity = updated.quantity || 1;
+            updated.quantity = 1;
             updated.price = updated.ratePerSqft;
-            updated.total = updated.quantity * updated.sqft * updated.ratePerSqft;
+            updated.total = (updated.sqft || 10) * (updated.ratePerSqft || defaultSqftRate);
           } else {
             const product = products.find(p => p.id === updated.productId);
             updated.price = product ? product.sellingPrice : (updated.price || 0);
@@ -149,20 +149,15 @@ export default function NewBillPage() {
             const qty = field === "quantity" ? value : updated.quantity;
             const prc = field === "price" ? value : updated.price;
             updated.total = (qty || 0) * (prc || 0);
-          } else {
-            const qty = field === "quantity" ? value : updated.quantity;
-            const sq = updated.sqft || 0;
-            const rate = updated.ratePerSqft || 0;
-            updated.total = (qty || 0) * sq * rate;
           }
         } else if (field === "sqft" || field === "ratePerSqft") {
           const sq = field === "sqft" ? value : (updated.sqft || 0);
           const rate = field === "ratePerSqft" ? value : (updated.ratePerSqft || 0);
-          const qty = updated.quantity || 1;
+          updated.quantity = 1;
           updated.sqft = sq;
           updated.ratePerSqft = rate;
           updated.price = rate;
-          updated.total = (qty || 0) * (sq || 0) * (rate || 0);
+          updated.total = (sq || 0) * (rate || 0);
         } else if (field === "lengthFt" || field === "heightFt") {
           const len = field === "lengthFt" ? value : (updated.lengthFt || 0);
           const ht = field === "heightFt" ? value : (updated.heightFt || 0);
@@ -170,9 +165,9 @@ export default function NewBillPage() {
             const calculatedSqft = Math.round(len * ht * 100) / 100;
             updated.sqft = calculatedSqft;
             const rate = updated.ratePerSqft || defaultSqftRate;
-            const qty = updated.quantity || 1;
+            updated.quantity = 1;
             updated.price = rate;
-            updated.total = qty * calculatedSqft * rate;
+            updated.total = calculatedSqft * rate;
           }
         }
         
@@ -469,7 +464,7 @@ export default function NewBillPage() {
                     {/* Form Controls Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
                       {/* Product Selection */}
-                      <div className={isSqft ? "md:col-span-4" : "md:col-span-5"}>
+                      <div className="md:col-span-5">
                         <label className="block text-[11px] font-semibold text-gray-600 dark:text-slate-300 mb-1">
                           Product / Item Name *
                         </label>
@@ -528,23 +523,6 @@ export default function NewBillPage() {
                                 className="w-full pl-6 pr-2.5 py-2 border border-emerald-300 dark:border-emerald-700/70 rounded-lg text-sm font-bold bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 outline-none"
                               />
                             </div>
-                          </div>
-
-                          {/* Quantity (multiplier if multiple units with this sqft) */}
-                          <div className="md:col-span-1">
-                            <label className="block text-[11px] font-semibold text-gray-600 dark:text-slate-400 mb-1">
-                              Qty
-                            </label>
-                            <input
-                              type="number"
-                              required
-                              min="1"
-                              step="1"
-                              value={item.quantity || 1}
-                              onChange={(e) => updateItem(item.id, "quantity", parseFloat(e.target.value) || 1)}
-                              placeholder="1"
-                              className="w-full px-2 py-2 border border-gray-300 dark:border-slate-700 rounded-lg text-sm bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-primary outline-none text-center"
-                            />
                           </div>
 
                           {/* Total */}

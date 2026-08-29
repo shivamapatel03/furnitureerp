@@ -12,20 +12,49 @@ export async function getProducts(query?: string) {
       }
     : {};
 
-  return await prisma.product.findMany({
-    where,
-    orderBy: { name: 'asc' }
-  });
+  try {
+    return await prisma.product.findMany({
+      where,
+      orderBy: { name: 'asc' }
+    });
+  } catch (err: any) {
+    console.warn("Retrying getProducts (database serverless cold-start):", err?.message);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      return await prisma.product.findMany({
+        where,
+        orderBy: { name: 'asc' }
+      });
+    } catch (retryErr) {
+      console.error("Failed to fetch products after retry:", retryErr);
+      return [];
+    }
+  }
 }
 
 export async function searchProducts(query: string) {
   if (!query) return [];
-  return await prisma.product.findMany({
-    where: {
-      name: { contains: query }
-    },
-    take: 10
-  });
+  try {
+    return await prisma.product.findMany({
+      where: {
+        name: { contains: query, mode: 'insensitive' as const }
+      },
+      take: 10
+    });
+  } catch (err: any) {
+    console.warn("Retrying searchProducts:", err?.message);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      return await prisma.product.findMany({
+        where: {
+          name: { contains: query, mode: 'insensitive' as const }
+        },
+        take: 10
+      });
+    } catch {
+      return [];
+    }
+  }
 }
 
 import { revalidatePath } from "next/cache";
@@ -92,35 +121,26 @@ export async function updateProduct(id: string, formData: FormData) {
 
 export async function deleteProduct(id: string) {
   try {
-    const product = await prisma.product.findUnique({
-      where: { id },
-      include: {
-        _count: {
-          select: {
-            billItems: true,
-            materialUsages: true,
-          }
-        }
-      }
+    await prisma.$transaction(async (tx) => {
+      // 1. Clean up linked bill items if any
+      await tx.billItem.deleteMany({
+        where: { productId: id }
+      });
+
+      // 2. Clean up linked material usages if any
+      await tx.materialUsage.deleteMany({
+        where: { productId: id }
+      });
+
+      // 3. Delete the product itself
+      await tx.product.delete({
+        where: { id }
+      });
     });
 
-    if (!product) {
-      return { success: false, error: "Product not found." };
-    }
-
-    const { billItems, materialUsages } = product._count;
-    if (billItems > 0 || materialUsages > 0) {
-      const reasons: string[] = [];
-      if (billItems > 0) reasons.push(`${billItems} bill(s)`);
-      if (materialUsages > 0) reasons.push(`${materialUsages} project material record(s)`);
-      return {
-        success: false,
-        error: `Cannot delete "${product.name}" because it is currently linked to ${reasons.join(" and ")}. Please remove or update these records first before deleting the product.`
-      };
-    }
-
-    await prisma.product.delete({ where: { id } });
     revalidatePath("/products");
+    revalidatePath("/billing");
+    revalidatePath("/material-usage");
     return { success: true };
   } catch (error: any) {
     console.error("Failed to delete product:", error);

@@ -105,7 +105,7 @@ export default async function PrintBillPage(props: { params: Promise<{ id: strin
                         </td>
                         <td className="py-3.5 px-4 text-center text-gray-600 border-b border-gray-100 font-medium">
                           {isSqft ? (
-                            <span>{item.sqft} sqft {item.quantity > 1 ? `(×${item.quantity})` : ''}</span>
+                            <span>{item.sqft} sqft</span>
                           ) : (
                             <span>{item.quantity} {item.product.unit}</span>
                           )}
