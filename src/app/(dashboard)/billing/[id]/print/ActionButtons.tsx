@@ -1,7 +1,9 @@
 "use client";
 
-import { Download, Printer, Edit, Loader2 } from "lucide-react";
-import { downloadInvoicePdf } from "@/lib/downloadPdf";
+import { Download, Edit, Loader2 } from "lucide-react";
+import { downloadBillPdf, downloadInvoicePdf } from "@/lib/downloadPdf";
+import { getBillById } from "@/app/actions/billing";
+import { getSettings } from "@/app/actions/settings";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -19,6 +21,18 @@ export default function ActionButtons({
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
+      if (billId) {
+        const [bill, settings] = await Promise.all([
+          getBillById(billId),
+          getSettings(),
+        ]);
+        if (bill) {
+          await downloadBillPdf(bill, settings);
+          return;
+        }
+      }
+
+      // Fallback
       const safeName = customerName ? customerName.trim().replace(/[/\\?%*:|"<>]/g, "_") : "";
       const filename = safeName ? `${safeName}_${billNumber}.pdf` : `Invoice_${billNumber}.pdf`;
       await downloadInvoicePdf("print-area", filename);
@@ -29,12 +43,6 @@ export default function ActionButtons({
       }
     } finally {
       setIsDownloading(false);
-    }
-  };
-
-  const handlePrint = () => {
-    if (typeof window !== "undefined") {
-      window.print();
     }
   };
 
@@ -55,16 +63,6 @@ export default function ActionButtons({
       <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={handlePrint}
-          className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-gray-900 dark:bg-slate-100 hover:bg-black text-white dark:text-slate-900 font-bold text-xs sm:text-sm rounded-xl active:scale-98 transition-all shadow-sm"
-          title="Print Invoice"
-        >
-          <Printer size={16} />
-          <span>Print</span>
-        </button>
-
-        <button
-          type="button"
           onClick={handleDownload}
           disabled={isDownloading}
           className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark active:scale-98 text-white disabled:opacity-70 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm"
@@ -72,12 +70,12 @@ export default function ActionButtons({
           {isDownloading ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              <span>Saving PDF...</span>
+              <span>Downloading...</span>
             </>
           ) : (
             <>
               <Download size={16} />
-              <span>Download PDF</span>
+              <span>Download Bill</span>
             </>
           )}
         </button>
