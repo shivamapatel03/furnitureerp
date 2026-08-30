@@ -1,7 +1,7 @@
 import { getBills } from "@/app/actions/billing";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Plus, FileText, IndianRupee } from "lucide-react";
+import { Plus, FileText, IndianRupee, Edit } from "lucide-react";
 import PrintActionButton from "./PrintActionButton";
 import DeleteBillButton from "./DeleteBillButton";
 import BillSearchInput from "./BillSearchInput";
@@ -19,21 +19,21 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-slate-100">Billing History</h1>
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400">Invoices & customer transactions</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-slate-100">Billing & Invoices</h1>
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400">Generate bills and track customer payments</p>
         </div>
         <Link 
           href="/billing/new" 
           className="bg-primary hover:bg-primary-dark active:scale-98 text-white px-4 py-2.5 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
         >
           <Plus size={18} />
-          Create New Bill
+          Create Bill
         </Link>
       </div>
 
       <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
         {/* Search Toolbar */}
-        <div className="p-3.5 sm:p-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-800/40 flex items-center justify-between">
+        <div className="p-3.5 sm:p-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-800/40">
           <Suspense fallback={<div className="h-10 w-full bg-gray-200 dark:bg-slate-800 animate-pulse rounded-lg" />}>
             <BillSearchInput />
           </Suspense>
@@ -74,6 +74,14 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
                 </div>
 
                 <div className="pt-2 flex justify-end items-center gap-2 border-t border-gray-50 dark:border-slate-800">
+                  <Link
+                    href={`/billing/${bill.id}/edit`}
+                    className="p-2 text-gray-600 dark:text-slate-400 hover:text-primary rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold"
+                    title="Edit Bill"
+                  >
+                    <Edit size={16} />
+                    <span>Edit</span>
+                  </Link>
                   <PrintActionButton billId={bill.id} />
                   <DeleteBillButton billId={bill.id} billNumber={bill.billNumber} />
                 </div>
@@ -133,6 +141,13 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <Link
+                          href={`/billing/${bill.id}/edit`}
+                          className="p-2 text-gray-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                          title="Edit Bill"
+                        >
+                          <Edit size={16} />
+                        </Link>
                         <PrintActionButton billId={bill.id} />
                         <DeleteBillButton billId={bill.id} billNumber={bill.billNumber} />
                       </div>
@@ -143,9 +158,9 @@ export default async function BillingPage(props: { searchParams: Promise<{ q?: s
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-gray-500 dark:text-slate-400">
                     <div className="flex flex-col items-center justify-center">
-                      <FileText className="w-12 h-12 text-gray-300 dark:text-slate-600 mb-3" />
-                      <p className="text-base font-bold text-gray-900 dark:text-slate-100">No bills found</p>
-                      <p className="text-xs text-gray-400 dark:text-slate-500 mt-1 mb-4">Create your first invoice to get started.</p>
+                      <IndianRupee className="w-12 h-12 text-gray-300 dark:text-slate-600 mb-3" />
+                      <p className="text-base font-bold text-gray-900 dark:text-slate-100">No bills generated yet</p>
+                      <p className="text-xs text-gray-400 dark:text-slate-500 mt-1 mb-4">Start creating bills for your customers.</p>
                       <Link href="/billing/new" className="text-primary font-semibold hover:underline text-sm">
                         Create New Bill →
                       </Link>

@@ -3,8 +3,9 @@
 import { useState, useTransition, useEffect } from "react";
 import { markAttendance, createEmployee, updateEmployee, deleteEmployee } from "@/app/actions/attendance";
 import { format } from "date-fns";
-import { Users, Calendar, IndianRupee, Plus, Edit2, Trash2, Check, X, UserCheck, Save, Printer } from "lucide-react";
+import { Users, Calendar, IndianRupee, Plus, Edit2, Trash2, Check, X, UserCheck, Save, Printer, Download, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { downloadInvoicePdf } from "@/lib/downloadPdf";
 
 type Employee = { id: string; name: string; position: string | null; mobile: string; dailySalary: number; status: string };
 type AttendanceRecord = { employeeId: string; status: string; date: string };
@@ -93,6 +94,32 @@ export default function AttendanceManager({
     });
   };
 
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownloadAttendance = async () => {
+    setIsDownloading(true);
+    try {
+      await downloadInvoicePdf("daily-attendance-section", `Staff_Attendance_${selectedDate}.pdf`);
+    } catch (e) {
+      console.error("Attendance download error:", e);
+      window.print();
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleDownloadSalary = async () => {
+    setIsDownloading(true);
+    try {
+      await downloadInvoicePdf("salary-summary-section", `Salary_Summary_${format(new Date(), 'MMM_yyyy')}.pdf`);
+    } catch (e) {
+      console.error("Salary download error:", e);
+      window.print();
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   const handlePrint = () => {
     window.print();
   };
@@ -169,7 +196,7 @@ export default function AttendanceManager({
 
       {/* ── DAILY ATTENDANCE TAB ── */}
       {tab === "attendance" && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
+        <div id="daily-attendance-section" className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
           {/* Header toolbar */}
           <div className="p-3.5 sm:p-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-800/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
@@ -187,11 +214,23 @@ export default function AttendanceManager({
                 className="w-full sm:w-auto border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100" 
               />
               <button
-                onClick={handlePrint}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all"
-                title="Print / Export to PDF"
+                type="button"
+                onClick={handleDownloadAttendance}
+                disabled={isDownloading}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all disabled:opacity-60"
+                title="Download Attendance PDF"
               >
-                <Printer size={16} /> Print / PDF
+                {isDownloading ? (
+                  <>
+                    <Loader2 size={15} className="animate-spin" />
+                    <span>Saving PDF...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download size={15} />
+                    <span>Download PDF</span>
+                  </>
+                )}
               </button>
               <button
                 onClick={handleSave}
@@ -507,18 +546,30 @@ export default function AttendanceManager({
 
       {/* ── SALARY SUMMARY TAB ── */}
       {tab === "salary" && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
+        <div id="salary-summary-section" className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
           <div className="p-3.5 sm:p-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-800/40 flex justify-between items-center">
             <div>
               <h2 className="font-bold text-gray-900 dark:text-slate-100 text-sm sm:text-base">Salary Summary — {format(new Date(), 'MMMM yyyy')}</h2>
               <p className="text-xs text-gray-500 dark:text-slate-400">Calculated based on attendance days (30 days basis)</p>
             </div>
             <button
-              onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all print:hidden"
-              title="Print / Export to PDF"
+              type="button"
+              onClick={handleDownloadSalary}
+              disabled={isDownloading}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all disabled:opacity-60 print:hidden"
+              title="Download Salary Summary PDF"
             >
-              <Printer size={16} /> Print / PDF
+              {isDownloading ? (
+                <>
+                  <Loader2 size={15} className="animate-spin" />
+                  <span>Saving PDF...</span>
+                </>
+              ) : (
+                <>
+                  <Download size={15} />
+                  <span>Download PDF</span>
+                </>
+              )}
             </button>
           </div>
 

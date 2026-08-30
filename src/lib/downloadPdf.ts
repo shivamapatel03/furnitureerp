@@ -2,26 +2,33 @@ import { toJpeg } from "html-to-image";
 import jsPDF from "jspdf";
 
 /**
- * Modern, ultra-reliable PDF download utility.
- * Captures full-width desktop invoice at 2x retina resolution and scales
- * it to perfectly fill an A4 PDF page without narrow column distortion.
+ * High-reliability PDF download utility.
+ * Renders the invoice DOM into a high-res portrait A4 PDF and triggers direct download.
  */
 export async function downloadInvoicePdf(elementId: string, filename: string): Promise<boolean> {
   const element = document.getElementById(elementId);
   if (!element) {
     console.error(`Element #${elementId} not found`);
+    alert("Invoice element not found on page.");
     return false;
   }
 
   const cleanFilename = filename.endsWith(".pdf") ? filename : `${filename}.pdf`;
 
   try {
-    // 1. Generate high-resolution JPEG from DOM using native browser rasterization
+    // 1. Generate high-resolution JPEG from DOM without CORS font blocking
     const imgData = await toJpeg(element, {
       quality: 0.98,
       pixelRatio: 2,
       backgroundColor: "#ffffff",
       cacheBust: true,
+      filter: (node) => {
+        // Exclude print-hidden action buttons from the rasterized image
+        if (node instanceof HTMLElement && node.classList.contains("print:hidden")) {
+          return false;
+        }
+        return true;
+      }
     });
 
     // 2. Initialize jsPDF in portrait A4 (210mm x 297mm)
@@ -38,7 +45,7 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
     const maxWidth = pageWidth - margin * 2; // 194 mm
     const maxHeight = pageHeight - margin * 2; // 281 mm
 
-    // Calculate exact aspect ratio
+    // Calculate aspect ratio
     const img = new Image();
     img.src = imgData;
     await new Promise((resolve, reject) => {
@@ -60,49 +67,17 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
 
     pdf.addImage(imgData, "JPEG", xOffset, yOffset, renderWidth, renderHeight);
 
-    // 3. Create real binary PDF Blob
-    const pdfBlob = pdf.output("blob");
-    const blobUrl = URL.createObjectURL(pdfBlob);
-
-    // 4. Mobile file handling (iOS Safari / Android Chrome share sheet)
-    const pdfFile = new File([pdfBlob], cleanFilename, { type: "application/pdf" });
-    if (
-      typeof navigator !== "undefined" &&
-      navigator.canShare &&
-      navigator.canShare({ files: [pdfFile] })
-    ) {
-      try {
-        await navigator.share({
-          files: [pdfFile],
-          title: cleanFilename,
-        });
-        URL.revokeObjectURL(blobUrl);
-        return true;
-      } catch (shareErr: any) {
-        if (shareErr.name === "AbortError") {
-          URL.revokeObjectURL(blobUrl);
-          return true;
-        }
-      }
-    }
-
-    // 5. Direct Anchor download
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = cleanFilename;
-    a.style.display = "none";
-    document.body.appendChild(a);
-    a.click();
-
-    setTimeout(() => {
-      if (a.parentNode) a.parentNode.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
-    }, 4000);
+    // 3. Primary download method via jsPDF save (works across Chrome, Edge, Safari, Firefox, Android)
+    pdf.save(cleanFilename);
 
     return true;
-  } catch (error) {
-    console.error("PDF generation error:", error);
-    alert("Could not generate PDF. Please try again.");
+  } catch (error: any) {
+    console.error("PDF generation error, falling back to print dialog:", error);
+    // Fallback to native print to PDF
+    if (typeof window !== "undefined") {
+      window.print();
+      return true;
+    }
     return false;
   }
 }

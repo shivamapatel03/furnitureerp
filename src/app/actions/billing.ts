@@ -140,6 +140,150 @@ export async function createBill(data: z.infer<typeof createBillSchema>) {
   }
 }
 
+export async function updateBill(id: string, data: z.infer<typeof createBillSchema>) {
+  try {
+    const validatedData = createBillSchema.parse(data);
+
+    const existingBill = await prisma.bill.findUnique({
+      where: { id },
+      include: {
+        items: true,
+        payments: true,
+      }
+    });
+
+    if (!existingBill) {
+      return { success: false, error: "Bill not found." };
+    }
+
+    await prisma.$transaction(async (tx) => {
+      // 1. Restore previous product stock
+      for (const oldItem of existingBill.items) {
+        await tx.product.update({
+          where: { id: oldItem.productId },
+          data: {
+            stock: {
+              increment: oldItem.quantity
+            }
+          }
+        });
+      }
+
+      // 2. Adjust previous customer totalPurchased
+      await tx.customer.update({
+        where: { id: existingBill.customerId },
+        data: {
+          totalPurchased: {
+            decrement: existingBill.grandTotal
+          }
+        }
+      });
+
+      // 3. Find or link customer
+      let customer = await tx.customer.findUnique({
+        where: { mobile: validatedData.customerMobile }
+      });
+
+      if (!customer) {
+        customer = await tx.customer.create({
+          data: {
+            name: validatedData.customerName,
+            mobile: validatedData.customerMobile,
+          }
+        });
+      } else if (customer.name !== validatedData.customerName) {
+        customer = await tx.customer.update({
+          where: { id: customer.id },
+          data: { name: validatedData.customerName }
+        });
+      }
+
+      // 4. Delete old bill items
+      await tx.billItem.deleteMany({
+        where: { billId: id }
+      });
+
+      // 5. Update Bill details and create new items
+      await tx.bill.update({
+        where: { id },
+        data: {
+          customerId: customer.id,
+          category: validatedData.category || "House",
+          subtotal: validatedData.subtotal,
+          discount: validatedData.discount,
+          tax: validatedData.tax,
+          grandTotal: validatedData.grandTotal,
+          paymentStatus: validatedData.paymentStatus,
+          notes: validatedData.notes || null,
+          items: {
+            create: validatedData.items.map(item => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.price,
+              total: item.total,
+              calculationType: item.calculationType || "UNIT",
+              sqft: item.sqft ?? null,
+              ratePerSqft: item.ratePerSqft ?? null,
+            }))
+          }
+        }
+      });
+
+      // 6. Update payments
+      await tx.payment.deleteMany({
+        where: { billId: id }
+      });
+
+      if (validatedData.paidAmount > 0) {
+        await tx.payment.create({
+          data: {
+            billId: id,
+            amount: validatedData.paidAmount,
+            method: validatedData.paymentMethod,
+          }
+        });
+      }
+
+      // 7. Increment customer totalPurchased with new grandTotal
+      await tx.customer.update({
+        where: { id: customer.id },
+        data: {
+          totalPurchased: {
+            increment: validatedData.grandTotal
+          }
+        }
+      });
+
+      // 8. Deduct new product stock
+      for (const newItem of validatedData.items) {
+        await tx.product.update({
+          where: { id: newItem.productId },
+          data: {
+            stock: {
+              decrement: newItem.quantity
+            }
+          }
+        });
+      }
+    });
+
+    revalidatePath("/billing");
+    revalidatePath(`/billing/${id}/print`);
+    revalidatePath(`/billing-print/${id}`);
+    revalidatePath("/products");
+    revalidatePath("/customers");
+    revalidatePath("/");
+
+    return { success: true, billId: id };
+  } catch (error: any) {
+    console.error("Error updating bill:", error);
+    return {
+      success: false,
+      error: error.message || "Failed to update bill."
+    };
+  }
+}
+
 export async function getBills(query?: string) {
   const where = query
     ? {
