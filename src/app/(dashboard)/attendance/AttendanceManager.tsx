@@ -94,31 +94,56 @@ export default function AttendanceManager({
     });
   };
 
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadingType, setDownloadingType] = useState<"attendance" | "salary" | null>(null);
 
   const handleDownloadAttendance = async () => {
-    setIsDownloading(true);
+    if (downloadingType) return;
+    setDownloadingType("attendance");
     try {
-      const dateFormatted = format(new Date(selectedDate + "T00:00:00"), 'dd MMM yyyy');
-      await downloadAttendanceReportPdf(dateFormatted, employees, attendance);
+      const res = await fetch(`/api/pdf/attendance?date=${selectedDate}`);
+      if (!res.ok) throw new Error("Failed to download attendance");
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Staff_Attendance_${selectedDate}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     } catch (e) {
       console.error("Attendance download error:", e);
-      window.print();
+      window.location.href = `/api/pdf/attendance?date=${selectedDate}`;
     } finally {
-      setIsDownloading(false);
+      setTimeout(() => {
+        setDownloadingType(null);
+      }, 700);
     }
   };
 
   const handleDownloadSalary = async () => {
-    setIsDownloading(true);
+    if (downloadingType) return;
+    setDownloadingType("salary");
+    const currentMonth = format(new Date(), 'yyyy-MM');
     try {
-      const monthFormatted = format(new Date(), 'MMMM yyyy');
-      await downloadSalaryReportPdf(monthFormatted, initialSalary);
+      const res = await fetch(`/api/pdf/salary?month=${currentMonth}`);
+      if (!res.ok) throw new Error("Failed to download salary summary");
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Salary_Summary_${currentMonth}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     } catch (e) {
       console.error("Salary download error:", e);
-      window.print();
+      window.location.href = `/api/pdf/salary?month=${currentMonth}`;
     } finally {
-      setIsDownloading(false);
+      setTimeout(() => {
+        setDownloadingType(null);
+      }, 700);
     }
   };
 
@@ -215,15 +240,25 @@ export default function AttendanceManager({
                 onChange={e => router.push('?date=' + e.target.value)}
                 className="w-full sm:w-auto border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100" 
               />
-              <a
-                href={`/api/pdf/attendance?date=${selectedDate}`}
-                download
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all"
+              <button
+                type="button"
+                onClick={handleDownloadAttendance}
+                disabled={downloadingType === "attendance"}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all disabled:opacity-70"
                 title="Download Attendance PDF"
               >
-                <Download size={15} />
-                <span>Download PDF</span>
-              </a>
+                {downloadingType === "attendance" ? (
+                  <>
+                    <Loader2 size={15} className="animate-spin text-primary" />
+                    <span>Preparing PDF...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download size={15} />
+                    <span>Download PDF</span>
+                  </>
+                )}
+              </button>
               <button
                 onClick={handleSave}
                 disabled={isPending}
@@ -544,15 +579,25 @@ export default function AttendanceManager({
               <h2 className="font-bold text-gray-900 dark:text-slate-100 text-sm sm:text-base">Salary Summary — {format(new Date(), 'MMMM yyyy')}</h2>
               <p className="text-xs text-gray-500 dark:text-slate-400">Calculated based on attendance days (30 days basis)</p>
             </div>
-            <a
-              href={`/api/pdf/salary?month=${format(new Date(), 'yyyy-MM')}`}
-              download
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all print:hidden"
+            <button
+              type="button"
+              onClick={handleDownloadSalary}
+              disabled={downloadingType === "salary"}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all disabled:opacity-70 print:hidden"
               title="Download Salary Summary PDF"
             >
-              <Download size={15} />
-              <span>Download PDF</span>
-            </a>
+              {downloadingType === "salary" ? (
+                <>
+                  <Loader2 size={15} className="animate-spin text-primary" />
+                  <span>Preparing PDF...</span>
+                </>
+              ) : (
+                <>
+                  <Download size={15} />
+                  <span>Download PDF</span>
+                </>
+              )}
+            </button>
           </div>
 
           {/* Mobile Salary Cards */}

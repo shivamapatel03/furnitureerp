@@ -2,6 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import fs from "fs";
+import path from "path";
+
+function getLogoBase64(): string | null {
+  try {
+    const logoPath = path.join(process.cwd(), "src", "logo", "logo.png");
+    if (fs.existsSync(logoPath)) {
+      const buffer = fs.readFileSync(logoPath);
+      return `data:image/png;base64,${buffer.toString("base64")}`;
+    }
+  } catch (e) {
+    console.error("Could not load logo for Attendance PDF:", e);
+  }
+  return null;
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,18 +36,33 @@ export async function GET(request: NextRequest) {
 
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-    // Header
+    // Company Header Bar with Logo
     doc.setFillColor(45, 45, 45);
-    doc.rect(0, 0, 210, 28, "F");
+    doc.rect(0, 0, 210, 30, "F");
+
+    const logoBase64 = getLogoBase64();
+    let textStartX = 14;
+
+    if (logoBase64) {
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(12, 4, 22, 22, 2, 2, "F");
+      try {
+        doc.addImage(logoBase64, "PNG", 13, 5, 20, 20);
+        textStartX = 38;
+      } catch (err) {
+        console.error("Failed adding logo to Attendance PDF:", err);
+      }
+    }
 
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(16);
+    doc.setFontSize(15);
     doc.setFont("helvetica", "bold");
-    doc.text("BHURJALA FURNITURE", 14, 12);
+    doc.text("BHURJALA FURNITURE", textStartX, 13);
 
-    doc.setFontSize(10);
+    doc.setFontSize(9.5);
     doc.setFont("helvetica", "normal");
-    doc.text("DAILY STAFF ATTENDANCE REPORT", 14, 20);
+    doc.setTextColor(220, 220, 220);
+    doc.text("DAILY STAFF ATTENDANCE REPORT", textStartX, 21);
 
     const formattedDate = targetDate.toLocaleDateString("en-IN", {
       weekday: "long",
@@ -40,8 +70,8 @@ export async function GET(request: NextRequest) {
       month: "short",
       year: "numeric",
     });
-    doc.setFontSize(10);
-    doc.text(`Date: ${formattedDate}`, 196, 16, { align: "right" });
+    doc.setFontSize(9.5);
+    doc.text(`Date: ${formattedDate}`, 196, 17, { align: "right" });
 
     // Stats
     let presentCount = 0;
@@ -55,7 +85,7 @@ export async function GET(request: NextRequest) {
       else if (status === "ABSENT") absentCount++;
     });
 
-    const startY = 34;
+    const startY = 36;
     doc.setDrawColor(220, 220, 220);
 
     // Total Staff
@@ -113,13 +143,13 @@ export async function GET(request: NextRequest) {
         String(index + 1),
         emp.name,
         emp.position || "General Staff",
-        `₹${emp.dailySalary.toLocaleString()}/day`,
+        `Rs. ${emp.dailySalary.toLocaleString()}/day`,
         statusDisplay,
       ];
     });
 
     autoTable(doc, {
-      startY: 54,
+      startY: 56,
       head: [["#", "Staff Name", "Role / Position", "Daily Rate", "Attendance Status"]],
       body: tableData,
       theme: "striped",

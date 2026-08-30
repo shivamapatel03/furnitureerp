@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CheckCircle2, Download, X } from "lucide-react";
+import { CheckCircle2, Download, Loader2, X } from "lucide-react";
 
 export default function SuccessModal({ 
   billId,
@@ -13,6 +13,7 @@ export default function SuccessModal({
   customerName?: string | null; 
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     // Show modal on mount
@@ -21,7 +22,38 @@ export default function SuccessModal({
 
   if (!isOpen) return null;
 
-  const downloadUrl = billId ? `/api/pdf/bill/${billId}` : "#";
+  const handleDownload = async () => {
+    if (isDownloading || !billId) return;
+
+    setIsDownloading(true);
+    try {
+      const res = await fetch(`/api/pdf/bill/${billId}`);
+      if (!res.ok) throw new Error("Download failed");
+      const blob = await res.blob();
+      const contentDisposition = res.headers.get("content-disposition");
+      let filename = `Invoice_${billNumber}.pdf`;
+      if (contentDisposition && contentDisposition.includes("filename=")) {
+        const match = contentDisposition.match(/filename="?([^"]+)"?/);
+        if (match && match[1]) filename = match[1];
+      }
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error("Download error:", err);
+      window.location.href = `/api/pdf/bill/${billId}`;
+    } finally {
+      setTimeout(() => {
+        setIsDownloading(false);
+      }, 700);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:hidden bg-black/60 p-0 print:hidden backdrop-blur-xs animate-in fade-in duration-200">
@@ -45,14 +77,24 @@ export default function SuccessModal({
         </div>
 
         <div className="space-y-3 pb-2">
-          <a
-            href={downloadUrl}
-            download
-            className="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark active:scale-98 text-white px-5 py-3.5 rounded-lg font-bold text-base transition-all shadow-md"
+          <button
+            type="button"
+            onClick={handleDownload}
+            disabled={isDownloading}
+            className="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark active:scale-98 text-white disabled:opacity-75 px-5 py-3.5 rounded-lg font-bold text-base transition-all shadow-md"
           >
-            <Download size={20} />
-            <span>Download PDF Invoice</span>
-          </a>
+            {isDownloading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" />
+                <span>Preparing PDF...</span>
+              </>
+            ) : (
+              <>
+                <Download size={20} />
+                <span>Download PDF Invoice</span>
+              </>
+            )}
+          </button>
           
           <button
             onClick={() => setIsOpen(false)}

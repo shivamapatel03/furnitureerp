@@ -3,6 +3,21 @@ import prisma from "@/lib/prisma";
 import { getSettings } from "@/app/actions/settings";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import fs from "fs";
+import path from "path";
+
+function getLogoBase64(): string | null {
+  try {
+    const logoPath = path.join(process.cwd(), "src", "logo", "logo.png");
+    if (fs.existsSync(logoPath)) {
+      const buffer = fs.readFileSync(logoPath);
+      return `data:image/png;base64,${buffer.toString("base64")}`;
+    }
+  } catch (e) {
+    console.error("Could not load logo for PDF:", e);
+  }
+  return null;
+}
 
 export async function GET(
   request: NextRequest,
@@ -35,19 +50,34 @@ export async function GET(
     // Generate Vector PDF (Portrait A4: 210mm x 297mm)
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-    // 1. Dark Top Header Bar
+    // 1. Dark Top Header Bar with Logo & Branding
     doc.setFillColor(45, 45, 45);
     doc.rect(0, 0, 210, 32, "F");
 
+    const logoBase64 = getLogoBase64();
+    let textStartX = 14;
+
+    if (logoBase64) {
+      // White container badge for logo
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(12, 4.5, 23, 23, 2, 2, "F");
+      try {
+        doc.addImage(logoBase64, "PNG", 13.5, 6, 20, 20);
+        textStartX = 39;
+      } catch (err) {
+        console.error("Failed adding logo image to PDF:", err);
+      }
+    }
+
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(17);
+    doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("BHURJALA", 14, 14);
+    doc.text("BHURJALA", textStartX, 14);
 
     doc.setTextColor(239, 68, 68);
-    doc.setFontSize(10.5);
+    doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
-    doc.text("FURNITURE", 14, 22);
+    doc.text("FURNITURE", textStartX, 22);
 
     doc.setTextColor(220, 220, 220);
     doc.setFontSize(8.5);
@@ -152,7 +182,6 @@ export async function GET(
       ];
     });
 
-    // If no explicit items, provide summary line
     if (tableData.length === 0) {
       tableData.push([
         "1",
@@ -243,24 +272,16 @@ export async function GET(
       doc.text(bill.notes, 14, finalY + 12, { maxWidth: 95 });
     }
 
-    // 5. Signature Section (Left: Customer, Right: Owner Physical Signature)
+    // 5. Signature Section (Owner / Authorized Signatory Only)
     const signatureY = Math.max(finalY + 48, 240);
 
-    // Left: Customer Signature Line
-    doc.setDrawColor(160, 160, 160);
-    doc.line(14, signatureY + 18, 65, signatureY + 18);
-    doc.setFontSize(8);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(60, 60, 60);
-    doc.text("Customer Signature", 14, signatureY + 23);
-
-    // Right: Owner / Authorized Signatory Box
     doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(20, 20, 20);
     doc.text("For, BHURJALA FURNITURE", 196, signatureY + 5, { align: "right" });
 
-    doc.line(145, signatureY + 18, 196, signatureY + 18);
+    doc.setDrawColor(160, 160, 160);
+    doc.line(140, signatureY + 18, 196, signatureY + 18);
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100, 100, 100);
