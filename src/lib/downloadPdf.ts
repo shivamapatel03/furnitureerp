@@ -93,7 +93,7 @@ export async function savePdfDoc(pdf: jsPDF, filename: string): Promise<boolean>
  * Direct 1-click download on Desktop and Mobile without opening new tabs.
  */
 export async function downloadBillPdf(bill: any, settings?: any): Promise<boolean> {
-  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
 
   // 1. Dark Top Header Bar
   doc.setFillColor(45, 45, 45);
@@ -354,7 +354,7 @@ export async function downloadAttendanceReportPdf(
   employees: Array<{ id: string; name: string; position: string | null; dailySalary: number }>,
   attendance: Array<{ employeeId: string; status: string }>
 ): Promise<boolean> {
-  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
 
   // Company Header
   doc.setFillColor(45, 45, 45);
@@ -506,7 +506,7 @@ export async function downloadSalaryReportPdf(
     netSalary: number;
   }>
 ): Promise<boolean> {
-  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
 
   // Company Header
   doc.setFillColor(45, 45, 45);
@@ -673,11 +673,11 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
     const html2pdf = html2pdfModule.default || html2pdfModule;
 
     const opt = {
-      margin: 5,
+      margin: 4,
       filename: cleanFilename,
-      image: { type: "jpeg" as const, quality: 0.98 },
+      image: { type: "jpeg" as const, quality: 0.85 },
       html2canvas: {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
@@ -685,7 +685,7 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
         scrollY: 0,
         logging: false,
       },
-      jsPDF: { unit: "mm" as const, format: "a4", orientation: "portrait" as const },
+      jsPDF: { unit: "mm" as const, format: "a4", orientation: "portrait" as const, compressPDF: true },
     };
 
     const pdfBlob: Blob = await html2pdf().set(opt).from(element).outputPdf("blob");

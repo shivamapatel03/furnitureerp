@@ -48,7 +48,7 @@ export async function GET(
     }
 
     // Generate Vector PDF (Portrait A4: 210mm x 297mm)
-    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
 
     // 1. Dark Top Header Bar with Logo & Branding
     doc.setFillColor(45, 45, 45);

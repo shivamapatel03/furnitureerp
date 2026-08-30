@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
 
     // Company Header Bar with Logo
     doc.setFillColor(45, 45, 45);
