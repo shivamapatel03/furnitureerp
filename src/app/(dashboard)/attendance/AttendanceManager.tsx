@@ -215,25 +215,15 @@ export default function AttendanceManager({
                 onChange={e => router.push('?date=' + e.target.value)}
                 className="w-full sm:w-auto border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100" 
               />
-              <button
-                type="button"
-                onClick={handleDownloadAttendance}
-                disabled={isDownloading}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all disabled:opacity-60"
+              <a
+                href={`/api/pdf/attendance?date=${selectedDate}`}
+                download
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all"
                 title="Download Attendance PDF"
               >
-                {isDownloading ? (
-                  <>
-                    <Loader2 size={15} className="animate-spin" />
-                    <span>Saving PDF...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download size={15} />
-                    <span>Download PDF</span>
-                  </>
-                )}
-              </button>
+                <Download size={15} />
+                <span>Download PDF</span>
+              </a>
               <button
                 onClick={handleSave}
                 disabled={isPending}
@@ -554,25 +544,15 @@ export default function AttendanceManager({
               <h2 className="font-bold text-gray-900 dark:text-slate-100 text-sm sm:text-base">Salary Summary — {format(new Date(), 'MMMM yyyy')}</h2>
               <p className="text-xs text-gray-500 dark:text-slate-400">Calculated based on attendance days (30 days basis)</p>
             </div>
-            <button
-              type="button"
-              onClick={handleDownloadSalary}
-              disabled={isDownloading}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all disabled:opacity-60 print:hidden"
+            <a
+              href={`/api/pdf/salary?month=${format(new Date(), 'yyyy-MM')}`}
+              download
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95 transition-all print:hidden"
               title="Download Salary Summary PDF"
             >
-              {isDownloading ? (
-                <>
-                  <Loader2 size={15} className="animate-spin" />
-                  <span>Saving PDF...</span>
-                </>
-              ) : (
-                <>
-                  <Download size={15} />
-                  <span>Download PDF</span>
-                </>
-              )}
-            </button>
+              <Download size={15} />
+              <span>Download PDF</span>
+            </a>
           </div>
 
           {/* Mobile Salary Cards */}

@@ -19,7 +19,7 @@ export default async function PrintBillPage(props: { params: Promise<{ id: strin
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-slate-950 p-2.5 sm:p-8 pb-28 sm:pb-8 flex flex-col items-center relative w-full transition-colors">
-      <SuccessModal billNumber={bill.billNumber} customerName={bill.customer.name} />
+      <SuccessModal billId={bill.id} billNumber={bill.billNumber} customerName={bill.customer.name} />
       <ActionButtons billId={bill.id} billNumber={bill.billNumber} customerName={bill.customer.name} />
 
       <div className="w-full max-w-full overflow-x-auto flex justify-center">

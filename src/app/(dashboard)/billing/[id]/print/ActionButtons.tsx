@@ -1,10 +1,6 @@
 "use client";
 
-import { Download, Edit, Loader2 } from "lucide-react";
-import { downloadBillPdf, downloadInvoicePdf } from "@/lib/downloadPdf";
-import { getBillById } from "@/app/actions/billing";
-import { getSettings } from "@/app/actions/settings";
-import { useState } from "react";
+import { Download, Edit } from "lucide-react";
 import Link from "next/link";
 
 export default function ActionButtons({ 
@@ -16,35 +12,7 @@ export default function ActionButtons({
   billNumber: string; 
   customerName?: string | null; 
 }) {
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  const handleDownload = async () => {
-    setIsDownloading(true);
-    try {
-      if (billId) {
-        const [bill, settings] = await Promise.all([
-          getBillById(billId),
-          getSettings(),
-        ]);
-        if (bill) {
-          await downloadBillPdf(bill, settings);
-          return;
-        }
-      }
-
-      // Fallback
-      const safeName = customerName ? customerName.trim().replace(/[/\\?%*:|"<>]/g, "_") : "";
-      const filename = safeName ? `${safeName}_${billNumber}.pdf` : `Invoice_${billNumber}.pdf`;
-      await downloadInvoicePdf("print-area", filename);
-    } catch (err) {
-      console.error("PDF download trigger error:", err);
-      if (typeof window !== "undefined") {
-        window.print();
-      }
-    } finally {
-      setIsDownloading(false);
-    }
-  };
+  const downloadUrl = billId ? `/api/pdf/bill/${billId}` : "#";
 
   return (
     <div className="w-full max-w-3xl flex flex-wrap items-center justify-between gap-2.5 mb-4 print:hidden">
@@ -61,24 +29,14 @@ export default function ActionButtons({
       )}
 
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={handleDownload}
-          disabled={isDownloading}
-          className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark active:scale-98 text-white disabled:opacity-70 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm"
+        <a
+          href={downloadUrl}
+          download
+          className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark active:scale-98 text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm"
         >
-          {isDownloading ? (
-            <>
-              <Loader2 size={16} className="animate-spin" />
-              <span>Downloading...</span>
-            </>
-          ) : (
-            <>
-              <Download size={16} />
-              <span>Download Bill</span>
-            </>
-          )}
-        </button>
+          <Download size={16} />
+          <span>Download Bill</span>
+        </a>
       </div>
     </div>
   );
