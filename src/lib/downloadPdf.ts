@@ -1,21 +1,35 @@
 import { toJpeg } from "html-to-image";
 import jsPDF from "jspdf";
+import { Capacitor } from "@capacitor/core";
 
 /**
- * High-reliability PDF download utility.
- * Renders the invoice DOM into a high-res portrait A4 PDF and triggers direct download.
+ * Universal High-reliability PDF download utility.
+ * Supports:
+ * 1. Native Android App (Capacitor Filesystem + Native Share Sheet to Save/WhatsApp/Drive)
+ * 2. Mobile Browser (Web Share API)
+ * 3. Desktop Browsers (jsPDF file save + download link)
  */
 export async function downloadInvoicePdf(elementId: string, filename: string): Promise<boolean> {
   const element = document.getElementById(elementId);
   if (!element) {
     console.error(`Element #${elementId} not found`);
-    alert("Invoice element not found on page.");
+    alert("Element not found for download.");
     return false;
   }
 
   const cleanFilename = filename.endsWith(".pdf") ? filename : `${filename}.pdf`;
 
+  // Detect and temporarily suspend dark mode so the captured PDF is pure, crisp light mode
+  const root = document.documentElement;
+  const wasDark = root.classList.contains("dark");
+
   try {
+    if (wasDark) {
+      root.classList.remove("dark");
+      // Allow browsers a tiny tick to recalculate styles
+      await new Promise(resolve => setTimeout(resolve, 80));
+    }
+
     // 1. Generate high-resolution JPEG from DOM without CORS font blocking
     const imgData = await toJpeg(element, {
       quality: 0.98,
@@ -67,17 +81,67 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
 
     pdf.addImage(imgData, "JPEG", xOffset, yOffset, renderWidth, renderHeight);
 
-    // 3. Primary download method via jsPDF save (works across Chrome, Edge, Safari, Firefox, Android)
+    // 3. Check if running inside Native Mobile App (Capacitor Android / iOS)
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const { Filesystem, Directory } = await import("@capacitor/filesystem");
+        const { Share } = await import("@capacitor/share");
+
+        const base64Data = pdf.output("datauristring").split(",")[1];
+        const savedFile = await Filesystem.writeFile({
+          path: cleanFilename,
+          data: base64Data,
+          directory: Directory.Cache,
+        });
+
+        await Share.share({
+          title: cleanFilename,
+          text: cleanFilename,
+          url: savedFile.uri,
+          dialogTitle: "Save or Share PDF",
+        });
+
+        return true;
+      } catch (nativeErr) {
+        console.warn("Native Filesystem/Share failed, trying browser fallbacks:", nativeErr);
+      }
+    }
+
+    // 4. Mobile Browser Web Share API (iOS Safari & Android Chrome)
+    const pdfBlob = pdf.output("blob");
+    const pdfFile = new File([pdfBlob], cleanFilename, { type: "application/pdf" });
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.canShare &&
+      navigator.canShare({ files: [pdfFile] })
+    ) {
+      try {
+        await navigator.share({
+          files: [pdfFile],
+          title: cleanFilename,
+        });
+        return true;
+      } catch (shareErr: any) {
+        if (shareErr.name === "AbortError") {
+          return true;
+        }
+      }
+    }
+
+    // 5. Desktop browser download via jsPDF save
     pdf.save(cleanFilename);
 
     return true;
   } catch (error: any) {
     console.error("PDF generation error, falling back to print dialog:", error);
-    // Fallback to native print to PDF
     if (typeof window !== "undefined") {
       window.print();
       return true;
     }
     return false;
+  } finally {
+    if (wasDark) {
+      root.classList.add("dark");
+    }
   }
 }
