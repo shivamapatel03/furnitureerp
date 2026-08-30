@@ -5,7 +5,7 @@ import { markAttendance, createEmployee, updateEmployee, deleteEmployee } from "
 import { format } from "date-fns";
 import { Users, Calendar, IndianRupee, Plus, Edit2, Trash2, Check, X, UserCheck, Save, Printer, Download, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { downloadInvoicePdf } from "@/lib/downloadPdf";
+import { downloadAttendanceReportPdf, downloadSalaryReportPdf } from "@/lib/downloadPdf";
 
 type Employee = { id: string; name: string; position: string | null; mobile: string; dailySalary: number; status: string };
 type AttendanceRecord = { employeeId: string; status: string; date: string };
@@ -99,7 +99,8 @@ export default function AttendanceManager({
   const handleDownloadAttendance = async () => {
     setIsDownloading(true);
     try {
-      await downloadInvoicePdf("daily-attendance-section", `Staff_Attendance_${selectedDate}.pdf`);
+      const dateFormatted = format(new Date(selectedDate + "T00:00:00"), 'dd MMM yyyy');
+      await downloadAttendanceReportPdf(dateFormatted, employees, attendance);
     } catch (e) {
       console.error("Attendance download error:", e);
       window.print();
@@ -111,7 +112,8 @@ export default function AttendanceManager({
   const handleDownloadSalary = async () => {
     setIsDownloading(true);
     try {
-      await downloadInvoicePdf("salary-summary-section", `Salary_Summary_${format(new Date(), 'MMM_yyyy')}.pdf`);
+      const monthFormatted = format(new Date(), 'MMMM yyyy');
+      await downloadSalaryReportPdf(monthFormatted, initialSalary);
     } catch (e) {
       console.error("Salary download error:", e);
       window.print();
