@@ -32,33 +32,33 @@ export async function GET(
       return new NextResponse("Bill not found", { status: 404 });
     }
 
-    // Generate Vector PDF
+    // Generate Vector PDF (Portrait A4: 210mm x 297mm)
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
     // 1. Dark Top Header Bar
     doc.setFillColor(45, 45, 45);
-    doc.rect(0, 0, 210, 30, "F");
+    doc.rect(0, 0, 210, 32, "F");
 
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(16);
+    doc.setFontSize(17);
     doc.setFont("helvetica", "bold");
-    doc.text("BHURJALA", 14, 13);
+    doc.text("BHURJALA", 14, 14);
 
     doc.setTextColor(239, 68, 68);
-    doc.setFontSize(10);
+    doc.setFontSize(10.5);
     doc.setFont("helvetica", "bold");
-    doc.text("FURNITURE", 14, 21);
+    doc.text("FURNITURE", 14, 22);
 
     doc.setTextColor(220, 220, 220);
     doc.setFontSize(8.5);
     doc.setFont("helvetica", "normal");
     const phone = settings?.phone || "Contact via App";
     const address = settings?.address || "Main Showroom & Workshop";
-    doc.text(`Phone: ${phone}`, 196, 13, { align: "right" });
-    doc.text(`Address: ${address}`, 196, 20, { align: "right" });
+    doc.text(`Phone: ${phone}`, 196, 14, { align: "right" });
+    doc.text(`Address: ${address}`, 196, 21, { align: "right" });
 
     // 2. Customer Info & Invoice Meta
-    const startY = 38;
+    const startY = 40;
 
     doc.setTextColor(120, 120, 120);
     doc.setFontSize(8);
@@ -73,7 +73,7 @@ export async function GET(
     doc.setFontSize(8.5);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(80, 80, 80);
-    doc.text(`Mobile: ${bill.customer?.mobile || "—"}`, 14, startY + 11);
+    doc.text(`Mobile: ${bill.customer?.mobile || "—"}`, 14, startY + 12);
 
     const metaX = 135;
     doc.setTextColor(120, 120, 120);
@@ -128,21 +128,41 @@ export async function GET(
 
     // 3. Line Items Table
     const tableStartY = statusY + 8;
-    const tableData = (bill.items || []).map((item: any, index: number) => {
+    const itemsList = bill.items && bill.items.length > 0 ? bill.items : [];
+
+    const tableData = itemsList.map((item: any, index: number) => {
       const isSqft = item.calculationType === "SQFT" || item.sqft;
-      const rateText = isSqft ? `₹${item.ratePerSqft || item.price}/sqft` : `₹${item.price}/unit`;
-      const qtyText = isSqft ? `${item.sqft || item.quantity} sqft` : `${item.quantity} units`;
-      const categoryText = isSqft ? `Sqft (${bill.category || "Custom"})` : "Unit Item";
+      const rateText = isSqft
+        ? `Rs. ${(item.ratePerSqft || item.price).toLocaleString()}/sqft`
+        : `Rs. ${item.price.toLocaleString()}/unit`;
+      const qtyText = isSqft
+        ? `${item.sqft || item.quantity} sqft`
+        : `${item.quantity} units`;
+      const categoryText = isSqft
+        ? `Sqft (${bill.category || "Custom"})`
+        : "Unit Item";
 
       return [
         String(index + 1),
-        item.product?.name || "Custom Item",
+        item.product?.name || "Custom Furniture Item",
         categoryText,
         rateText,
         qtyText,
-        `₹${Number(item.total).toLocaleString()}`,
+        `Rs. ${Number(item.total).toLocaleString()}`,
       ];
     });
+
+    // If no explicit items, provide summary line
+    if (tableData.length === 0) {
+      tableData.push([
+        "1",
+        "Furniture Works / Order",
+        bill.category || "Standard",
+        `Rs. ${Number(bill.grandTotal).toLocaleString()}`,
+        "1 Job",
+        `Rs. ${Number(bill.grandTotal).toLocaleString()}`,
+      ]);
+    }
 
     autoTable(doc, {
       startY: tableStartY,
@@ -156,7 +176,7 @@ export async function GET(
         fontSize: 9,
       },
       bodyStyles: {
-        fontSize: 9,
+        fontSize: 8.5,
         textColor: [30, 30, 30],
       },
       alternateRowStyles: {
@@ -174,7 +194,7 @@ export async function GET(
 
     // 4. Totals & Payment Summary Box
     // @ts-ignore
-    const finalY = (doc as any).lastAutoTable.finalY + 6;
+    const finalY = (doc as any).lastAutoTable?.finalY ? (doc as any).lastAutoTable.finalY + 6 : tableStartY + 40;
     const summaryBoxX = 120;
     const summaryWidth = 76;
 
@@ -186,12 +206,12 @@ export async function GET(
     doc.setTextColor(80, 80, 80);
 
     doc.text("Subtotal:", summaryBoxX + 4, finalY + 6);
-    doc.text(`₹${Number(bill.subtotal).toLocaleString()}`, 192, finalY + 6, { align: "right" });
+    doc.text(`Rs. ${Number(bill.subtotal).toLocaleString()}`, 192, finalY + 6, { align: "right" });
 
     if (bill.discount > 0) {
       doc.text("Discount:", summaryBoxX + 4, finalY + 12);
       doc.setTextColor(220, 38, 38);
-      doc.text(`-₹${Number(bill.discount).toLocaleString()}`, 192, finalY + 12, { align: "right" });
+      doc.text(`-Rs. ${Number(bill.discount).toLocaleString()}`, 192, finalY + 12, { align: "right" });
       doc.setTextColor(80, 80, 80);
     }
 
@@ -202,18 +222,18 @@ export async function GET(
     doc.setFontSize(10.5);
     doc.setTextColor(20, 20, 20);
     doc.text("Grand Total:", summaryBoxX + 4, finalY + 23);
-    doc.text(`₹${Number(bill.grandTotal).toLocaleString()}`, 192, finalY + 23, { align: "right" });
+    doc.text(`Rs. ${Number(bill.grandTotal).toLocaleString()}`, 192, finalY + 23, { align: "right" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.5);
     doc.setTextColor(22, 101, 52);
     doc.text("Amount Paid:", summaryBoxX + 4, finalY + 29);
-    doc.text(`₹${Number(paidAmount).toLocaleString()}`, 192, finalY + 29, { align: "right" });
+    doc.text(`Rs. ${Number(paidAmount).toLocaleString()}`, 192, finalY + 29, { align: "right" });
 
     doc.setFont("helvetica", "bold");
     doc.setTextColor(balanceDue > 0 ? 185 : 22, balanceDue > 0 ? 28 : 101, balanceDue > 0 ? 28 : 52);
     doc.text("Balance Due:", summaryBoxX + 4, finalY + 36);
-    doc.text(`₹${Number(balanceDue).toLocaleString()}`, 192, finalY + 36, { align: "right" });
+    doc.text(`Rs. ${Number(balanceDue).toLocaleString()}`, 192, finalY + 36, { align: "right" });
 
     if (bill.notes) {
       doc.setFont("helvetica", "normal");
@@ -223,9 +243,34 @@ export async function GET(
       doc.text(bill.notes, 14, finalY + 12, { maxWidth: 95 });
     }
 
-    doc.setFont("helvetica", "normal");
+    // 5. Signature Section (Left: Customer, Right: Owner Physical Signature)
+    const signatureY = Math.max(finalY + 48, 240);
+
+    // Left: Customer Signature Line
+    doc.setDrawColor(160, 160, 160);
+    doc.line(14, signatureY + 18, 65, signatureY + 18);
     doc.setFontSize(8);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(60, 60, 60);
+    doc.text("Customer Signature", 14, signatureY + 23);
+
+    // Right: Owner / Authorized Signatory Box
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(20, 20, 20);
+    doc.text("For, BHURJALA FURNITURE", 196, signatureY + 5, { align: "right" });
+
+    doc.line(145, signatureY + 18, 196, signatureY + 18);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(100, 100, 100);
+    doc.text("Authorized Signature", 196, signatureY + 23, { align: "right" });
+
+    // 6. Bottom Terms & Footer
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7.5);
     doc.setTextColor(140, 140, 140);
+    doc.text("Terms: Goods once sold will not be taken back. Subject to local jurisdiction.", 105, 280, { align: "center" });
     doc.text("Thank you for your business! | Bhurjala Furniture", 105, 285, { align: "center" });
 
     const safeCustomer = bill.customer?.name?.replace(/[^a-zA-Z0-9]/g, "_") || "Customer";
