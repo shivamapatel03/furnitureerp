@@ -253,6 +253,13 @@ export async function downloadBillPdf(bill: any, settings?: any): Promise<boolea
   });
 
   // 4. Totals & Payment Summary Box (Under table)
+  const hasDiscount = (bill.discount || 0) > 0;
+  const hasTax = (bill.tax || 0) > 0;
+  let extraLines = 0;
+  if (hasDiscount) extraLines++;
+  if (hasTax) extraLines++;
+
+  const boxHeight = 36 + extraLines * 6;
   // @ts-ignore
   const finalY = (doc as any).lastAutoTable?.finalY ? (doc as any).lastAutoTable.finalY + 6 : tableStartY + 40;
   const summaryBoxX = 120;
@@ -260,46 +267,62 @@ export async function downloadBillPdf(bill: any, settings?: any): Promise<boolea
 
   doc.setFillColor(250, 250, 250);
   doc.setDrawColor(225, 225, 225);
-  doc.roundedRect(summaryBoxX, finalY, summaryWidth, 40, 2, 2, "FD");
+  doc.roundedRect(summaryBoxX, finalY, summaryWidth, boxHeight, 2, 2, "FD");
 
   doc.setFontSize(8.5);
   doc.setTextColor(80, 80, 80);
 
+  let currentLineY = finalY + 6;
+
   // Subtotal
-  doc.text("Subtotal:", summaryBoxX + 4, finalY + 6);
-  doc.text(`Rs. ${Number(bill.subtotal).toLocaleString()}`, 192, finalY + 6, { align: "right" });
+  doc.text("Subtotal:", summaryBoxX + 4, currentLineY);
+  doc.text(`Rs. ${Number(bill.subtotal).toLocaleString()}`, 192, currentLineY, { align: "right" });
 
   // Discount
-  if (bill.discount > 0) {
-    doc.text("Discount:", summaryBoxX + 4, finalY + 12);
+  if (hasDiscount) {
+    currentLineY += 6;
+    doc.text("Discount:", summaryBoxX + 4, currentLineY);
     doc.setTextColor(220, 38, 38);
-    doc.text(`-Rs. ${Number(bill.discount).toLocaleString()}`, 192, finalY + 12, { align: "right" });
+    doc.text(`-Rs. ${Number(bill.discount).toLocaleString()}`, 192, currentLineY, { align: "right" });
+    doc.setTextColor(80, 80, 80);
+  }
+
+  // GST / Tax
+  if (hasTax) {
+    currentLineY += 6;
+    doc.text("GST / Tax:", summaryBoxX + 4, currentLineY);
+    doc.setTextColor(30, 30, 30);
+    doc.text(`+Rs. ${Number(bill.tax).toLocaleString()}`, 192, currentLineY, { align: "right" });
     doc.setTextColor(80, 80, 80);
   }
 
   // Divider
+  currentLineY += 4;
   doc.setDrawColor(220, 220, 220);
-  doc.line(summaryBoxX + 4, finalY + 16, summaryBoxX + summaryWidth - 4, finalY + 16);
+  doc.line(summaryBoxX + 4, currentLineY, summaryBoxX + summaryWidth - 4, currentLineY);
 
   // Grand Total
+  currentLineY += 6;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10.5);
   doc.setTextColor(20, 20, 20);
-  doc.text("Grand Total:", summaryBoxX + 4, finalY + 23);
-  doc.text(`Rs. ${Number(bill.grandTotal).toLocaleString()}`, 192, finalY + 23, { align: "right" });
+  doc.text("Grand Total:", summaryBoxX + 4, currentLineY);
+  doc.text(`Rs. ${Number(bill.grandTotal).toLocaleString()}`, 192, currentLineY, { align: "right" });
 
   // Paid Amount
+  currentLineY += 6;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(22, 101, 52);
-  doc.text("Amount Paid:", summaryBoxX + 4, finalY + 29);
-  doc.text(`Rs. ${Number(paidAmount).toLocaleString()}`, 192, finalY + 29, { align: "right" });
+  doc.text("Amount Paid:", summaryBoxX + 4, currentLineY);
+  doc.text(`Rs. ${Number(paidAmount).toLocaleString()}`, 192, currentLineY, { align: "right" });
 
   // Balance Due
+  currentLineY += 6;
   doc.setFont("helvetica", "bold");
   doc.setTextColor(balanceDue > 0 ? 185 : 22, balanceDue > 0 ? 28 : 101, balanceDue > 0 ? 28 : 52);
-  doc.text("Balance Due:", summaryBoxX + 4, finalY + 36);
-  doc.text(`Rs. ${Number(balanceDue).toLocaleString()}`, 192, finalY + 36, { align: "right" });
+  doc.text("Balance Due:", summaryBoxX + 4, currentLineY);
+  doc.text(`Rs. ${Number(balanceDue).toLocaleString()}`, 192, currentLineY, { align: "right" });
 
   // Notes or Footer on bottom left
   if (bill.notes) {
@@ -310,16 +333,8 @@ export async function downloadBillPdf(bill: any, settings?: any): Promise<boolea
     doc.text(bill.notes, 14, finalY + 12, { maxWidth: 95 });
   }
 
-  // 5. Signature Section (Left: Customer, Right: Owner Physical Signature)
-  const signatureY = Math.max(finalY + 48, 240);
-
-  // Left: Customer Signature Line
-  doc.setDrawColor(160, 160, 160);
-  doc.line(14, signatureY + 18, 65, signatureY + 18);
-  doc.setFontSize(8);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(60, 60, 60);
-  doc.text("Customer Signature", 14, signatureY + 23);
+  // 5. Signature Section (Owner / Authorized Signatory Only)
+  const signatureY = Math.max(finalY + boxHeight + 8, 240);
 
   // Right: Owner / Authorized Signatory Box
   doc.setFontSize(9);
@@ -327,7 +342,8 @@ export async function downloadBillPdf(bill: any, settings?: any): Promise<boolea
   doc.setTextColor(20, 20, 20);
   doc.text("For, BHURJALA FURNITURE", 196, signatureY + 5, { align: "right" });
 
-  doc.line(145, signatureY + 18, 196, signatureY + 18);
+  doc.setDrawColor(160, 160, 160);
+  doc.line(140, signatureY + 18, 196, signatureY + 18);
   doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(100, 100, 100);

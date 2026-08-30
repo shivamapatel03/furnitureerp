@@ -222,6 +222,13 @@ export async function GET(
     });
 
     // 4. Totals & Payment Summary Box
+    const hasDiscount = (bill.discount || 0) > 0;
+    const hasTax = (bill.tax || 0) > 0;
+    let extraLines = 0;
+    if (hasDiscount) extraLines++;
+    if (hasTax) extraLines++;
+
+    const boxHeight = 36 + extraLines * 6;
     // @ts-ignore
     const finalY = (doc as any).lastAutoTable?.finalY ? (doc as any).lastAutoTable.finalY + 6 : tableStartY + 40;
     const summaryBoxX = 120;
@@ -229,40 +236,62 @@ export async function GET(
 
     doc.setFillColor(250, 250, 250);
     doc.setDrawColor(225, 225, 225);
-    doc.roundedRect(summaryBoxX, finalY, summaryWidth, 40, 2, 2, "FD");
+    doc.roundedRect(summaryBoxX, finalY, summaryWidth, boxHeight, 2, 2, "FD");
 
     doc.setFontSize(8.5);
     doc.setTextColor(80, 80, 80);
 
-    doc.text("Subtotal:", summaryBoxX + 4, finalY + 6);
-    doc.text(`Rs. ${Number(bill.subtotal).toLocaleString()}`, 192, finalY + 6, { align: "right" });
+    let currentLineY = finalY + 6;
 
-    if (bill.discount > 0) {
-      doc.text("Discount:", summaryBoxX + 4, finalY + 12);
+    // Subtotal
+    doc.text("Subtotal:", summaryBoxX + 4, currentLineY);
+    doc.text(`Rs. ${Number(bill.subtotal).toLocaleString()}`, 192, currentLineY, { align: "right" });
+
+    // Discount
+    if (hasDiscount) {
+      currentLineY += 6;
+      doc.text("Discount:", summaryBoxX + 4, currentLineY);
       doc.setTextColor(220, 38, 38);
-      doc.text(`-Rs. ${Number(bill.discount).toLocaleString()}`, 192, finalY + 12, { align: "right" });
+      doc.text(`-Rs. ${Number(bill.discount).toLocaleString()}`, 192, currentLineY, { align: "right" });
       doc.setTextColor(80, 80, 80);
     }
 
-    doc.setDrawColor(220, 220, 220);
-    doc.line(summaryBoxX + 4, finalY + 16, summaryBoxX + summaryWidth - 4, finalY + 16);
+    // GST / Tax
+    if (hasTax) {
+      currentLineY += 6;
+      doc.text("GST / Tax:", summaryBoxX + 4, currentLineY);
+      doc.setTextColor(30, 30, 30);
+      doc.text(`+Rs. ${Number(bill.tax).toLocaleString()}`, 192, currentLineY, { align: "right" });
+      doc.setTextColor(80, 80, 80);
+    }
 
+    // Divider Line
+    currentLineY += 4;
+    doc.setDrawColor(220, 220, 220);
+    doc.line(summaryBoxX + 4, currentLineY, summaryBoxX + summaryWidth - 4, currentLineY);
+
+    // Grand Total
+    currentLineY += 6;
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10.5);
     doc.setTextColor(20, 20, 20);
-    doc.text("Grand Total:", summaryBoxX + 4, finalY + 23);
-    doc.text(`Rs. ${Number(bill.grandTotal).toLocaleString()}`, 192, finalY + 23, { align: "right" });
+    doc.text("Grand Total:", summaryBoxX + 4, currentLineY);
+    doc.text(`Rs. ${Number(bill.grandTotal).toLocaleString()}`, 192, currentLineY, { align: "right" });
 
+    // Amount Paid
+    currentLineY += 6;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.5);
     doc.setTextColor(22, 101, 52);
-    doc.text("Amount Paid:", summaryBoxX + 4, finalY + 29);
-    doc.text(`Rs. ${Number(paidAmount).toLocaleString()}`, 192, finalY + 29, { align: "right" });
+    doc.text("Amount Paid:", summaryBoxX + 4, currentLineY);
+    doc.text(`Rs. ${Number(paidAmount).toLocaleString()}`, 192, currentLineY, { align: "right" });
 
+    // Balance Due
+    currentLineY += 6;
     doc.setFont("helvetica", "bold");
     doc.setTextColor(balanceDue > 0 ? 185 : 22, balanceDue > 0 ? 28 : 101, balanceDue > 0 ? 28 : 52);
-    doc.text("Balance Due:", summaryBoxX + 4, finalY + 36);
-    doc.text(`Rs. ${Number(balanceDue).toLocaleString()}`, 192, finalY + 36, { align: "right" });
+    doc.text("Balance Due:", summaryBoxX + 4, currentLineY);
+    doc.text(`Rs. ${Number(balanceDue).toLocaleString()}`, 192, currentLineY, { align: "right" });
 
     if (bill.notes) {
       doc.setFont("helvetica", "normal");
@@ -273,7 +302,7 @@ export async function GET(
     }
 
     // 5. Signature Section (Owner / Authorized Signatory Only)
-    const signatureY = Math.max(finalY + 48, 240);
+    const signatureY = Math.max(finalY + boxHeight + 8, 240);
 
     doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
