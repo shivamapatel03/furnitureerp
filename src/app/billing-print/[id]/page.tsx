@@ -34,6 +34,7 @@ export default async function StandalonePrintPage(props: { params: Promise<{ id:
                   width={140} 
                   height={50} 
                   className="object-contain h-10 w-auto"
+                  unoptimized
                 />
               </div>
               <div className="block">

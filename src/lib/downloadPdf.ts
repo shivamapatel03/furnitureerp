@@ -1,19 +1,20 @@
-import { toJpeg } from "html-to-image";
 import jsPDF from "jspdf";
 import { Capacitor } from "@capacitor/core";
 
 /**
  * Universal High-reliability PDF download utility.
  * Supports:
- * 1. Native Android App (Capacitor Filesystem + Native Share Sheet to Save/WhatsApp/Drive)
- * 2. Mobile Browser (Web Share API)
- * 3. Desktop Browsers (jsPDF file save + download link)
+ * 1. Desktop & Mobile Web on Vercel (html2pdf with CORS & Taint tolerance + direct file download)
+ * 2. Native Android App (Capacitor Filesystem + Native Share Sheet to Save/WhatsApp/Drive)
+ * 3. Fallback to rasterization and native Print dialog
  */
 export async function downloadInvoicePdf(elementId: string, filename: string): Promise<boolean> {
   const element = document.getElementById(elementId);
   if (!element) {
     console.error(`Element #${elementId} not found`);
-    alert("Element not found for download.");
+    if (typeof window !== "undefined") {
+      window.print();
+    }
     return false;
   }
 
@@ -30,64 +31,48 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
       await new Promise(resolve => setTimeout(resolve, 80));
     }
 
-    // 1. Generate high-resolution JPEG from DOM without CORS font blocking
-    const imgData = await toJpeg(element, {
-      quality: 0.98,
-      pixelRatio: 2,
-      backgroundColor: "#ffffff",
-      cacheBust: true,
-      filter: (node) => {
-        // Exclude print-hidden action buttons from the rasterized image
-        if (node instanceof HTMLElement && node.classList.contains("print:hidden")) {
-          return false;
-        }
-        return true;
-      }
-    });
+    // Try html2pdf.js (handles CSS, tables, fonts, and A4 scaling automatically)
+    // @ts-ignore
+    const html2pdfModule = await import("html2pdf.js");
+    const html2pdf = html2pdfModule.default || html2pdfModule;
 
-    // 2. Initialize jsPDF in portrait A4 (210mm x 297mm)
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-      compress: true,
-    });
+    const opt = {
+      margin: 5,
+      filename: cleanFilename,
+      image: { type: "jpeg" as const, quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        scrollX: 0,
+        scrollY: 0,
+        logging: false,
+      },
+      jsPDF: { unit: "mm" as const, format: "a4", orientation: "portrait" as const },
+    };
 
-    const pageWidth = pdf.internal.pageSize.getWidth(); // 210 mm
-    const pageHeight = pdf.internal.pageSize.getHeight(); // 297 mm
-    const margin = 8; // 8 mm margin
-    const maxWidth = pageWidth - margin * 2; // 194 mm
-    const maxHeight = pageHeight - margin * 2; // 281 mm
-
-    // Calculate aspect ratio
-    const img = new Image();
-    img.src = imgData;
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-    });
-
-    const imgRatio = img.width / img.height;
-    let renderWidth = maxWidth;
-    let renderHeight = renderWidth / imgRatio;
-
-    if (renderHeight > maxHeight) {
-      renderHeight = maxHeight;
-      renderWidth = renderHeight * imgRatio;
-    }
-
-    const xOffset = (pageWidth - renderWidth) / 2;
-    const yOffset = margin;
-
-    pdf.addImage(imgData, "JPEG", xOffset, yOffset, renderWidth, renderHeight);
-
-    // 3. Check if running inside Native Mobile App (Capacitor Android / iOS)
+    // 1. Check if running inside Native Mobile App (Capacitor Android / iOS)
     if (Capacitor.isNativePlatform()) {
       try {
         const { Filesystem, Directory } = await import("@capacitor/filesystem");
         const { Share } = await import("@capacitor/share");
 
-        const base64Data = pdf.output("datauristring").split(",")[1];
+        const pdfBlob: Blob = await html2pdf().set(opt).from(element).outputPdf("blob");
+        
+        // Convert blob to base64 string
+        const reader = new FileReader();
+        const base64Promise = new Promise<string>((resolve, reject) => {
+          reader.onloadend = () => {
+            const res = reader.result as string;
+            const base64 = res.includes(",") ? res.split(",")[1] : res;
+            resolve(base64);
+          };
+          reader.onerror = reject;
+        });
+        reader.readAsDataURL(pdfBlob);
+        const base64Data = await base64Promise;
+
         const savedFile = await Filesystem.writeFile({
           path: cleanFilename,
           data: base64Data,
@@ -103,42 +88,54 @@ export async function downloadInvoicePdf(elementId: string, filename: string): P
 
         return true;
       } catch (nativeErr) {
-        console.warn("Native Filesystem/Share failed, trying browser fallbacks:", nativeErr);
+        console.warn("Native capacitor download failed, using standard download:", nativeErr);
       }
     }
 
-    // 4. Mobile Browser Web Share API (iOS Safari & Android Chrome)
-    const pdfBlob = pdf.output("blob");
-    const pdfFile = new File([pdfBlob], cleanFilename, { type: "application/pdf" });
-    if (
-      typeof navigator !== "undefined" &&
-      navigator.canShare &&
-      navigator.canShare({ files: [pdfFile] })
-    ) {
-      try {
-        await navigator.share({
-          files: [pdfFile],
-          title: cleanFilename,
-        });
-        return true;
-      } catch (shareErr: any) {
-        if (shareErr.name === "AbortError") {
-          return true;
-        }
-      }
-    }
-
-    // 5. Desktop browser download via jsPDF save
-    pdf.save(cleanFilename);
-
+    // 2. Direct browser save via html2pdf (Works on desktop & mobile Chrome, Safari, Edge, Firefox)
+    await html2pdf().set(opt).from(element).save();
     return true;
   } catch (error: any) {
-    console.error("PDF generation error, falling back to print dialog:", error);
-    if (typeof window !== "undefined") {
-      window.print();
+    console.error("PDF download failed, attempting secondary download method:", error);
+    try {
+      const { toJpeg } = await import("html-to-image");
+      const imgData = await toJpeg(element, {
+        quality: 0.98,
+        pixelRatio: 2,
+        backgroundColor: "#ffffff",
+        cacheBust: true,
+      });
+
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      
+      const img = new Image();
+      img.src = imgData;
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+
+      const imgRatio = img.width / img.height;
+      let renderWidth = pageWidth - 10;
+      let renderHeight = renderWidth / imgRatio;
+      if (renderHeight > pageHeight - 10) {
+        renderHeight = pageHeight - 10;
+        renderWidth = renderHeight * imgRatio;
+      }
+
+      pdf.addImage(imgData, "JPEG", (pageWidth - renderWidth) / 2, 5, renderWidth, renderHeight);
+      pdf.save(cleanFilename);
       return true;
+    } catch (secErr) {
+      console.error("All PDF methods failed, falling back to print dialog:", secErr);
+      if (typeof window !== "undefined") {
+        window.print();
+        return true;
+      }
+      return false;
     }
-    return false;
   } finally {
     if (wasDark) {
       root.classList.add("dark");
